@@ -1,0 +1,264 @@
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    font-family: "Poppins";
+    background: #ededed;
+}
+
+.container-data_cs {
+    overflow: hidden;
+}
+
+.header-data_cs {
+    color: #202b46;
+}
+
+.btn-tambah-cs {
+    width: 161px;
+    background: #407bff;
+    color: #ffffff;
+}
+
+.btn-tambah-cs:hover {
+    background: #366ee9;
+    color: #ffffff;
+}
+
+.btn-edit-cs {
+    background: #ff8900;
+}
+
+.btn-edit-cs:hover {
+    background-color: #d67401;
+}
+
+/* focus form & button */
+#searchInput,
+#searchButton {
+    border-radius: 50px !important;
+    border: none;
+}
+#searchInput:focus,
+#searchButton:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+.input-group.custom-shadow > * {
+    font-size: 16px !important;
+}
+.custom-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.input-group.custom-shadow {
+    border: 1px solid black !important;
+    border-radius: 50px !important;
+    width: 270px;
+}
+a:focus {
+    box-shadow: none !important;
+}
+/* search focus */
+.input-group.custom-shadow:focus-within {
+    border: 1.5px solid #0dcaf0 !important; /* border focus search */
+    border-radius: 50px !important;
+}
+.form-select:focus,
+input.form-control:focus,
+textarea:focus {
+    border: 1.5px solid #0dcaf0 !important; /* border focus input, select & textarea */
+    box-shadow: none;
+}
+input.form-control,
+textarea.form-control,
+.form-select {
+    border: white; /* ubah border menjadi putih */
+    outline: none;
+}
+
+/* table */
+th {
+    font-weight: 500 !important;
+    font-size: 18px;
+    background-color: #202b46 !important;
+    color: white !important;
+}
+td {
+    font-weight: normal;
+    font-size: 14px;
+}
+th,
+td {
+    max-width: 150px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+#icon {
+    display: none;
+}
+/* end */
+/* pagination CSS */
+.pagination {
+    background-color: white;
+    margin-bottom: 0;
+}
+.pagination .page-item.active .page-link {
+    background-color: #202b46;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+.pagination .page-item .page-link {
+    background-color: #e5e9ee;
+    border-color: #ffffff;
+    color: #707070;
+}
+
+.pagination .page-item:hover .page-link {
+    background-color: #dcdcdc;
+}
+.pagination .page-item.active:hover .page-link {
+    background-color: #202b46;
+}
+/* end */
+/* button class */
+.btn-hides {
+    border: 1px solid #a0a0a0 !important;
+}
+.btn-hides:hover {
+    background-color: #dcdcdc !important ;
+}
+
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-red {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-red:hover {
+    background-color: #d8453a !important;
+    color: white !important;
+}
+
+.btn-orange {
+    background-color: #ff8900 !important;
+    color: white !important;
+}
+
+.btn-orange:hover {
+    background-color: #d67401 !important;
+    color: white !important;
+}
+
+.btn-grey {
+    background-color: #dcdcdc !important;
+    color: black !important;
+    border: none !important;
+}
+.btn-purple {
+    background-color: #202b46 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-grey:hover {
+    background-color: #bfbfbf !important;
+}
+
+.btn-purple:hover {
+    background-color: #34405a !important;
+}
+
+.custom-checkbox {
+    border-radius: 5px;
+
+    /* end */
+}
+/* Edit & Add */
+header {
+    color: white;
+    background-color: #202b46 !important;
+    border-radius: 10px 10px 0 0;
+}
+
+main {
+    border-radius: 0 0 10px 10px;
+}
+
+.input-container {
+    position: relative !important;
+}
+
+.custom-input {
+    width: 100% !important;
+    height: 49.33px !important;
+    border: 1px solid #a0a0a0 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+.custom-input::placeholder {
+    color: #9f9f9f !important;
+    font-size: 15px !important;
+}
+
+.custom-label {
+    position: absolute !important;
+    top: -10px !important;
+    left: 25px !important;
+    background-color: white !important;
+    padding: 0 5px !important;
+    z-index: 5 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #9f9f9f;
+}
+/* end */
+
+/* media */
+@media only screen and (max-width: 992px) {
+    /* Masukkan aturan CSS yang ingin Anda terapkan ketika lebar layar kurang dari atau sama dengan 989px di sini */
+    th {
+        font-size: 15px; /* Contoh: Mengubah ukuran font body menjadi 16px */
+    }
+    td {
+        font-size: 13px;
+    }
+    #icon {
+        display: inline;
+        font-size: 12px;
+    }
+    #text {
+        display: none;
+    }
+    #searchInput{}
+}
+
+
+.session-card,
+.session-error {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    background-color: #fff;
+    color: #000000;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

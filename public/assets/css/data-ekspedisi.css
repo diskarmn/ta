@@ -1,0 +1,140 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: "Poppins" !important;
+    background: #ededed !important;
+}
+
+.header-text {
+    color: #202b46 !important;
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff,
+        3px 3px 0 #fff !important;
+}
+
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-red {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-red:hover {
+    background-color: #d8453a !important;
+    color: white !important;
+}
+
+.btn-orange {
+    background-color: #ff8900 !important;
+    color: white !important;
+}
+
+.btn-orange:hover {
+    background-color: #d67401 !important;
+    color: white !important;
+}
+
+.btn:focus,
+a:focus {
+    box-shadow: none !important;
+}
+
+#searchInput,
+#searchButton {
+    border-radius: 50px !important;
+}
+
+.input-group.custom-shadow > * {
+    font-size: 16px !important;
+}
+
+th {
+    font-weight: 500 !important;
+    font-size: 18px !important;
+}
+
+td {
+    font-weight: normal !important;
+    font-size: 14px !important;
+}
+
+th,
+td {
+    max-width: 170px !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #202b46 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+.pagination .page-item .page-link {
+    background-color: #e5e9ee !important;
+    border-color: #ffffff !important;
+    color: #707070 !important;
+}
+
+.pagination .page-item:hover .page-link {
+    background-color: #dcdcdc !important;
+}
+.pagination .page-item.active:hover .page-link {
+    background-color: #202b46 !important;
+}
+
+label {
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+.custom-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) !important;
+}
+
+.input-group.custom-shadow {
+    border: 1px solid black !important;
+    border-radius: 50px !important;
+}
+
+/* search focus */
+.input-group.custom-shadow:focus-within {
+    border: 1.5px solid #0dcaf0 !important;
+    border-radius: 50px !important;
+}
+
+/* other */
+.input-group:focus-within {
+    border: 1.5px solid #0dcaf0 !important;
+}
+
+/* hilangkan input focus dari input group*/
+.input-group > input.form-control.input-fields:focus,
+.input-group > button:focus {
+    border: none !important;
+    outline-style: none !important;
+    box-shadow: none !important;
+}
+
+input.form-control {
+    border: white !important;
+}
+
+input.form-control:focus {
+    border: 1.5px solid #0dcaf0 !important;
+    box-shadow: none;
+}
+.table-darks {
+    background-color: #202b46 !important;
+    color: white !important;
+}

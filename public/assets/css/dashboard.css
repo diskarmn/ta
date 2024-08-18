@@ -1,0 +1,316 @@
+
+* {
+    box-sizing: border-box;
+    font-family: "Poppins";
+}
+
+.status-order {
+    background-color: #202b46;
+    color: white;
+}
+
+.status-order-normal {
+    background-color: white;
+    color: black;
+}
+
+.status-order:hover {
+    background-color: #7c8396;
+}
+
+.status-order-normal:active {
+    background: #202b46;
+    color: white;
+}
+
+.custom_popover {
+    background: #202b46;
+    color: white;
+    margin: 0;
+    padding: 0;
+    --bs-popover-height: 20px;
+    --bs-popover-body-padding-x: 0.5rem;
+    --bs-popover-body-padding-y: 0.5rem;
+}
+
+.m_t {
+    margin-top: -5px;
+}
+
+.cek-order {
+    background-color: #fac82b;
+    color: #000;
+}
+
+.cek-order:hover {
+    background-color: #fac82b;
+}
+
+.id_produk {
+    border: 2px solid #202b46;
+    color: #202b46;
+}
+
+.date_produk {
+    color: #828282;
+}
+
+.date_text {
+    font-size: 12px;
+}
+
+.header_dashboard {
+    border-bottom: 2px dashed #6f6f6f;
+}
+
+.letter_spacing {
+    letter-spacing: 2px;
+    color: #202b46;
+}
+
+.color_text {
+    color: #202b46;
+}
+
+.tambah_pembayaran {
+    width: fit-content;
+}
+
+.cek_pembayaran,
+.cetak_invoice {
+    width: 192px;
+}
+
+.kd_produk {
+    border-bottom: 1px solid #202b46;
+}
+
+.font_small {
+    font-size: 14px;
+}
+
+.btn_sunting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 160px;
+}
+
+.gap_btn {
+    width: fit-content;
+}
+
+.cost_container {
+    margin-left: 32px;
+    width: 336px;
+    height: 260px;
+}
+
+.cost_container_success {
+    margin-left: 32px;
+    width: 336px;
+    height: 300px;
+}
+
+.cost_header {
+    background: linear-gradient(to bottom, #ff8e8e, #ff8e8e, #ff8e8e, #ffffff);
+    overflow: hidden;
+    border-bottom: 3px solid #acb9d8;
+    box-shadow: 2px solid #acb9d8;
+    height: 30%;
+    color: #202b46;
+}
+
+.cost_header_warning {
+    background: linear-gradient(to bottom, #fdf771, #fdf771, #fdf771, #ffffff);
+    overflow: hidden;
+    border-bottom: 3px solid #acb9d8;
+    box-shadow: 2px solid #acb9d8;
+    height: 30%;
+    color: #202b46;
+}
+
+.cost_header_success {
+    background: linear-gradient(to bottom, #4fdf6f, #4fdf6f, #4fdf6f, #ffffff);
+    overflow: hidden;
+    border-bottom: 3px solid #acb9d8;
+    box-shadow: 2px solid #acb9d8;
+    height: 30%;
+    color: #202b46;
+}
+
+.cost_body {
+    background-color: #ececec;
+    height: 70%;
+    color: #202b46;
+    font-weight: bold;
+}
+
+.cost_body_warning {
+    background-color: #ececec;
+    height: 70%;
+    color: #202b46;
+    font-weight: bold;
+}
+
+.cost_body_success {
+    background-color: #ececec;
+    height: 70%;
+    color: #202b46;
+    font-weight: bold;
+}
+
+.line_selengkapnya {
+    width: 50%;
+    background-color: black;
+    color: #000;
+}
+
+.line_bayar {
+    margin-right: -12px;
+}
+
+.line_right {
+    margin-right: 10px;
+}
+
+.gap_custom {
+    gap: 11px;
+}
+
+.gap_date {
+    gap: 26px;
+}
+
+.pl-custom {
+    padding-left: 8px;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.angka_filter {
+    background-color: #ff0000;
+    border-radius: 50%;
+}
+
+.px-custom {
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.active {
+    background: #202b46;
+    color: white;
+}
+
+.modal_btn_width {
+    width: 178px;
+}
+
+.text_success {
+    color: #5ba81e;
+}
+
+.session-card,
+.session-error {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    background-color: #fff;
+    color: #000000;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.disabled {
+    background-color: #d7d7d7;
+    color: white;
+}
+.cari {
+    border: 1px solid rgb(7, 7, 7);
+    border-radius: 18px;
+    outline: none;
+    box-shadow: none;
+    margin-right: 5px;
+}
+.input-search {
+    border: none;
+    /* border-bottom: 1px solid #ced4da;
+    border-top: 1px solid #ced4da;
+    border-left: 1px solid #ced4da; */
+    border-radius: 18px;
+    outline: none;
+    /* box-shadow: none; */
+}
+
+.btn-search {
+    border: none;
+    /* border-bottom: 1px solid #ced4da;
+    border-top: 1px solid #ced4da;
+    border-right: 1px solid #ced4da; */
+    border-radius: 18px;
+    outline: none;
+    /* box-shadow: none;
+    cursor: none; */
+}
+
+.text-1xl {
+    font-size: 16px;
+}
+
+.-mt-12 {
+    margin-top: -132px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1100px) {
+    .fzt4 {
+        font-size: 40% !important;
+    }
+
+    .fzt5 {
+        font-size: 50% !important;
+    }
+
+    .fzt6 {
+        font-size: 60% !important;
+    }
+
+    .fzt7 {
+        font-size: 70% !important;
+    }
+
+    .fzt8 {
+        font-size: 80% !important;
+    }
+
+    .wt5 {
+        width: 50% !important;
+    }
+
+    .wt6 {
+        width: 60% !important;
+    }
+
+    .wt7 {
+        width: 70% !important;
+    }
+
+    .wt8 {
+        width: 80% !important;
+    }
+
+    .angka_filter {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

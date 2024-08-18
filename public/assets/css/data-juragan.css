@@ -1,0 +1,195 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: "Poppins" !important;
+    background: #ededed !important;
+}
+/* Title page header */
+.header-text {
+    color: #202b46;
+    font-size: 36px;
+    font-weight: 800;
+    text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff,
+        3px 3px 0 #fff;
+}
+
+/*Sarch, focus form & button */
+#searchInput,
+#searchButton {
+    border-radius: 50px !important;
+    border: none;
+}
+
+/* focus wadah grup search */
+.input-group.custom-shadow:focus-within {
+    border: 1.5px solid #0dcaf0 !important;
+    border-radius: 50px !important;
+}
+#searchInput:focus,
+#searchButton:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.input-group.custom-shadow > * {
+    font-size: 16px !important;
+}
+.custom-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.input-group.custom-shadow {
+    border: 1px solid black !important;
+    border-radius: 50px !important;
+    width: 270px;
+}
+a:focus,
+.btn:focus {
+    box-shadow: none !important;
+}
+
+/* focus wadah grup lainnya */
+.input-group:focus-within {
+    border: 1.5px solid #0dcaf0 !important;
+}
+.input-group > input.form-control:focus,
+.input-group > button:focus {
+    border: none !important;
+    outline-style: none !important;
+    box-shadow: none !important;
+}
+.form-select:focus,
+input.form-control:focus,
+textarea:focus {
+    border: 1.5px solid #0dcaf0 !important; /* border focus input, select & textarea */
+    box-shadow: none;
+}
+input.form-control,
+textarea.form-control,
+.form-select {
+    border: white; /* ubah border menjadi putih */
+    outline: none;
+}
+/* end */
+
+/* button CSS */
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-red {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-red:hover {
+    background-color: #d8453a !important;
+    color: white !important;
+}
+
+.btn-orange {
+    background-color: #ff8900 !important;
+    color: white !important;
+}
+
+.btn-orange:hover {
+    background-color: #d67401 !important;
+    color: white !important;
+}
+/* end */
+
+/* table */
+th {
+    font-weight: 500 !important;
+    font-size: 18px !important;
+    color: white !important;
+    background-color: #202b46 !important;
+}
+
+td {
+    font-weight: normal !important;
+    font-size: 14px !important;
+}
+
+th,
+td {
+    max-width: 170px !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+}
+
+#icon {
+    display: none;
+}
+/* end */
+
+/* pagination CSS */
+.pagination {
+    background-color: white;
+    margin-bottom: 0;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #202b46 !important;
+    border-color: #ffffff !important;
+    color: #ffffff !important;
+}
+.pagination .page-item .page-link {
+    background-color: #e5e9ee !important;
+    border-color: #ffffff !important;
+    color: #707070 !important;
+}
+
+.pagination .page-item:hover .page-link {
+    background-color: #dcdcdc !important;
+}
+.pagination .page-item.active:hover .page-link {
+    background-color: #202b46 !important;
+}
+/* end */
+
+/* card form */
+label {
+    font-weight: 500 !important;
+    color: #333 !important;
+}
+
+#idToko,
+.btn-orange,
+label {
+    font-size: 12px !important;
+}
+/* end */
+#idTokoLabel,
+#namaTokoLabel {
+    font-size: 16px !important;
+}
+
+@media only screen and (max-width: 992px) {
+    /* Masukkan aturan CSS yang ingin Anda terapkan ketika lebar layar kurang dari atau sama dengan 989px di sini */
+    th {
+        font-size: 15px; /* Contoh: Mengubah ukuran font body menjadi 16px */
+    }
+    td {
+        font-size: 13px;
+    }
+    #icon {
+        display: inline;
+        font-size: 12px;
+    }
+    #text {
+        display: none;
+    }
+}
+@media screen and (min-width:768px) and (max-width: 992px){
+    .fst6{font-size: 60%;}
+    .fst7{font-size: 70%;}
+    .fst8{font-size: 80%;}
+    .fst10{font-size: 100%;}
+}

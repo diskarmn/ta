@@ -1,0 +1,300 @@
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    background: #ededed;
+}
+
+.container-charts {
+    overflow: hidden;
+}
+
+.card-charts {
+    width: 390px;
+}
+
+.date-charts {
+    color: #8f8686;
+}
+
+.title-cs-charts {
+    color: #163190;
+}
+
+.footer-cs-charts {
+    background-image: url("../img/bg-footer-charts-cs.png");
+}
+#charts {
+    font-weight: 600;
+    color: white !important;
+}
+#charts:hover {
+    color: #0091ff !important;
+}
+.toast-info {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast-info.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* chartnya */
+.wadah-chart{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.chart-kiri{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 0 !important;
+    width:5%;
+    margin-top:10px;
+}
+.tinggi {
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    width: 50px;
+}
+.chart-kanan{
+    width:95%;
+
+}
+.background-garis-nilai{
+    width:100%;
+    position: relative;
+}
+.background-garis{
+    display: flex;
+    flex-direction: column;
+}
+.garis-garis {
+    height: 50px;
+    border-bottom: 1px dashed black;
+}
+.nilai-chart{
+    position: absolute;
+    top:0;
+    left:-.5%;
+    right:1%;
+    bottom:0%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+}
+.nilainya{
+    display:flex;
+    align-self: flex-end;
+    align-items: flex-end;
+}
+.nilainya div{
+    width:50%;
+    animation:tinggi 1s forwards;
+    align-self:flex-end;
+    border-radius:4px;
+}
+@keyframes tinggi{
+    0%{height:0%}
+    100%{height:100%}
+}
+.kanan-bulan{
+
+}
+
+/* ranking */
+.leaderboard-parent{
+    padding-bottom: 250px !important;
+}
+.pemenang, .leaderboard-parent{
+    background-color: rgba(255, 255, 255, 0.5);
+
+}
+
+.ranktigabesar{
+padding-top:150px;
+align-items: flex-end;
+position: relative;
+padding:0;
+}
+.ranksatu, .rankdua, .ranktiga{
+    position: relative;
+    padding-top:10%;
+}
+.anakabsolute{
+    position: absolute;
+    right:0;
+    left:0;
+    top:-70px;
+}
+.ranksatu{
+    height:670px;
+    background-image: linear-gradient(to top, #2E3955 50% , #4e5a7c);
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+}
+.perak{
+    color:#E0A567;
+}
+.gold{
+    color:#e8aa0a;
+}
+.silver{
+    color:#BCCCD2;
+}
+.ranksatu img{
+    border:13px solid #e8aa0a;
+    border-radius:50%;
+}
+.rankdua img{
+    border:13px solid #E0A567;
+    border-radius:50%;
+}
+.ranktiga img{
+    border:13px solid #BCCCD2;
+    border-radius:50%;
+}
+
+
+
+
+.rankdua, .ranktiga{
+    height:500px;
+    background-color: #2E3955;
+
+}
+.ranktiga{
+    border-top-left-radius: 40px;
+}
+.rankdua{
+    border-top-right-radius: 40px;
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .anakabsolute img{
+        width:50%;
+    }
+    .anakabsolute{
+        top:-40px;
+    }
+    .ranksatu{
+        height:600px;
+    }
+    .nama-profil-list{
+        font-size:70%;
+    }
+    .username-profil-list,.poin{
+        font-size:65%;
+    }
+
+}
+@media screen and (min-width: 850px) and (max-width: 950px) {
+    .anakabsolute img{
+        width:60%;
+    }
+    .anakabsolute{
+        top:-60px;
+    }
+    .ranksatu{
+        height:630px;
+    }
+
+}
+@media screen and (min-width:950px){
+    .ranksatu, .rankdua, .ranktiga{
+        padding-top:15%;
+    }
+    .nama-profil-list,.poin{
+        font-size:90%;
+    }
+    .username-profil-list{
+        font-size:80%;
+    }
+}
+/* list */
+.daftar{
+    border-radius: 30px;
+    height:500px;
+    position:absolute;
+    bottom:-300px;
+    left:0;
+    right:0;
+    padding: 0 !important;
+    /* padding-top:100px !important; */
+}
+.isi-daftar-scroll{
+    border-radius: 30px;
+    padding-top:30px;
+    width:100%;
+    height:100%;
+    overflow-y:scroll;
+    overflow-x: hidden; /* Menghilangkan scrollbar horizontal */
+     scrollbar-width: thin;
+       scrollbar-color: rgba(43, 66, 131, 0.5) rgba(56, 67, 96, 0);
+}
+/* menghias scroll */
+/* Untuk Firefox dan Edge */
+/* .isi-daftar-scroll {
+
+
+} */
+
+/* Untuk Chrome */
+/* .isi-daftar-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 30px;
+}
+/*
+.isi-daftar-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(56, 67, 96, 0.5);
+    border-radius: 5px;
+} *
+
+.isi-daftar-scroll::-webkit-scrollbar-track {
+    border-radius: 30px;
+    background-color: transparent;
+} */
+
+
+/* kkk */
+
+
+.profil-list-kiri{
+    width:50px;
+    height:50px;
+}
+.profil-list-kiri img{
+    width:50px;
+}
+.active{
+    background-color: rgb(56,67,96);
+    color:white;
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .card-sa-t{
+        flex-direction: column ;
+
+    }
+    .child-card-sa-t{
+        width:100% !important;
+    }
+    .child-card-sa-t-delapan{
+        width:80% !important;
+    }
+}
+@media screen and (min-width: 1024px) {
+    .child-card-sa-t{
+        width:30% !important;
+    }
+}

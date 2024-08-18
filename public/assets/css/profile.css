@@ -1,0 +1,372 @@
+* {
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.container-profile,
+.container-edit_profile {
+    margin: 12px;
+    overflow: hidden;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.header-profile {
+    min-height: 217px;
+    background-color: #202b46;
+    position: relative;
+    padding: 2% 7%;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.body-profile {
+    min-height: 417px;
+}
+
+.icon-profile {
+    position: absolute;
+    top: 90%;
+    width: 85%;
+    height: fit-content;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.icon-profile p {
+    font-size: 1.1rem;
+    margin-left: 12px;
+}
+
+.icon-profile .username {
+    font-size: 1.5rem;
+    margin-left: 12px;
+}
+
+.img-container {
+    width: 150px;
+    height: 100%;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-ganti-password {
+    display: flex;
+    width: fit-content;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.btn-ganti-password a {
+    background-color: #202b46;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.btn-ganti-password p {
+    font-size: 1rem;
+}
+
+.edit-pw-icon {
+    margin-left: 38px;
+}
+
+.btn-edit-profile {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-left: 18px;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.btn-edit-profile a {
+    background-color: #202b46;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.header-edit_profile {
+    display: flex;
+    align-items: center;
+    height: 136px;
+    column-gap: 20px;
+    background-color: #202b46;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.header-edit_profile h1 {
+    font-size: 2rem;
+    margin-left: 12px;
+}
+
+.edit-icon {
+    margin-left: 48px;
+}
+
+.body-edit_profile {
+    flex-direction: column;
+}
+
+.password-wrapper {
+    width: 75%;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.edit-profile-container {
+    width: 75%;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.edit-profile-container h1 {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.btn-edit_save {
+    width: 80%;
+    justify-content: end;
+    margin-top: 32px;
+}
+
+.btn_simpan-edit {
+    width: 161px;
+    background-color: #202b46;
+    color: #ffffff;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.btn_batal-edit {
+    width: 161px;
+    background-color: #dcdcdc;
+    color: #000000;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.back-profile {
+    display: block;
+    font-size: 32px;
+}
+
+.icon_back-profile {
+    color: white;
+}
+
+.body-profile {
+    margin-top: -12px;
+}
+
+.box-profile {
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+    width: 85%;
+    border-radius: 8px;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.box-profile .admin-data p {
+    font-size: 1.2rem;
+}
+
+.box-profile .title {
+    font-size: 1.6rem;
+}
+
+.body-profile p {
+    font-size: 1.1rem;
+}
+
+.slider {
+    margin-left: 12px;
+    height: 10px;
+    background-color: #ddd;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.strengthText {
+    font-size: 40px;
+}
+
+.weak {
+    background-color: #ff4d4d;
+}
+
+.medium {
+    background-color: #ffd633;
+}
+
+.strong {
+    background-color: #4dff4d;
+}
+
+.progress {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #ddd; /* Atur panjang border di sini */
+}
+
+.toast-info {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast-info.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Breakpoints Responsive */
+
+/* tablet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .header-profile {
+        min-height: 190px;
+        background-color: #202b46;
+    }
+
+    .icon-profile {
+        display: flex;
+        align-items: center;
+        width: 90%;
+        height: fit-content;
+        top: 100%;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .img-container {
+        width: 60px;
+        height: fit-content;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .btn-ganti-password {
+        display: flex;
+        width: fit-content;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .box-profile {
+        width: 90%;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .progress-bar {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 0.3s ease;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .password-wrapper {
+        width: 90%;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .password-wrapper input {
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        line-height: 1.5;
+        outline: none;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .password-wrapper input::placeholder {
+        font-size: 1.1rem;
+        margin: 0;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .password-wrapper i {
+        font-size: 1.2rem;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .edit-profile-container {
+        width: 80%;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .btn-edit_save {
+        width: 70%;
+        justify-content: end;
+        margin-top: 32px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .btn_batal-edit {
+        font-size: 1.1rem;
+        padding: 12px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .btn_simpan-edit {
+        font-size: 1.1rem;
+        padding: 12px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .header-edit_profile {
+        display: flex;
+        align-items: center;
+        height: 130px;
+        background-color: #202b46;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .header-edit_profile a {
+        margin: 0;
+        padding: 0;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .header-edit_profile h1 {
+        font-size: 1.8rem;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+}
+
+@media (max-width: 414px) {
+    * {
+        font-size: 55%;
+    }
+
+    .container-profile,
+    .container-edit_profile {
+        margin: 12px;
+        overflow: hidden;
+    }
+
+    .avatar-profile {
+        width: 82px;
+        height: 82px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .btn-ganti-password {
+        display: flex;
+        width: 150px;
+        justify-content: end;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+
+    .edit-pw-icon {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ddd; /* Atur panjang border di sini */
+    }
+}

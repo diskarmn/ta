@@ -1,0 +1,262 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    background: #ededed;
+}
+/* Title page header */
+.header-text {
+    color: #202b46;
+    font-size: 36px;
+    font-weight: 800;
+    text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff,
+        /* Bayangan untuk sisi atas */ -3px 3px 0 #fff, 3px 3px 0 #fff; /* Bayangan untuk sisi bawah */
+}
+
+/* focus form & button */
+#searchInput,
+#searchButton {
+    border-radius: 50px !important;
+    border: none;
+}
+#searchInput:focus,
+#searchButton:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+.input-group.custom-shadow > * {
+    font-size: 16px !important;
+}
+.custom-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.input-group.custom-shadow {
+    border: 1px solid black !important;
+    border-radius: 50px !important;
+    width: 270px;
+}
+a:focus {
+    box-shadow: none !important;
+}
+.input-group.custom-shadow:focus-within {
+    border: 1.5px solid #0dcaf0 !important; /* border focus search */
+    border-radius: 50px !important;
+}
+.form-select:focus,
+input.form-control:focus,
+textarea:focus {
+    border: 1.5px solid #0dcaf0 !important; /* border focus input, select & textarea */
+    box-shadow: none;
+}
+input.form-control,
+textarea.form-control,
+.form-select {
+    border: white; /* ubah border menjadi putih */
+    outline: none;
+}
+/* end */
+
+/* table */
+th {
+    font-weight: 500 !important;
+    font-size: 18px;
+    background-color: #202b46 !important;
+    color: white !important;
+}
+td {
+    font-weight: normal;
+    font-size: 14px;
+}
+th,
+td {
+    max-width: 170px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+#icon {
+    display: none;
+}
+/* end */
+
+/* pagination CSS */
+.pagination {
+    background-color: white;
+    margin-bottom: 0;
+}
+.pagination .page-item.active .page-link {
+    background-color: #202b46;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+.pagination .page-item .page-link {
+    background-color: #e5e9ee;
+    border-color: #ffffff;
+    color: #707070;
+}
+
+.pagination .page-item:hover .page-link {
+    background-color: #dcdcdc;
+}
+.pagination .page-item.active:hover .page-link {
+    background-color: #202b46;
+}
+/* end */
+
+/* button CSS */
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-red {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-red:hover {
+    background-color: #d8453a !important;
+    color: white !important;
+}
+
+.btn-orange {
+    background-color: #ff8900 !important;
+    color: white !important;
+}
+
+.btn-orange:hover {
+    background-color: #d67401 !important;
+    color: white !important;
+}
+
+.btn-grey {
+    background-color: #dcdcdc !important;
+    color: black !important;
+    border: none !important;
+}
+.btn-purple {
+    background-color: #202b46 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-grey:hover {
+    background-color: #bfbfbf !important;
+}
+
+.btn-purple:hover {
+    background-color: #34405a !important;
+}
+
+/* modal */
+.modal-content {
+    background-color: #fafafa;
+}
+.label-order {
+    font-weight: 500;
+    color: #333333 !important;
+}
+
+.modal-body .label-order,
+.modal-body input,
+.modal-body textarea,
+.modal-body .form-select {
+    font-size: 16px;
+}
+/* end */
+
+@media only screen and (max-width: 992px) {
+    /* Masukkan aturan CSS yang ingin Anda terapkan ketika lebar layar kurang dari atau sama dengan 989px di sini */
+    th {
+        font-size: 15px; /* Contoh: Mengubah ukuran font body menjadi 16px */
+    }
+    td {
+        font-size: 13px;
+    }
+    #icon {
+        display: inline;
+        font-size: 12px;
+    }
+    #text {
+        display: none;
+    }
+}
+.toast-info {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+
+}
+
+.toast-info.show {
+    opacity: 1;
+    transform: translateY(0);
+
+}
+@media (min-width: 768px) and (max-width: 830px) {
+    .ovscroll{
+        overflow: scroll !important;
+        width:100px ;
+        background-color: #f0f0f000; /* Atur warna latar belakang */
+    scrollbar-color: #202B46;
+    }
+    .ovscroll::-webkit-scrollbar {
+        width: 10px;
+        height:5px; /* Atur lebar scrollbar */
+    }
+
+    .ovscroll::-webkit-scrollbar-track {
+        background-color: transparent; /* Mengatur latar belakang scrollbar menjadi transparan */
+    }
+
+    .ovscroll::-webkit-scrollbar-track:horizontal {
+        background-color:#8d98b45d; /* Mengatur latar belakang scrollbar horizontal menjadi transparan */
+    }
+
+    .ovscroll::-webkit-scrollbar-track:vertical {
+        background-color:transparent ; /* Atur warna latar belakang scrollbar vertikal */
+    }
+
+
+    .ovscroll::-webkit-scrollbar-thumb {
+        background-color: #202B46; /* Atur warna alat scroll */
+        border-radius: 2px;
+    }
+}
+@media (min-width: 830px) and (max-width: 990px) {
+    .ovscroll{
+        overflow: scroll !important;
+        width:150px ;
+        background-color: #f0f0f000; /* Atur warna latar belakang */
+    scrollbar-color: #202B46;
+    }
+    .ovscroll::-webkit-scrollbar {
+        width: 10px;
+        height:5px; /* Atur lebar scrollbar */
+    }
+
+    .ovscroll::-webkit-scrollbar-track {
+        background-color: transparent; /* Mengatur latar belakang scrollbar menjadi transparan */
+    }
+
+    .ovscroll::-webkit-scrollbar-track:horizontal {
+        background-color:#8d98b45d; /* Mengatur latar belakang scrollbar horizontal menjadi transparan */
+    }
+
+    .ovscroll::-webkit-scrollbar-track:vertical {
+        background-color:transparent ; /* Atur warna latar belakang scrollbar vertikal */
+    }
+
+
+    .ovscroll::-webkit-scrollbar-thumb {
+        background-color: #202B46; /* Atur warna alat scroll */
+        border-radius: 2px;
+    }
+}

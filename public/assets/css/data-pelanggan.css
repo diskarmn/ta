@@ -1,0 +1,247 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: "Poppins";
+    background: #ededed;
+}
+/* Title page header */
+.header-text {
+    color: #202b46;
+    font-size: 36px;
+    font-weight: 800;
+    text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff,
+        /* Bayangan untuk sisi atas */ -3px 3px 0 #fff, 3px 3px 0 #fff; /* Bayangan untuk sisi bawah */
+}
+
+/* focus form & button */
+#searchInput,
+#searchButton {
+    border-radius: 50px !important;
+    border: none;
+}
+#searchInput:focus,
+#searchButton:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+.input-group.custom-shadow > * {
+    font-size: 16px !important;
+}
+.custom-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.input-group.custom-shadow {
+    border: 1px solid black !important;
+    border-radius: 50px !important;
+    width: 270px;
+}
+a:focus {
+    box-shadow: none !important;
+}
+.input-group.custom-shadow:focus-within {
+    border: 1.5px solid #0dcaf0 !important; /* border focus search */
+    border-radius: 50px !important;
+}
+.form-select:focus,
+input.form-control:focus,
+textarea:focus {
+    border: 1.5px solid #0dcaf0 !important; /* border focus input, select & textarea */
+    box-shadow: none;
+}
+input.form-control,
+textarea.form-control,
+.form-select {
+    border: white; /* ubah border menjadi putih */
+    outline: none;
+}
+/* end */
+
+/* table */
+th {
+    font-weight: 500 !important;
+    font-size: 18px;
+    background-color: #202b46 !important;
+    color: white !important;
+}
+td {
+    font-weight: normal;
+    font-size: 14px;
+}
+th,
+td {
+    max-width: 150px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.toast-info {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast-info.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-info {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast-info.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#icon {
+    display: none;
+}
+/* end */
+
+/* pagination CSS */
+.pagination {
+    background-color: white;
+    margin-bottom: 0;
+}
+.pagination .page-item.active .page-link {
+    background-color: #202b46;
+    border-color: #ffffff;
+    color: #ffffff;
+}
+.pagination .page-item .page-link {
+    background-color: #e5e9ee;
+    border-color: #ffffff;
+    color: #707070;
+}
+
+.pagination .page-item:hover .page-link {
+    background-color: #dcdcdc;
+}
+.pagination .page-item.active:hover .page-link {
+    background-color: #202b46;
+}
+/* end */
+
+/* button CSS */
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-red {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-red:hover {
+    background-color: #d8453a !important;
+    color: white !important;
+}
+
+.btn-orange {
+    background-color: #ff8900 !important;
+    color: white !important;
+}
+
+.btn-orange:hover {
+    background-color: #d67401 !important;
+    color: white !important;
+}
+
+.btn-grey {
+    background-color: #dcdcdc !important;
+    color: black !important;
+    border: none !important;
+}
+.btn-purple {
+    background-color: #202b46 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-grey:hover {
+    background-color: #bfbfbf !important;
+}
+
+.btn-purple:hover {
+    background-color: #34405a !important;
+}
+
+.btn-detail {
+    color: white;
+    background-color: #1cd3b7;
+}
+
+.btn-detail:hover,
+.btn-detail:focus {
+    color: white !important;
+    background-color: #1bbfa6 !important;
+}
+
+.btn-outline-purple {
+    border: 2px solid #202b46;
+    border-radius: 50%;
+    color: #202b46;
+}
+
+.btn-outline-purple:hover {
+    color: white;
+    background-color: #202b46;
+}
+/* end */
+
+/* modal */
+.modal-content {
+    background-color: #fafafa;
+}
+.modal-body .label-order,
+.modal-body input,
+.modal-body textarea,
+.modal-body .form-select {
+    font-size: 16px;
+}
+
+.label-order {
+    font-weight: 500;
+    color: #333333 !important;
+}
+/* end */
+
+/* detail & riwayat */
+.color-title {
+    color: #41404c;
+}
+.badge-gradient {
+    background-color: #fdf771;
+    background-image: linear-gradient(
+        rgba(253, 247, 113, 1),
+        rgba(253, 247, 113, 0)
+    );
+}
+/* end */
+
+@media only screen and (max-width: 992px) {
+    /* Masukkan aturan CSS yang ingin Anda terapkan ketika lebar layar kurang dari atau sama dengan 989px di sini */
+    th {
+        font-size: 15px; /* Contoh: Mengubah ukuran font body menjadi 16px */
+    }
+    td {
+        font-size: 13px;
+    }
+    #icon {
+        display: inline;
+        font-size: 12px;
+    }
+    #text {
+        display: none;
+    }
+}

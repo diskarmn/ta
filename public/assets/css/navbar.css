@@ -1,0 +1,149 @@
+* {
+    font-family: "Poppins";
+}
+
+/* Custom style Navbar */
+nav {
+    background-color: #202b46 !important;
+}
+
+.max-container {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+.nav-menu.nav-link {
+    border-radius: 8px !important;
+    padding: 5px !important;
+    color: #828282 !important;
+    font-size: 20px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+.notif {
+    color: #828282 !important;
+    font-size: 20px !important;
+    height: 40px !important;
+}
+
+.notif:hover {
+    background-color: white !important;
+    color: #828282 !important;
+}
+
+.notif.active {
+    color: #0091ff !important;
+    background-color: white !important;
+}
+.nav-menu.nav-link:hover {
+    background-color: white !important;
+    color: #0091ff !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+#navbar-dashboard:hover {
+    background-color: white !important;
+    color: #0091ff !important;
+    border-radius: 8px !important;
+    height: 40px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+a.nav-menu.nav-link.active {
+    border-radius: 8px !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+a.nav-menu.nav-link.active:hover {
+    color: #0091ff !important;
+}
+
+/* Custom styles for the offcanvas */
+.offcanvas {
+    max-width: 270px !important; /* Set the maximum width according to your preference */
+    background-color: #202b46 !important;
+}
+
+.nav-pills > a.offcanvas-link.active {
+    background-color: #647192 !important;
+    border-radius: 8px !important;
+}
+
+a.offcanvas-link,
+#logout {
+    color: #adb4cb !important;
+}
+
+/* hover sb aktif sama off */
+a.offcanvas-link:hover,
+#logout:hover {
+    color: white !important;
+}
+
+a.offcanvas-link:hover path {
+    fill: white !important;
+}
+
+a.offcanvas-link:hover #databarang path,
+a.offcanvas-link:hover #audionotif path,
+#logout:hover #keluar path {
+    stroke: white !important;
+    fill: none !important;
+}
+
+a.offcanvas-link.active #databarang path,
+a.offcanvas-link.active #audionotif path {
+    fill: none !important;
+    stroke: white !important;
+}
+
+a.offcanvas-link.active {
+    color: white !important;
+}
+
+a.offcanvas-link.active path {
+    fill: white !important;
+}
+
+.btn-blue {
+    background-color: #0091ff;
+    color: white;
+}
+
+.btn-blue:hover {
+    background-color: #007bd8;
+    color: white;
+}
+
+.btn-grey1 {
+    background-color: #62637f !important;
+    color: white !important;
+}
+.btn-grey1:hover {
+    background-color: #3b3c5f !important;
+    color: white !important;
+}
+
+.fa-solid.fa-bell {
+    color: #0091ff;
+    background-color: white;
+}
+a.offcanvas-link.active #databarang path,
+a.offcanvas-link.active #audionotif path {
+    fill: none !important;
+    stroke: white !important;
+}
+
+/* .triangle {
+    animation: scroll linear infinite;
+}
+
+@keyframes scroll {
+        from { transform: translateX(100%); }
+        to { transform: translateX(-100%); }
+    } */

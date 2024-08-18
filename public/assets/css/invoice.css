@@ -1,0 +1,56 @@
+* {
+    font-family: "poppins";
+}
+p {
+    margin-bottom: 0;
+}
+
+td {
+    font-size: 10px;
+    font-weight: 500;
+    color: #5e6470 !important;
+}
+th {
+    font-weight: 600;
+    font-size: 10px;
+    color: #1a1c21;
+}
+
+.btn-blue {
+    background-color: #407bff !important;
+    color: white !important;
+}
+
+.btn-blue:hover {
+    background-color: #366ee9 !important;
+    color: white !important;
+}
+
+.btn-grey {
+    background-color: #ececf0 !important;
+    color: black !important;
+    border: none !important;
+}
+
+.btn-grey:hover {
+    background-color: #d8d8df !important;
+}
+
+@media print {
+    .hide-on-print {
+        display: none !important;
+    }
+    .card {
+        border: none;
+        box-shadow: none !important;
+    }
+}
+
+.sub-title {
+    font-size: 10px;
+    color: #b9bbc0;
+}
+
+.data-invoice {
+    font-size: 10px;
+}
