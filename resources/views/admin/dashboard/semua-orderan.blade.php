@@ -1078,127 +1078,96 @@
             </div>
         @endforeach
 
-        {{-- resi --}}
-        @foreach ($allorder as $resi)
-            <div class="modal fade" id="resi{{ $resi->order_number }}" tabindex="-1"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="margin-left: 120px">
-                                Input Resi {{ $resi->order_number }}</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        @php
-                            $orderDetails = DB::table('orders')
-                                ->where('order_number', $resi->order_number)
-                                ->get();
-                            $totalQuantity = DB::table('orders')
-                                ->where('order_number', $resi->order_number)
-                                ->value('total_quantity');
-                        @endphp
-                        <form method="POST" id="formongkir"
-                            action="{{ route('resia', ['orderNumber' => $resi->order_number]) }}">
+     {{-- resi --}}
+     @foreach ($allorder as $resi)
+     <div class="modal fade" id="resi{{ $resi->order_number }}" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h1 class="modal-title fs-5" id="exampleModalLabel" style="margin-left: 120px">
+                         Input Resi {{ $resi->order_number }}</h1>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal"
+                         aria-label="Close"></button>
+                 </div>
+                 @php
+                     $orderDetails = DB::table('orders')
+                         ->where('order_number', $resi->order_number)
+                         ->get();
+                     $totalQuantity = DB::table('orders')
+                         ->where('order_number', $resi->order_number)
+                         ->value('total_quantity');
+                     $ongkir = DB::table('orders')
+                         ->where('order_number', $resi->order_number)
+                         ->value('dana_ongkir');
+                 @endphp
+                      <form method="POST" id="formongkir"
+                      action="{{ route('resia', ['orderNumber' => $resi->order_number]) }}">
 
-                            @csrf
-                            <div class="modal-body">
-                                <div class="d-flex flex-row justify-content-between">
-                                    <div class="mb-3 col-5">
-                                        <label for="tanggal-bayar" class="col-form-label">Pilih Kurir</label>
-                                        <select class="form-select custom-input" aria-label="Default select example"
-                                            id="kurir" name="kurir">
-                                            <option value="" selected>Pilih Kurir</option>
-                                            <option value="JNE">JNE</option>
-                                            <option value="Speed">Speed</option>
-                                            <option value="Fast">Fast</option>
-                                            <option value="Express">Express</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 col-5">
-                                        <label for="lainnya" class="col-form-label">Lainnya</label>
-                                        <input type="text" class="form-control custom-input" id="lainnya"
-                                            name="lainnya" value="">
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row">
-                                    <div class="mb-3 col-12">
-                                        <label for="resi" class="col-form-label">No Resi</label>
-                                        <input type="text" class="form-control custom-input" id="resi"
-                                            name="resi" value="">
-                                    </div>
-                                </div>
-                                <div class="d-flex flex-row justify-content-between">
-                                    <div class="mb-3 col-5">
-                                        <label for="tanggal_kirim" class="col-form-label">Tanggal Kirim</label>
-                                        <input type="date" class="form-control custom-input" id="tanggal_kirim"
-                                            name="tanggal_kirim" value="">
-                                    </div>
-                                    <div class="mb-3 col-5">
-                                        <label for="isi_paket" class="col-form-label">Isi Paket</label>
-                                        <input type="number" readonly class="form-control custom-input" id="isi_paket"
-                                            name="isi_paket" value="{{ $totalQuantity }}">
-                                    </div>
+                      @csrf
+                      <div class="modal-body">
+                          <div class="d-flex flex-row justify-content-between">
+                              <div class="mb-3 col-5">
+                                  <label for="tanggal-bayar" class="col-form-label">Pilih Kurir</label>
+                                  <select class="form-select custom-input" aria-label="Default select example"
+                                      id="kurir" name="kurir">
+                                      <option value="" selected>Pilih Kurir</option>
+                                      <option value="JNE" >JNE</option>
+                                      <option value="Speed" >Speed</option>
+                                      <option value="Fast" >Fast</option>
+                                      <option value="Express" >Express</option>
+                                  </select>
+                              </div>
+                              <div class="mb-3 col-5">
+                                  <label for="lainnya" class="col-form-label">Lainnya</label>
+                                  <input type="text"  class="form-control custom-input" id="lainnya"
+                                      name="lainnya"
+                                      value="">
+                              </div>
+                          </div>
+                          <div class="d-flex flex-row">
+                              <div class="mb-3 col-12">
+                                  <label for="resi" class="col-form-label">No Resi</label>
+                                  <input type="text" class="form-control custom-input" id="resi"
+                                      name="resi" value="">
+                              </div>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between">
+                              <div class="mb-3 col-5">
+                                  <label for="tanggal_kirim" class="col-form-label">Tanggal Kirim</label>
+                                  <input type="date" class="form-control custom-input" id="tanggal_kirim"
+                                      name="tanggal_kirim"
+                                      value="">
+                              </div>
+                              <div class="mb-3 col-5">
+                                  <label for="isi_paket" class="col-form-label">Isi Paket</label>
+                                  <input type="number" readonly class="form-control custom-input" id="isi_paket"
+                                      name="isi_paket"
+                                      value="{{ $totalQuantity }}">
+                              </div>
 
-                                </div>
-                                <div class="d-flex flex-row justify-content-between">
-                                    <div class="mb-3 col-5">
-                                        <label for="ongkir" class="col-form-label">Ongkir</label>
-                                        <input type="number" class="form-control custom-input" id="ongkir"
-                                            name="ongkir" value="">
-                                    </div>
-                                </div>
-                            </div>
+                          </div>
+                          <div class="d-flex flex-row justify-content-between">
+                              <div class="mb-3 col-5">
+                                  <label for="ongkir" class="col-form-label">Ongkir</label>
+                                  <input type="number" readonly class="form-control custom-input" id="ongkir"
+                                      name="ongkir"
+                                      value="{{ $ongkir }}">
+                              </div>
+                          </div>
+                      </div>
 
-                            {{--   <h6 class="text-center bg-warning mb-4 p-2 rounded">Detail Pembayaran tidak
-                                    bisa
-                                    diganti
-                                    atau diubah</h6>
-                                <div class="d-flex">
+                             <div class="modal-footer justify-content-start">
+                                 <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Simpan</button>
+                                 <button type="button" class="btn btn-secondary"
+                                     data-bs-dismiss="modal">Batal</button>
+                             </div>
+                         </form>
+             </div>
+         </div>
+     </div>
+ @endforeach
 
-                                    <div class="mb-3 me-3">
-                                        <label for="tujuan-pembayaran" class="col-form-label">Tujuan
-                                            Pembayaran</label>
-                                        <select class="form-select custom-input" aria-label="Default select example"
-                                            id="tujuan-pembayaran" style="width: 200px" name="tujuan_bayar">
-                                            @if (!$orderNumber->tujuan_bayar)
-                                                <option value="" selected>Pilih Tujuan</option>
-                                            @else
-                                                <option value="{{ $orderNumber->tujuan_bayar }}" selected>
-                                                    {{ $orderNumber->tujuan_bayar }}</option>
-                                            @endif
-
-                                            <option value="BRI">BRI</option>
-                                            <option value="BCA">BCA</option>
-                                            <option value="BNI">BNI</option>
-                                            <option value="Mandiri">Mandiri</option>
-                                            <option value="BSI">BSI</option>
-                                            <option value="COD">COD</option>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3 ms-5">
-                                        <label for="tanggal-bayar" class="col-form-label">Tanggal
-                                            Bayar</label>
-                                        <input type="date" class="form-control custom-input" id="tanggal-bayar"
-                                            name="tanggal_bayar" style="width: 200px"
-                                            value="{{ $orderNumber->updated_at }}">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="jumlah-dana" class="col-form-label">Jumlah Dana</label>
-                                    <input type="text" class="form-control custom-input" id="jumlah-dana"
-                                        name="jumlah_dana" style="width: 200px" value="">
-                                </div>
-                            </div> --}}
-                            <div class="modal-footer justify-content-start">
-                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Simpan</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        @endforeach
 
 
         {{-- toast/popup ketika pembayaran berhasil --}}
