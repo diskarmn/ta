@@ -9,7 +9,6 @@ use App\Models\Barang;
 use App\Models\Juragan;
 use App\Models\Customer;
 use App\Models\Employee;
-use App\Models\Keranjang;
 use App\Models\Pelanggan;
 use App\Models\Notiforder;
 use App\Models\BarangOrder;
@@ -24,6 +23,7 @@ use App\Events\NotifRequestPending;
 use Illuminate\Support\Facades\Log;
 use App\Events\NotifRequestDiterima;
 use App\Http\Controllers\Controller;
+use App\Models\ViewTulisOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -60,25 +60,25 @@ class RequestController extends Controller
         );
     }
 
-    public function mainSA()
-    {
-        $title = "Request Super Admin";
-        $requests = EditRequest::with(['order' => function ($query) {
-            $query->select('id', 'order_number', 'juragan');
-        }, 'order.juragan:id,name_juragan'])
-            ->whereNull('selesai')
+    // public function mainSA()
+    // {
+    //     $title = "Request Super Admin";
+    //     $requests = EditRequest::with(['order' => function ($query) {
+    //         $query->select('id', 'order_number', 'juragan');
+    //     }, 'order.juragan:id,name_juragan'])
+    //         ->whereNull('selesai')
 
-            ->get();
-        $status = EditRequest::with(['order' => function ($query) {
-            $query->select('id', 'order_number', 'juragan');
-        }, 'order.juragan:id,name_juragan'])
-            ->whereNotNull('selesai')
-            ->where('selesai', '<>', '')
-            ->get();
+    //         ->get();
+    //     $status = EditRequest::with(['order' => function ($query) {
+    //         $query->select('id', 'order_number', 'juragan');
+    //     }, 'order.juragan:id,name_juragan'])
+    //         ->whereNotNull('selesai')
+    //         ->where('selesai', '<>', '')
+    //         ->get();
 
 
-        return view('super-admin.request.main', ['requests' => $requests, 'title' => $title, 'status' => $status]);
-    }
+    //     return view('super-admin.request.main', ['requests' => $requests, 'title' => $title, 'status' => $status]);
+    // }
 
     public function handleRequest($order_number, $status)
     {
@@ -221,7 +221,7 @@ class RequestController extends Controller
                 $barang = Barang::find($order->id_produk);
 
                 if ($barang) {
-                    $keranjang = new Keranjang();
+                    $keranjang = new ViewTulisOrder();
 
                     $keranjang->order_number = $order->order_number;
                     $keranjang->ukuran = $order->size;
@@ -275,19 +275,19 @@ class RequestController extends Controller
         $juragans = Juragan::get();
         $employees = Employee::get();
 
-        $keranjang = Keranjang::where('order_number', $order_number)->get();
+        $keranjang = ViewTulisOrder::where('order_number', $order_number)->get();
 
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
+        $biaya_lain = ViewTulisOrder::whereNotNull('biaya_lain')
             ->whereNotNull('jasa_biaya_lain')
             ->where('order_number', $order_number)
             ->get();
-        $ongkir = Keranjang::whereNotNull('ongkir')
+        $ongkir = ViewTulisOrder::whereNotNull('ongkir')
             ->whereNotNull('jasa_ongkir')
             ->where('order_number', $order_number)
             ->get();
         $kda = Barang::all();
         $nomer_order = $order_number;
-        
+
         return view('admin.request.requestEdit', [
             'request' => $requests,
             'keranjang' => $keranjang,
@@ -314,7 +314,7 @@ class RequestController extends Controller
 
         $orders = [];
         foreach ($kdProdukArray as $index => $kdProduk) {
-            $keranjang = Keranjang::create([
+            $keranjang = ViewTulisOrder::create([
                 'kd' => $kdProduk,
                 'harga' => $hargaArray[$index],
                 'ukuran' => $sizeArray[$index],
@@ -344,7 +344,7 @@ class RequestController extends Controller
     //     $keranjangItems = [];
     //     $orders = Order::where('order_number', $order_number)->get();
     //     foreach ($orders as $order) {
-    //         if (!Keranjang::where('kd', $order->barang->kd_produk)->exists()) {
+    //         if (!ViewTulisOrder::where('kd', $order->barang->kd_produk)->exists()) {
     //             $keranjang = new Keranjang();
     //             $keranjang->kd = $order->barang->kd_produk;
     //             $keranjang->barang = $order->barang->nama;
@@ -356,16 +356,16 @@ class RequestController extends Controller
     //             $keranjangItems[] = $keranjang->toArray();
     //         }
     //     }
-    //     Keranjang::insert($keranjangItems);
-    //     $keranjang = Keranjang::where('employee_id', $user->id)->get();
+    //     ViewTulisOrder::insert($keranjangItems);
+    //     $keranjang = ViewTulisOrder::where('employee_id', $user->id)->get();
     //     $requests = EditRequest::where('id_order', $orderan->id)->get();
     //     $juragans = Juragan::get();
     //     $employees = Employee::get();
-    //     $biaya_lain = Keranjang::whereNotNull('biaya_lain')
+    //     $biaya_lain = ViewTulisOrder::whereNotNull('biaya_lain')
     //         ->whereNotNull('jasa_biaya_lain')
     //         ->where('employee_id', $user->id)
     //         ->get();
-    //     $ongkir = Keranjang::whereNotNull('ongkir')
+    //     $ongkir = ViewTulisOrder::whereNotNull('ongkir')
     //         ->whereNotNull('jasa_ongkir')
     //         ->where('employee_id', $user->id)
     //         ->get();
@@ -386,107 +386,107 @@ class RequestController extends Controller
 
     // }
 
-    public function viewrequestSA($order_number)
-    {
-        $title = "Request Edit";
-        $user = Auth::guard('employee')->user();
+    // public function viewrequestSA($order_number)
+    // {
+    //     $title = "Request Edit";
+    //     $user = Auth::guard('employee')->user();
 
-        $requests = EditRequest::where('order_number', $order_number)->get();
+    //     $requests = EditRequest::where('order_number', $order_number)->get();
 
-        $juragans = Juragan::get();
-        $employees = Employee::get();
+    //     $juragans = Juragan::get();
+    //     $employees = Employee::get();
 
-        $keranjang = Keranjang::where('order_number', $order_number)->get();
+    //     $keranjang = ViewTulisOrder::where('order_number', $order_number)->get();
 
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('order_number', $order_number)
-            ->get();
-        $ongkir = Keranjang::whereNotNull('ongkir')
-            ->whereNotNull('jasa_ongkir')
-            ->where('order_number', $order_number)
-            ->get();
-        $kda = Barang::all();
-        $nomer_order = $order_number;
+    //     $biaya_lain = ViewTulisOrder::whereNotNull('biaya_lain')
+    //         ->whereNotNull('jasa_biaya_lain')
+    //         ->where('order_number', $order_number)
+    //         ->get();
+    //     $ongkir = ViewTulisOrder::whereNotNull('ongkir')
+    //         ->whereNotNull('jasa_ongkir')
+    //         ->where('order_number', $order_number)
+    //         ->get();
+    //     $kda = Barang::all();
+    //     $nomer_order = $order_number;
 
-        return view('super-admin.request.requestEdit', [
-            'request' => $requests,
-            'keranjang' => $keranjang,
-            'juragans' => $juragans,
-            'employees' => $employees,
-            'biaya_lain' => $biaya_lain,
-            'ongkir' => $ongkir,
-            'kda' => $kda,
-            'title' => $title,
-            'nomer_order' => $nomer_order,
-            'user_id' => $user->id,
-        ]);
-    }
-    public function kerequestSA($order_number)
-    {
-        $user = Auth::guard('employee')->user();
-        $orders = BarangOrder::where('order_number', $order_number)->get();
-        $notas = Order::where('order_number', $order_number)->first();
-
-
-        if ($notas) {
-            $ongkir = $notas->ongkir;
-            $dana_ongkir = $notas->dana_ongkir;
-            $biaya_lain = $notas->biaya_lain;
-            $dana_biaya_lain = $notas->dana_dana_biaya_lain;
-
-            foreach ($orders as $order) {
-                $barang = Barang::find($order->id_produk);
-
-                if ($barang) {
-                    $keranjang = new Keranjang();
-
-                    $keranjang->order_number = $order->order_number;
-                    $keranjang->ukuran = $order->size;
-                    $keranjang->jasa_ongkir = $ongkir;
-                    $keranjang->jasa_biaya_lain = $biaya_lain;
-                    $keranjang->ongkir = $dana_ongkir;
-                    $keranjang->biaya_lain = $dana_biaya_lain;
-                    $keranjang->barang = $barang->nama;
-                    $keranjang->kd = $barang->id;
-                    $keranjang->harga = $barang->harga_satuan;
-                    $keranjang->qty = $order->quantity;
-                    $keranjang->point = $barang->point;
-                    $keranjang->subtotal = $order->subtotal;
-                    $keranjang->save();
-                }
-            }
-        }
+    //     return view('super-admin.request.requestEdit', [
+    //         'request' => $requests,
+    //         'keranjang' => $keranjang,
+    //         'juragans' => $juragans,
+    //         'employees' => $employees,
+    //         'biaya_lain' => $biaya_lain,
+    //         'ongkir' => $ongkir,
+    //         'kda' => $kda,
+    //         'title' => $title,
+    //         'nomer_order' => $nomer_order,
+    //         'user_id' => $user->id,
+    //     ]);
+    // }
+    // public function kerequestSA($order_number)
+    // {
+    //     $user = Auth::guard('employee')->user();
+    //     $orders = BarangOrder::where('order_number', $order_number)->get();
+    //     $notas = Order::where('order_number', $order_number)->first();
 
 
-        DB::table('requests')
-            ->where('order_number', $order_number)
-            ->update(['selesai' => 'diterima']);
-        Order::where('order_number', $order_number)->delete();
-        BarangOrder::where('order_number', $order_number)->delete();
+    //     if ($notas) {
+    //         $ongkir = $notas->ongkir;
+    //         $dana_ongkir = $notas->dana_ongkir;
+    //         $biaya_lain = $notas->biaya_lain;
+    //         $dana_biaya_lain = $notas->dana_dana_biaya_lain;
 
-        $notif = $this->handleRequest($order_number, 'diterima');
-        NotifRequestDiterima::dispatch($notif);
+    //         foreach ($orders as $order) {
+    //             $barang = Barang::find($order->id_produk);
 
-        return redirect()->route('super-admin.requestEdit.view', ['order_number' => $order_number]);
-    }
+    //             if ($barang) {
+    //                 $keranjang = new ViewTulisOrder();
 
-    public function ditolakSA($order_number)
-    {
-        DB::table('requests')
-            ->where('order_number', $order_number)
-            ->update(['selesai' => 'ditolak']);
+    //                 $keranjang->order_number = $order->order_number;
+    //                 $keranjang->ukuran = $order->size;
+    //                 $keranjang->jasa_ongkir = $ongkir;
+    //                 $keranjang->jasa_biaya_lain = $biaya_lain;
+    //                 $keranjang->ongkir = $dana_ongkir;
+    //                 $keranjang->biaya_lain = $dana_biaya_lain;
+    //                 $keranjang->barang = $barang->nama;
+    //                 $keranjang->kd = $barang->id;
+    //                 $keranjang->harga = $barang->harga_satuan;
+    //                 $keranjang->qty = $order->quantity;
+    //                 $keranjang->point = $barang->point;
+    //                 $keranjang->subtotal = $order->subtotal;
+    //                 $keranjang->save();
+    //             }
+    //         }
+    //     }
 
-        $notif = $this->handleRequest($order_number, 'ditolak');
-        NotifRequestDitolak::dispatch($notif);
 
-        return redirect()->route('super-admin.request.main');
-    }
+    //     DB::table('requests')
+    //         ->where('order_number', $order_number)
+    //         ->update(['selesai' => 'diterima']);
+    //     Order::where('order_number', $order_number)->delete();
+    //     BarangOrder::where('order_number', $order_number)->delete();
+
+    //     $notif = $this->handleRequest($order_number, 'diterima');
+    //     NotifRequestDiterima::dispatch($notif);
+
+    //     return redirect()->route('super-admin.requestEdit.view', ['order_number' => $order_number]);
+    // }
+
+    // public function ditolakSA($order_number)
+    // {
+    //     DB::table('requests')
+    //         ->where('order_number', $order_number)
+    //         ->update(['selesai' => 'ditolak']);
+
+    //     $notif = $this->handleRequest($order_number, 'ditolak');
+    //     NotifRequestDitolak::dispatch($notif);
+
+    //     return redirect()->route('super-admin.request.main');
+    // }
 
 
 
     // keranjang
-    public function keranjangrequest(Request $request)
+    public function suntingtulisorder(Request $request)
     {
         $user = Auth::guard('employee')->user();
         $request->validate([
@@ -496,20 +496,16 @@ class RequestController extends Controller
             'harga' => 'required',
             'ukuran' => 'required',
             'qty' => 'required',
-            'point' => 'required'
         ]);
         // dd($request->all());
-        Keranjang::create([
+        ViewTulisOrder::create([
             'kd' => $request->kd,
             'order_number' => $request->order_number,
             'harga' => $request->harga,
             'ukuran' => $request->ukuran,
             'qty' => $request->qty,
             'barang' => $request->nama_barang,
-            'subtotal' => $request->harga * $request->qty,
             'employee_id' => $user->id,
-            'point_per_barang' => $request->point,
-            'point' => $request->point * $request->qty
         ]);
         Barang::where('id', $request->kd)
             ->decrement('stock', $request->qty);
@@ -529,7 +525,7 @@ class RequestController extends Controller
             'point_edit' => 'nullable'
         ]);
         // dd($request->all());
-        $keranjang = Keranjang::findOrFail($id);
+        $keranjang = ViewTulisOrder::findOrFail($id);
 
         if ($keranjang) {
             $keranjang->kd = $request->kd_edit;
@@ -567,7 +563,7 @@ class RequestController extends Controller
             "jasa_ongkir" => 'nullable',
             'order_number' => 'required',
         ]);
-        Keranjang::create([
+        ViewTulisOrder::create([
             'ongkir' => $request->ongkir,
             'jasa_ongkir' => $request->jasa_ongkir,
             'employee_id' => $user->id,
@@ -585,7 +581,7 @@ class RequestController extends Controller
             "jasa_biaya_lain" => 'required',
             "order_number" => 'required',
         ]);
-        Keranjang::create([
+        ViewTulisOrder::create([
             'biaya_lain' => $request->biaya_lain,
             'jasa_biaya_lain' => $request->jasa_biaya_lain,
             'employee_id' => $user->id,
@@ -688,7 +684,7 @@ class RequestController extends Controller
         $ordernya = Order::where('order_number', $order_number)->first();
         $id_ordernya = $ordernya->id;
 
-        Keranjang::where('order_number', $order_number)->get()->each(function ($item) {
+        ViewTulisOrder::where('order_number', $order_number)->get()->each(function ($item) {
             $item->delete();
         });
 
@@ -700,95 +696,95 @@ class RequestController extends Controller
         return redirect()->back()->with('success', 'Data berhasil ditambahkan ke keranjang.');
     }
 
-    public function suntingeditordersSA(Request $request)
-    {
+    // public function suntingeditordersSA(Request $request)
+    // {
 
-        $user = Auth::guard('employee')->user();
-        $total_semua = $request->input('total_f');
-        $kdProdukArray = $request->input('kd_produk_f');
-        $sizeArray = $request->input('size_f');
-        $qtyArray = $request->input('qty_f');
-        $subtotal = $request->input('subtotal_f');
-        $juragan = $request->input('juragan_f');
-        $sumber = $request->input('sumber_f');
-        $served = $request->input('served_by');
-        $tanggal = $request->input('tanggal_order');
-        $id = $request->input('id_pelanggan_keorder');
-        $ongkir = $request->input('jasa_ongkir');
-        $biaya_lain = $request->input('jasa_biaya_lain');
-        $dana_ongkir = $request->input('ongkir');
-        $dana_biaya_lain = $request->input('biaya_lain');
-        $note = $request->input('note');
-        $point = array_sum($request->input('point_v'));
-        $pointArray = $request->input('point_v');
-        $total_qty = array_sum($request->input('qty_f'));
-
-
-        $order_number = $request->input('order_number');
-
-        $pelanggan = Customer::find($id);
-        if ($pelanggan && $point > 0) {
-            $pelanggan->update(['point' => $point]);
-        }
-
-        $order = new Order();
-        $order->total_amount = $total_semua;
-        $order->juragan = $juragan;
-        $order->source = $sumber;
-        $order->served_by = $served;
-        $order->order_date = $tanggal;
-        $order->id_customer = $id;
-        $order->notes = $note;
-        $order->order_number = $order_number;
-        $order->ongkir = $ongkir;
-        $order->biaya_lain = $biaya_lain;
-        $order->dana_ongkir = $dana_ongkir;
-        $order->dana_biaya_lain = $dana_biaya_lain;
-        $order->total_quantity = $total_qty;
-        $order->total_point = $point;
-
-        $order->save();
-
-        $orderId = Order::where('order_number', $order_number)->value('id');
-
-        $orders = [];
-        foreach ($kdProdukArray as $index => $kdProduk) {
-            $order = BarangOrder::create([
-                'id_produk' => $kdProduk,
-                'id_order' => $orderId,
-                'size' => $sizeArray[$index],
-                'quantity' => $qtyArray[$index],
-                'subtotal' => $subtotal[$index],
-                'order_number' => $order_number,
-                'point' => $pointArray[$index],
-            ]);
-            if ($order->save()) {
-                $orders[] = $order;
-            }
-        }
+    //     $user = Auth::guard('employee')->user();
+    //     $total_semua = $request->input('total_f');
+    //     $kdProdukArray = $request->input('kd_produk_f');
+    //     $sizeArray = $request->input('size_f');
+    //     $qtyArray = $request->input('qty_f');
+    //     $subtotal = $request->input('subtotal_f');
+    //     $juragan = $request->input('juragan_f');
+    //     $sumber = $request->input('sumber_f');
+    //     $served = $request->input('served_by');
+    //     $tanggal = $request->input('tanggal_order');
+    //     $id = $request->input('id_pelanggan_keorder');
+    //     $ongkir = $request->input('jasa_ongkir');
+    //     $biaya_lain = $request->input('jasa_biaya_lain');
+    //     $dana_ongkir = $request->input('ongkir');
+    //     $dana_biaya_lain = $request->input('biaya_lain');
+    //     $note = $request->input('note');
+    //     $point = array_sum($request->input('point_v'));
+    //     $pointArray = $request->input('point_v');
+    //     $total_qty = array_sum($request->input('qty_f'));
 
 
+    //     $order_number = $request->input('order_number');
 
-        if (!empty($orders)) {
-            Log::info('Memulai memicu event OrderCreatedNotif dengan orders: ', $orders);
-            event(new OrderCreatedNotif(collect($orders)));
-            Log::info('Event OrderCreatedNotif dipicu.');
-        }
+    //     $pelanggan = Customer::find($id);
+    //     if ($pelanggan && $point > 0) {
+    //         $pelanggan->update(['point' => $point]);
+    //     }
 
-        $jumlah_uang = InfoPembayaran::where('order_number', $order_number)
-            ->where('kelengkapan', 'Ada')
-            ->sum('jumlah_dana');
+    //     $order = new Order();
+    //     $order->total_amount = $total_semua;
+    //     $order->juragan = $juragan;
+    //     $order->source = $sumber;
+    //     $order->served_by = $served;
+    //     $order->order_date = $tanggal;
+    //     $order->id_customer = $id;
+    //     $order->notes = $note;
+    //     $order->order_number = $order_number;
+    //     $order->ongkir = $ongkir;
+    //     $order->biaya_lain = $biaya_lain;
+    //     $order->dana_ongkir = $dana_ongkir;
+    //     $order->dana_biaya_lain = $dana_biaya_lain;
+    //     $order->total_quantity = $total_qty;
+    //     $order->total_point = $point;
 
-        $ordernya = Order::where('order_number', $order_number)->first();
-        $id_ordernya = $ordernya->id;
-        Keranjang::where('order_number', $order_number)->get()->each(function ($item) {
-            $item->delete();
-        });
-        EditRequest::where('order_number', $order_number)->update(['id_order' => $id_ordernya]);
+    //     $order->save();
+
+    //     $orderId = Order::where('order_number', $order_number)->value('id');
+
+    //     $orders = [];
+    //     foreach ($kdProdukArray as $index => $kdProduk) {
+    //         $order = BarangOrder::create([
+    //             'id_produk' => $kdProduk,
+    //             'id_order' => $orderId,
+    //             'size' => $sizeArray[$index],
+    //             'quantity' => $qtyArray[$index],
+    //             'subtotal' => $subtotal[$index],
+    //             'order_number' => $order_number,
+    //             'point' => $pointArray[$index],
+    //         ]);
+    //         if ($order->save()) {
+    //             $orders[] = $order;
+    //         }
+    //     }
 
 
-        return redirect()->route('semua-orderan');
-    }
+
+    //     if (!empty($orders)) {
+    //         Log::info('Memulai memicu event OrderCreatedNotif dengan orders: ', $orders);
+    //         event(new OrderCreatedNotif(collect($orders)));
+    //         Log::info('Event OrderCreatedNotif dipicu.');
+    //     }
+
+    //     $jumlah_uang = InfoPembayaran::where('order_number', $order_number)
+    //         ->where('kelengkapan', 'Ada')
+    //         ->sum('jumlah_dana');
+
+    //     $ordernya = Order::where('order_number', $order_number)->first();
+    //     $id_ordernya = $ordernya->id;
+    //     ViewTulisOrder::where('order_number', $order_number)->get()->each(function ($item) {
+    //         $item->delete();
+    //     });
+    //     EditRequest::where('order_number', $order_number)->update(['id_order' => $id_ordernya]);
+
+
+    //     return redirect()->route('semua-orderan');
+    // }
     public function suntingeditordersA(Request $request)
     {
 
@@ -804,12 +800,9 @@ class RequestController extends Controller
         $tanggal = $request->input('tanggal_order');
         $id = $request->input('id_pelanggan_keorder');
         $ongkir = $request->input('jasa_ongkir');
-        $biaya_lain = $request->input('jasa_biaya_lain');
         $dana_ongkir = $request->input('ongkir');
-        $dana_biaya_lain = $request->input('biaya_lain');
         $note = $request->input('note');
-        // $point = array_sum($request->input('point_v'));
-        // $pointArray = $request->input('point_v');
+
         $total_qty = array_sum($request->input('qty_f'));
 
 
@@ -827,9 +820,7 @@ class RequestController extends Controller
         $order->notes = $note;
         $order->order_number = $order_number;
         $order->ongkir = $ongkir;
-        $order->biaya_lain = $biaya_lain;
         $order->dana_ongkir = $dana_ongkir;
-        $order->dana_biaya_lain = $dana_biaya_lain;
         $order->total_quantity = $total_qty;
 
         $order->save();
@@ -858,7 +849,7 @@ class RequestController extends Controller
         }
         $ordernya = Order::where('order_number', $order_number)->first();
         $id_ordernya = $ordernya->id;
-        Keranjang::where('order_number', $order_number)->get()->each(function ($item) {
+        ViewTulisOrder::where('order_number', $order_number)->get()->each(function ($item) {
             $item->delete();
         });
         // EditRequest::where('order_number', $order_number)->update(['id_order' => $id_ordernya]);
@@ -1157,7 +1148,7 @@ class RequestController extends Controller
             'ukuran' => 'required',
             'qty' => 'required',
         ]);
-        $keranjang = Keranjang::create([
+        $keranjang = ViewTulisOrder::create([
             'kd' => $request->kd,
             'harga' => $request->harga,
             'ukuran' => $request->ukuran,
@@ -1183,7 +1174,7 @@ class RequestController extends Controller
         // Lakukan validasi data jika diperlukan
 
         // Temukan record keranjang yang akan diedit
-        $keranjang = Keranjang::find($keranjang_id);
+        $keranjang = ViewTulisOrder::find($keranjang_id);
 
         // Perbarui data keranjang
         $keranjang->kd = $kd_produk;
@@ -1207,7 +1198,7 @@ class RequestController extends Controller
             'ongkir' => 'required',
             "jasa_ongkir" => 'required'
         ]);
-        Keranjang::create([
+        ViewTulisOrder::create([
             'employee_id' => Auth::guard('employee')->user()->id,
             'ongkir' => $request->ongkir,
             'jasa_ongkir' => $request->jasa_ongkir
@@ -1226,7 +1217,7 @@ class RequestController extends Controller
         // Lakukan validasi data jika diperlukan
 
         // Temukan record keranjang yang akan diedit
-        $keranjang = Keranjang::find($order_id);
+        $keranjang = ViewTulisOrder::find($order_id);
 
         // Perbarui data keranjang
         $keranjang->ongkir = $ongkir;
@@ -1250,7 +1241,7 @@ class RequestController extends Controller
         ]);
 
         // Menyimpan data ke dalam tabel biaya lain
-        Keranjang::create([
+        ViewTulisOrder::create([
             'biaya_lain' => $request->biaya_lain,
             'jasa_biaya_lain' => $request->jasa_biaya_lain,
             'employee_id' => Auth::guard('employee')->user()->id
@@ -1269,7 +1260,7 @@ class RequestController extends Controller
         // Lakukan validasi data jika diperlukan
 
         // Temukan record keranjang yang akan diedit
-        $keranjang = Keranjang::find($order_id);
+        $keranjang = ViewTulisOrder::find($order_id);
 
         // Perbarui data keranjang
         $keranjang->biaya_lain = $biaya_lain;

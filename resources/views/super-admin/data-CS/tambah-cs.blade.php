@@ -25,24 +25,17 @@
                        <label for="idadmin" class="form-label custom-label">Id Customer Service</label>
                        <input type="text" id="idadmin" class="form-control custom-input">
                    </div>
-
                    <div class="row mb-5">
                        <div class="col m-0 input-container">
                            <label for="nama" class="form-label custom-label">Nama</label>
                            <input type="text" id="nama" class="form-control custom-input"
                                placeholder="Tuliskan nama disini" name="name" required>
-                           <div class="invalid-feedback fw-bold">
-                               EROR: Field Tidak Boleh Kosong
-                           </div>
                        </div>
                        <div class="col m-0 input-container ">
                            <label for="hp" class="form-label custom-label">Nomor Handphone</label>
                            <input type="tel" maxlength="13" minlength="11" id="hp"
                                class="form-control custom-input" placeholder="Tuliskan nomor handphone disini"
                                oninput="this.value = this.value.replace(/\D/g, '')" name="phone_number" required>
-                           <div class="invalid-feedback fw-bold">
-                               EROR: Field Tidak Boleh Kosong 
-                           </div>
                        </div>
                    </div>
                    <div class="row mb-5">
@@ -50,28 +43,18 @@
                            <label for="email" class="form-label custom-label">Email</label>
                            <input type="email" id="email" class="form-control custom-input"
                                placeholder="Tuliskan email disini (@)" name="email" required>
-                           <div class="invalid-feedback fw-bold">
-                               EROR: Field Tidak Boleh Kosong
-                           </div>
                        </div>
                        <div class="col m-0 d-flex flex-row gap-2 input-container ">
                            <div class="col">
                                <label for="password" class="form-label custom-label">Password</label>
                                <input type="password" class="form-control custom-input rounded"
                                    placeholder="Min 8 char (e.g. Ab#123)" id="password" name="password" required>
-                               <div class="invalid-feedback fw-bold">
-                                   EROR: Field Tidak Boleh Kosong
-                               </div>
                            </div>
                            <div class="col-lg-1">
                                <button class="btn btn-hides rounded py-3 d-flex align-items-center"
                                    style="box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);" type="button" id="showPassword"><i
                                        class="fa-regular fa-eye text-muted m-0 p-0 "></i></button>
                            </div>
-                       </div>
-                       <div class="mb-5 d-none">
-                           <label for="role" class="form-label custom-label">Role</label>
-                           <input type="text" id="role" class="form-control custom-input" value="cs" name="role">
                        </div>
                    </div>
                    <div class="col m-0 d-flex flex-row gap-2 input-container ">
@@ -82,7 +65,6 @@
                                <option value="male">Male</option>
                                <option value="female">Female</option>
                            </select>
-                           <div class="invalid-feedback fw-bold">EROR: Field Tidak Boleh Kosong</div>
                        </div>
                        <div class="mb-3 col-6">
                            <label for="juragan" class="form-label">Juragan</label>
@@ -105,10 +87,6 @@
                        <input type="file" class="form-control custom-input" id="gambar"
                            name="gambar" style="width: 200px">
                    </div>
-
-
-
-
                    <div class="d-flex flex-row gap-3 justify-content-end ">
                        <a href="/admin/data-cs" class="btn fw-bold px-4 py-2 btn-btl">Batal</a>
                        <button type="submit" class="btn fw-bold btn-dark px-4 py-2 btn-sv">Simpan</button>

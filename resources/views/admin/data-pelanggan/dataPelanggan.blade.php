@@ -13,11 +13,8 @@
                 class="col-lg-5 col-xl-5 col-md-12  d-flex justify-content-md-end  flex-md-row-reverse flex-lg-row justify-content-center align-items-center gap-4 mb-4">
                 <button type="button" class="btn btn-blue px-4 py-2" data-bs-toggle="modal"
                     data-bs-target="#modalTambahPelanggan">Tambah</button>
-
             </div>
         </div>
-
-        {{-- table data pelanggan --}}
         <main class="d-flex table-responsive flex-column rounded-top bg-white ">
             <table class="table table-borderless text-center mb-3">
                 <thead>
@@ -43,8 +40,6 @@
 
                 </tbody>
             </table>
-
-            {{-- pagination --}}
             <div class="d-flex justify-content-between mt-5 m-4">
                     <div class="">
                         <button class="btn btn-outline-success" disabled>Halaman {{ $customers->currentPage() }}</button>
@@ -70,18 +65,11 @@
                             <label for="tanggalRegistrasi" class="form-label label-order mb-1">Tanggal Registrasi</label>
                             <input type="text" class="form-control form-control-lg  input-custom shadow"
                                 id="tanggalRegistrasi" name="register_date" value="{{ date('Y-m-d') }}" required readonly>
-                            <div class="invalid-feedback">
-                                Masukkan tanggal registrasi
-                            </div>
                         </div>
-
                         <div class="mb-4">
                             <label for="namaPelanggan" class="form-label label-order mb-1">Nama Pelanggan</label>
                             <input type="text" name="name" class="form-control form-control-lg input-custom shadow"
                                 id="namaPelanggan">
-                            <div class="invalid-feedback">
-                                Masukkan nama pelanggan
-                            </div>
                         </div>
 
 
@@ -104,18 +92,12 @@
                             <label for="email" class="form-label label-order mb-1">Email Pelanggan</label>
                             <input type="email" name="email"
                                 class="form-control form-control-lg  input-custom shadow" id="email" required>
-                            <div class="invalid-feedback">
-                                Masukkan email pelanggan
-                            </div>
                         </div>
 
                         <div class="mb-4 ">
                             <label for="alamat" class="form-label label-order mb-1">Alamat</label>
                             <textarea type="text" name="address" class="form-control form-control-lg  input-custom shadow " id="alamat"
                                 rows="3" required></textarea>
-                            <div class="invalid-feedback">
-                                Masukkan alamat
-                            </div>
                         </div>
 
                         <div class="row d-flex">
@@ -125,9 +107,6 @@
                                     onchange="loadKabupaten()" required>
                                     <option value="">Pilih Provinsi</option>
                                 </select>
-                                <div class="invalid-feedback">
-                                    Masukkan provinsi
-                                </div>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label for="kota" class="form-label label-order mb-1">Kab / kota</label>
@@ -135,9 +114,6 @@
                                     onchange="loadKecamatan()" required>
                                     <option value="">Pilih Kab/Kota</option>
                                 </select>
-                                <div class="invalid-feedback">
-                                    Masukkan kota
-                                </div>
                             </div>
                         </div>
 
@@ -147,17 +123,11 @@
                                 <select class="form-select form-select-lg  shadow" id="kecamatan" required>
                                     <option value="">Pilih Kecamatan</option>
                                 </select>
-                                <div class="invalid-feedback">
-                                    Masukkan kecamatan
-                                </div>
                             </div>
                             <div class="col-md-6 ">
                                 <label for="kodepos" class="form-label label-order mb-1">Kode Pos </label>
                                 <input type="number" class="form-control form-control-lg  input-custom shadow "
                                     name="kodepos" maxlength="5" id="kodepos" required>
-                                <div class="invalid-feedback">
-                                    Masukkan kodepos
-                                </div>
                             </div>
                         </div>
                         <div class="mb-4 ">

@@ -32,7 +32,6 @@
                 <tbody id="tabel-body">
                     @if ($data_ceo->count())
                         @foreach ($data_ceo as $data)
-
                             <tr>
                                 <td class="col pb-0 pt-3">{{ $loop->iteration }}</td>
                                 <td class="col pb-0 pt-3 text-capitalize">{{ $data->name }}</td>
@@ -42,12 +41,12 @@
                                 <td class="col pb-0 pt-3">
                                     <div class="d-flex justify-content-center gap-lg-3 gap-md-1">
                                         <a class="btn btn-sm btn-orange px-lg-4 px-md-3  text-center rounded-2 fw-medium "
-                                            style="font-size:12px;"  data-bs-toggle="modal"
+                                            style="font-size:12px;" data-bs-toggle="modal"
                                             data-bs-target="#edit{{ $data->id }}">Edit</a>
 
                                         <button class="btn btn-sm px-lg-3 px-md-2 btn-red text-center fw-medium rounded-2 "
-                                            style="font-size:12px;" data-bs-target="#ModalDelete{{ $data->id }}" data-bs-toggle="modal"
-                                            type="submit">Hapus</button>
+                                            style="font-size:12px;" data-bs-target="#ModalDelete{{ $data->id }}"
+                                            data-bs-toggle="modal" type="submit">Hapus</button>
                                 </td>
                             </tr>
 
@@ -84,73 +83,49 @@
 
                 </tbody>
             </table>
-          
+
 
         </main>
     </div>
 
     @foreach ($data_ceo as $edit)
-    <div class="modal fade" id="edit{{ $edit->id }}" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                yang mau di edit
-                </div>
-                <div class="modal-body">
-                <form action="{{ route('editcs2', $data->id) }}" method="POST" id="editForm"
-                    >
-                    @csrf
-                    @method('PUT')
-                    <div class="col m-0 input-container d-none">
-                        <label for="idadmin" class="form-label custom-label">Id </label>
-                        <input type="text" id="idadmin" class="form-control custom-input">
+        <div class="modal fade" id="edit{{ $edit->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        yang mau di edit
                     </div>
-
-                    <div class="row mb-5">
-                        <div class="col m-0 input-container">
-                            <label for="nama" class="form-label custom-label">Nama</label>
-                            <input type="text" id="nama" class="form-control custom-input" name="name"
-                                value="{{ $edit->name }}" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                    <div class="modal-body">
+                        <form action="{{ route('editcs2', $data->id) }}" method="POST" id="editForm">
+                            @csrf
+                            @method('PUT')
+                            <label for="nama" class="form-label">Nama</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="text" id="nama" class="form-control custom-input" name="name"
+                                    value="{{ $edit->name }}"required>
                             </div>
-                        </div>
-                        <div class="col m-0 input-container ">
-                            <label for="hp" class="form-label custom-label">Nomor Handphone</label>
-                            <input type="tel" maxlength="13" minlength="11" id="hp"
-                                class="form-control custom-input" oninput="this.value = this.value.replace(/\D/g, '')"
-                                value="{{ $edit->phone_number }}" name="phone_number" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                            <label for="hp" class="form-label">no hp</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="tel" maxlength="13" minlength="11" id="hp"
+                                    class="form-control custom-input" oninput="this.value = this.value.replace(/\D/g, '')"
+                                    value="{{ $edit->phone_number }}" name="phone_number"required>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col m-0 input-container ">
-                            <label for="email" class="form-label custom-label">Email</label>
-                            <input type="email" id="email" class="form-control custom-input"
-                                value="{{ $edit->email }}" name="email" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                            <label for="email" class="form-label">email</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="email" id="email" class="form-control custom-input"
+                                    value="{{ $edit->email }}" name="email"required>
                             </div>
-                        </div>
+                            <div class="d-flex flex-row gap-3 justify-content-end">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn fw-bold btn-primary px-4 py-2 btn-sv">Simpan</button>
+
+                            </div>
+                        </form>
                     </div>
-
-
-
-                    <div class="d-flex flex-row gap-3 justify-content-end">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn fw-bold btn-dark px-4 py-2 btn-sv"
-                            >Simpan</button>
-
-                    </div>
-                </form>
                 </div>
             </div>
         </div>
-    </div>
     @endforeach
     <!-- sukses Modal delete  -->
     <div class="modal fade" id="suksesModalDelete" tabindex="-1" role="dialog" data-bs-backdrop="false">

@@ -7,20 +7,17 @@
 @section('konten')
     <div class="container-fluid p-4">
 
-        {{-- header --}}
-        <div class="d-flex row justify-content-between align-items-center p-0">
-            <div class="col-lg-7 col-md-12 d-flex header-text align-items-center mb-4">Data Toko (Juragan)</div>
-            <div
-                class="col-lg-5 col-md-12 d-flex justify-content-md-end flex-md-row-reverse flex-lg-row justify-content-center align-items-center mb-4">
-
+        <div class="d-flex justify-content-between align-items-center mb-4 p-0">
+            <div class="col-lg-8 col-md-7 d-flex header-text align-items-center ">Data Toko</div>
+            <div class="col-lg-4 col-md-5 d-flex  justify-content-end">
+                <a href="{{ route('tambahjuraganview') }}" class="btn btn-lg btn-blue rounded-2 px-4 fs-6">Tambah</a>
 
             </div>
         </div>
 
 
-
         <div class="flex-row d-flex justify-content-between">
-            <div style="width: 70%">
+            <div class="col-12">
                 <main class="flex-column table-responsive my-1 bg-white">
 
                     <table class="table table-borderless text-center mb-2">
@@ -57,7 +54,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <!-- Modal Delete -->
+
                                     <div class="modal fade" id="ModalDelete{{ $data->id }}" tabindex="-1"
                                         role="dialog">
                                         <div class="modal-dialog modal-dialog-centered modal-md " role="document">
@@ -83,7 +80,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- modal edit-->
                                     <div class="modal fade" id="ModalEdit{{ $data->id }}" tabindex="-1" role="dialog">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
@@ -98,17 +94,12 @@
                                                             <input name="name_juragan" type="text" class="form-control"
                                                                 id="namaToko{{ $data->id }}"
                                                                 value="{{ $data->name_juragan }}" required>
-                                                            <span><i class="fa-solid fa-pen mx-3"
-                                                                    style="font-size: 10px;"></i></span>
                                                         </div>
-
                                                         <label for="alamatToko" class="form-label">Alamat</label>
                                                         <div class="input-group rounded mb-4 shadow align-items-center">
                                                             <input name="alamat" type="text" class="form-control"
                                                                 id="alamatToko{{ $data->id }}"
                                                                 value="{{ $data->alamat }}" required>
-                                                            <span><i class="fa-solid fa-pen mx-3"
-                                                                    style="font-size: 10px;"></i></span>
                                                         </div>
 
                                                         <div class="d-flex justify-content-center gap-3">
@@ -153,31 +144,7 @@
             </div>
 
 
-            <div class="w-25">
-                <div class="card border-black  p-4">
-                    <h5 class="text-center mb-4 " style="font-family: Montserrat; font-weight:600;">Tambah Toko</h5>
-                    <form action="{{ route('tambahJuraganSuperAdmin') }}" method="POST" class=""
-                        id="TambahTokoManual">
-                        @csrf
-                        <label for="namaToko" class="form-label">Nama Toko</label>
-                        <div class="mb-4 rounded  shadow">
-                            <input name="name_juragan" type="text" class="form-control" id="namaToko" required>
-                        </div>
 
-                        <label for="namaToko" class="form-label">Alamat</label>
-                        <div class="mb-4 rounded  shadow">
-                            <input name="alamat" type="text" class="form-control" id="namaToko" required>
-                        </div>
-
-
-                        <div class="d-flex justify-content-center gap-3">
-                            <button type="button" class="btn btn-danger px-4"
-                                onclick="showTambahTokoManual()">Batal</button>
-                            <button type="submit" class="btn btn-primary px-3" id="tambah">Tambah</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
         </div>
 

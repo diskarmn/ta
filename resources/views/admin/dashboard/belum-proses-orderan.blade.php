@@ -71,8 +71,7 @@
                                         <!--kanan-->
 
 
-                                        @include('super-admin.dashboard-invoice.icon.proses-icon')
-
+                                        @include('admin.dashboard.proses_icon')
 
 
                                     </div>
@@ -308,7 +307,6 @@
                                             <div class="card-body" style="font-size: 18px">
                                                 <p class="fzt7" style="font-weight: 900; color:#ccc">Keterangan</p>
                                                 @php
-                                                    // Ubah jumlah kata yang diinginkan sesuai kebutuhan
                                                     $limitedNote = Str::limit($data->notes, $limit = 50, $end = '...');
                                                 @endphp
                                                 <div class="note-section">
@@ -320,12 +318,7 @@
                                                         @else
                                                             <p class="fzt6 my-0">dana ongkir tidak ada</p>
                                                         @endif
-                                                        @if ($data->dana_biaya_lain)
-                                                            <p class="fzt6 my-0">{{ $data->biaya_lain }}:
-                                                                {{ $data->dana_biaya_lain }}</p>
-                                                        @else
-                                                            <p class="fzt6 my-0">biaya lain tidak ada</p>
-                                                        @endif
+
                                                     </div>
                                                     <div class="full-note fzt7"
                                                         style="display: none; margin-top: 0; padding-top: 0;">
@@ -336,26 +329,23 @@
                                                     <a href="#" class="show-more fzt7"
                                                         onclick="toggleNoteVisibility(this); return false;">Selengkapnya
                                                     </a>
-                                                    @php
-                                                        $status = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->get();
-                                                        $status9Selesai = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->where('id_status', 4)
-                                                            ->where('kelengkapan', 'selesai')
-                                                            ->first();
 
+                                                        <table>
+                                                            <tr>
+                                                                <th style="font-size: 70%;">Kurir</th>
+                                                                <td style="font-size: 70%;">:{{ $data->ongkir }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-size: 70%;">Ongkos</th>
+                                                                <td style="font-size: 70%;">:{{ $data->dana_ongkir }}</td>
+                                                            </tr>
 
-                                                    @endphp
-                                                    @if ($data->status == 'dalam_proses' && $data->total_amount == $data->paid_amount &&  $status9Selesai)
-                                                        <button type="button"
-                                                            class="btn btn-primary border border-dark w-100"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#resi{{ $data->order_number }}">Resi
-                                                        </button>
-                                                    @else
-                                                    @endif
+                                                            <tr>
+                                                                <th style="font-size: 70%;">No Resi</th>
+                                                                <td style="font-size: 70%;">:{{ $data->resi }}</td>
+                                                            </tr>
+                                                        </table>
+
 
                                                 </div>
                                             </div>
@@ -484,131 +474,6 @@
 
 
 
-        {{-- cek pembayaran --}}
-        @foreach ($dana as $orderNumber => $orders)
-            @php
-                $infoPembayaran = DB::table('info_pembayaran')
-                    ->where('order_number', $orderNumber)
-                    ->whereNull('kelengkapan')
-                    ->get();
-            @endphp
-            <div class="modal fade infopembayaran" id="infoPembayaranModal{{ $orderNumber }}" tabindex="1"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog ">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title w-100 text-center" id="infoPembayaranModalLabel">Info Pembayaran
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('update.check.paymenta', ['orderId' => $orderNumber]) }}"
-                                method="POST">
-                                @csrf
-                                <p>{{ $orderNumber }}</p>
-                                <p
-                                    class="bg-warning text-secondary rounded-1 text-center fs-6 fw-medium font-family-Montserrat m-0 px-3 py-2">
-                                    Detail Pembayaran tidak bisa diganti atau dirubah</p>
-                                @foreach ($infoPembayaran as $info)
-                                    <div class="d-flex flex-column parentinfo">
-                                        <div
-                                            class="d-flex gap-4 align-items-center justify-content-between border border-1
-                                                my-2 px-3 rounded-1 border-secondary shadow">
-                                            <div class="col-lg-2 d-flex align-items-center">
-                                                <p class="fw-bold gap-1 d-flex align-items-center my-1">
-                                                    <span>
-                                                        <svg width="35" height="31" viewBox="0 0 35 31"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <g id="Icon">
-                                                                <path id="Vector"
-                                                                    d="M29.4231 8.23779H5.57692C3.60144 8.23779 2 9.83989 2 11.8162V26.1298C2 28.1061 3.60144 29.7082 5.57692 29.7082H29.4231C31.3986 29.7082 33 28.1061 33 26.1298V11.8162C33 9.83989 31.3986 8.23779 29.4231 8.23779Z"
-                                                                    stroke="#0091FF" stroke-width="2.58333"
-                                                                    stroke-linejoin="round" />
-                                                                <path id="Vector_2"
-                                                                    d="M29.0773 8.47931V5.78352C29.0771 5.12234 28.9559 4.46936 28.7224 3.87116C28.4888 3.27296 28.1487 2.74429 27.7262 2.32287C27.3037 1.90146 26.8092 1.59768 26.2782 1.43321C25.7471 1.26875 25.1925 1.24765 24.6538 1.37142L5.02846 5.4106C4.1762 5.60645 3.40734 6.1548 2.85447 6.96108C2.30161 7.76735 1.99941 8.781 2 9.8272V14.2303"
-                                                                    stroke="#0091FF" stroke-width="2.58333"
-                                                                    stroke-linejoin="round" />
-                                                                <path id="Vector_3"
-                                                                    d="M25.8456 24.295C25.3739 24.295 24.9129 24.1263 24.5207 23.8103C24.1286 23.4944 23.8229 23.0453 23.6425 22.5199C23.462 21.9944 23.4147 21.4163 23.5068 20.8585C23.5988 20.3007 23.8259 19.7883 24.1594 19.3862C24.4929 18.984 24.9178 18.7102 25.3803 18.5992C25.8429 18.4882 26.3224 18.5452 26.7581 18.7628C27.1938 18.9805 27.5663 19.349 27.8283 19.8219C28.0903 20.2948 28.2302 20.8507 28.2302 21.4195C28.2302 22.1821 27.9789 22.9135 27.5317 23.4527C27.0845 23.992 26.478 24.295 25.8456 24.295Z"
-                                                                    fill="#0091FF" />
-                                                            </g>
-                                                        </svg>
-                                                    </span>
-                                                    {{ $info->payment_method }}
-
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-4 my-2">
-                                                <p class=" fs-6 fw-medium font-family-Poppins ml-2 my-0">
-                                                    Rp
-                                                    {{ number_format($info->jumlah_dana, 0, ',', '.') }}
-
-                                            </div>
-                                            <div class="col-lg-3 wadah my-2 justify-content-end d-flex">
-                                                <div class="btn-group dropend infopembayaran">
-                                                    <a class="btn border border-3 border-black px-2 dropdown rounded-2 ">
-                                                        <span class="">
-                                                            <svg width="14" height="4" style="display: ;"
-                                                                class="mx-1 my-2 garis" viewBox="0 0 11 1" fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path id="Vector 1489" d="M1.5 1.5H9.5" stroke="black"
-                                                                    stroke-width="3" stroke-linecap="round" />
-                                                            </svg>
-                                                            <i class="fa-solid fa-check text-success  fs-4 cekada"
-                                                                style="display: none;"></i>
-                                                            <i class="fa-solid fa-check text-danger fs-4 cektidak"
-                                                                style="display: none;"></i>
-                                                        </span>
-
-                                                    </a>
-
-                                                    <div class="dropdown-menu border border-dark" style="display: none;">
-                                                        <p class="mx-5 my-2" id="ada">Ada</p>
-                                                        <p class="mx-5 my-2" style="white-space: nowrap;" id="tidak-ada">
-                                                            Tidak Ada</p>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                            <input type="text" style="z-index: -10" class="border border-none bg-none"
-                                                name="adatidak[]" id="adatidak" value="">
-                                            <div class="py-2" id="statusContainer" style="display:none ;">
-                                                <p class="fw-bold text-success" id="statusText">Status: Dana
-                                                    Ada
-                                                </p>
-                                                <input type="text" class="form-control" id="paymentProof"
-                                                    name="link[]"
-                                                    placeholder="Inputan link gambar bukti pembayaran disini!">
-                                            </div>
-                                            <div class="py-2 " id="statusContainerTidak" style="display:none ;">
-                                                <p class="fw-bold text-danger" id="statusText">Status: Dana
-                                                    Tidak
-                                                    Ada</p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                @endforeach
-
-                                <div class=" justify-content-start gap-2">
-                                    <button type="submit" id="submit_cek"
-                                        class="btn btn-primary modal_btn_width">Simpan</button>
-                                    <button type="button" class="btn btn-secondary modal_btn_width"
-                                        data-bs-dismiss="modal">Batal</button>
-                                </div>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            </div>
-        @endforeach
 
 
         {{-- popup tambah pembayaran --}}
@@ -690,171 +555,103 @@
 
         {{-- proses status --}}
         @foreach ($allorder as $orderId)
-            <div class="modal fade" id="prosesOrderanModal{{ $orderId->order_number }}" data-bs-backdrop="static"
-                data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content">
+        <div class="modal fade" id="prosesOrderanModal{{ $orderId->order_number }}" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
 
-                        <form action="{{ route('update.on.procesa', ['orderId' => $orderId->order_number]) }}"
-                            method="post" id="form_proses">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Status Proses
-                                    Orderan {{ $orderId->order_number }}
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p
-                                    class="bg-warning text-secondary rounded-1 text-center fs-6 fw-medium font-family-Montserrat m-0 px-3 py-2">
-                                    Perlu diingat, penambahan status orderan ini tidak bisa diubah!</p>
+                    <form action="{{ route('update.on.procesa', ['orderId' => $orderId->order_number]) }}"
+                        method="post" id="form_proses">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Status Proses
+                                Orderan {{ $orderId->order_number }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p
+                                class="bg-warning text-secondary rounded-1 text-center fs-6 fw-medium font-family-Montserrat m-0 px-3 py-2">
+                                Perlu diingat, penambahan status orderan ini tidak bisa diubah!</p>
 
-                                @php
-                                    $updateStatusProses = DB::table('update_status_proses')
-                                        ->where('order_number', $orderId->order_number)
-                                        ->get();
-                                @endphp
+                            @php
+                                $updateStatusProses = DB::table('update_proses')
+                                    ->where('order_number', $orderId->order_number)
+                                    ->get();
+                            @endphp
 
-                                <br>
-
-                                @if ($updateStatusProses->where('id_status', 3)->where('kelengkapan', 'Lengkap')->isNotEmpty())
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option disabled"
-                                                            data-value="3">Data Pesanan</a></li>
-                                                    <li>
-
-                                                        <a class="dropdown-item status-option
-                                                                {{ $updateStatusProses->where('id_status', 4)->where('kelengkapan', 'selesai')->isNotEmpty() ? 'disabled' : '' }}"
-                                                            data-value="4"> Packing</a>
-
-                                                    </li>
-
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-
+                            <br>
+                                <div class="d-flex gap-1 justify-content-between">
+                                    <div class="col-lg-4 my-2">
+                                        <div class="
+                                         d-flex align-items-center px-2 py-1">
+                                           Proses Packing :
                                         </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    {{-- <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Masuk">Masuk</a>
-                                                    </li> --}}
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Selesai">Selesai</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-                                            </div>
+
+                                        <input type="hidden" name="status"  value="packing">
+                                    </div>
+                                    <div class="col-lg-8 my-2 keterangan-parent">
+                                        <div class="dropdown">
+                                            <button
+                                                class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                                id="kelengkapan" data-name="kelengkapan">
+                                                Pilih
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item kelengkapan-option"
+                                                        data-value="Selesai">Selesai</a></li>
+                                            </ul>
+                                            <input type="hidden" name="kelengkapan" id="checkKelengkapan"
+                                                value="">
                                         </div>
                                     </div>
-                                @else
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option" data-value="3">Data Pesanan
-                                                        </a></li>
-
-                                                    <li> <a class="dropdown-item status-option disabled"
-                                                            data-value="Packing">Packing</a></li>
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Lengkap">Lengkap</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Belum Lengkap">Belum
-                                                            Lengkap</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-
-
-
-
-                                <div class="mb-3 col-lg-12">
-                                    <label for="jumlah-dana" class="col-form-label">Note</label>
-                                    <textarea type="text" class="form-control shadow" placeholder="Opsional" style="min-height: 100px !important;"
-                                        name="keterangan"></textarea>
                                 </div>
 
-
+                            <div class="mb-3 col-lg-12">
+                                <label for="jumlah-dana" class="col-form-label">Note</label>
+                                <textarea type="text" class="form-control shadow" placeholder="Opsional" style="min-height: 100px !important;"
+                                    name="keterangan"></textarea>
                             </div>
-                            <div class="modal-footer justify-content-start gap-2 parentvalidasi"
-                                style="position: relative;">
 
-                                <div class="validasi px-2 py-1 rounded bg-primary text-center text-white">Simpan</div>
-                                <button type="button" class="btn btn-secondary modal_btn_width"
-                                    data-bs-dismiss="modal">Batal</button>
-                                <div class="validasimuncul" style="display: none;">
-                                    <div class="anaknyavalidasi">
 
-                                        <div
-                                            class="tengahnya w-50 m-auto p-5  rounded bg-white d-flex flex-column justify-content-center align-items-center">
-                                            <h1>Ubah Status Orderan</h1>
-                                            <p class="fz9 text-center">Setelah data status yang diubah disimpan data
-                                                tersebut <b class="text-danger fzt9">tidak bisa diubah kembali</b>
-                                                Apakah anda yakin menyimpan data ini?</p>
-                                            <div class="kanankirivalidasi d-flex flex-row justify-content-between w-50">
-                                                <button type="submit" class="btn btn-primary modal_btn_width "
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#confirmPerubahanStatusOrderModal"
-                                                    id="btnSimpanProsesOrderan">Simpan</button>
-                                                <div
-                                                    class="buttonvalidasi px-2 py-1 rounded bg-danger text-center d-flex align-items-center text-white">
-                                                    batal</div>
-                                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-start gap-2 parentvalidasi"
+                            style="position: relative;">
+
+                            <div class="validasi px-2 py-1 rounded bg-primary text-center text-white">Simpan</div>
+                            <button type="button" class="btn btn-secondary modal_btn_width"
+                                data-bs-dismiss="modal">Batal</button>
+                            <div class="validasimuncul" style="display: none;">
+                                <div class="anaknyavalidasi">
+
+                                    <div
+                                        class="tengahnya w-50 m-auto p-5  rounded bg-white d-flex flex-column justify-content-center align-items-center">
+                                        <h1>Ubah Status Orderan</h1>
+                                        <p class="fz9 text-center">Setelah data status yang diubah disimpan data
+                                            tersebut <b class="text-danger fzt9">tidak bisa diubah kembali</b>
+                                            Apakah anda yakin menyimpan data ini?</p>
+                                        <div class="kanankirivalidasi d-flex flex-row justify-content-between w-50">
+                                            <button type="submit" class="btn btn-primary modal_btn_width "
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmPerubahanStatusOrderModal"
+                                                id="btnSimpanProsesOrderan">Simpan</button>
+                                            <div
+                                                class="buttonvalidasi px-2 py-1 rounded bg-danger text-center d-flex align-items-center text-white">
+                                                batal</div>
                                         </div>
                                     </div>
-
                                 </div>
-                            </div>
 
-                        </form>
-                    </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
-        @endforeach
+        </div>
+    @endforeach
 
 
 

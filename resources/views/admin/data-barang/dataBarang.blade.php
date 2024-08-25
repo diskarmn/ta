@@ -13,8 +13,6 @@
                 class="col-lg-5 col-xl-5 col-md-12  d-flex justify-content-md-end  flex-md-row-reverse flex-lg-row  justify-content-center align-items-center gap-4 mb-4 ">
                 <button type="button" class="btn btn-blue px-4 py-2" data-bs-toggle="modal"
                     data-bs-target="#tambahBarangModal">Tambah</button>
-
-
             </div>
         </div>
 
@@ -45,7 +43,6 @@
                                     <td class="pb-0 pt-3">{{ $data_brg->stock }}</td>
                                     <td class="pb-0 pt-3 text-truncate"><a href="#">{{ $data_brg->img }}</a></td>
                                     <td class="pb-0 pt-3 text-truncate"><a href="#">{{ $data_brg->video }}</a></td>
-                                    {{-- <td class="pb-0 pt-3">{{ $data_brg->point }}</td> --}}
                                     <td class="pb-0 pt-3 d-flex flex-column justify-content-evenly gap-md-2 mx-auto">
                                         <button class="btn btn-sm btn-orange px-lg-4 text-center rounded-2 fw-medium"
                                             data-bs-toggle="modal" data-bs-target="#editBarangModal{{ $data_brg->id }}"
@@ -125,7 +122,6 @@
             <div class="modal-content">
                 <div class="modal-header border-bottom-0 m-3 py-0 ">
                     <h5 class="modal-title ms-auto">Tambah Data Barang</h5>
-                    {{-- <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
                 <div class="modal-body m-3 mt-0 pt-0 pb-3">
                     <form method="POST" id="tambahForm" action="{{ route('addbarang') }}">
@@ -136,7 +132,6 @@
                                 class="form-control shadow form-control-lg   @error('kd_produk') is-invalid @enderror"
                                 id="kd-produk" name="kd_produk" placeholder="Kode Produk" autofocus
                                 value="{{ old('kd_produk') }}">
-
                         </div>
                         <div class="mb-4">
                             <label for="nama-produk" class="form-label label-order mb-1">Nama Produk</label>

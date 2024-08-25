@@ -1,6 +1,5 @@
 @section('css')
     <style>
-
         .wadah-jalan {
             overflow: hidden;
         }
@@ -51,7 +50,6 @@
                     <div>
                         @if ($orderan->count())
                             @foreach ($orderan as $data)
-
                                 <div class="card mt-5 rounded-3  " style="box-shadow: 3px 3px 4px 2px rgb(187, 185, 185); ">
                                     <!--atas-->
                                     <div
@@ -73,7 +71,7 @@
                                         <!--kanan-->
 
 
-                                        @include('super-admin.dashboard-invoice.icon.proses-icon')
+                                        @include('admin.dashboard.proses_icon')
 
 
 
@@ -107,8 +105,8 @@
                                                     <label for="asalorderan" class="fzt7">Asal Orderan</label>
                                                     <input
                                                         style="border: none; background-color:white; font-weight:bold; font-size:20px"
-                                                        class="fzt7" type="text" id="asalorderan"
-                                                        readonly value="{{ $data->source }}">
+                                                        class="fzt7" type="text" id="asalorderan" readonly
+                                                        value="{{ $data->source }}">
                                                 </div>
                                                 <div class="mb-4">
                                                     <label for="cs" class="fzt7">Dilayani</label>
@@ -126,27 +124,32 @@
                                                 <div>
 
                                                     @php
-                                                        $barangOrders =  DB::table('barang_order')
-                                                                             ->join('barangs', 'barang_order.id_produk', '=', 'barangs.id')
-                                                                            ->where('barang_order.order_number', $data->order_number)
-                                                                            ->select('barang_order.*', 'barangs.nama as produk_nama')
-                                                                         ->get();
+                                                        $barangOrders = DB::table('barang_order')
+                                                            ->join(
+                                                                'barangs',
+                                                                'barang_order.id_produk',
+                                                                '=',
+                                                                'barangs.id',
+                                                            )
+                                                            ->where('barang_order.order_number', $data->order_number)
+                                                            ->select('barang_order.*', 'barangs.nama as produk_nama')
+                                                            ->get();
                                                     @endphp
 
                                                     @if ($barangOrders->count())
-                                                    @foreach ($barangOrders as $item)
-                                                        <div class="d-flex flex-row">
-                                                            <div class="col-6">
-                                                                <p><b>{{ $item->produk_nama }}</b></p>
-                                                                <p>{{ $item->size }}</p>
+                                                        @foreach ($barangOrders as $item)
+                                                            <div class="d-flex flex-row">
+                                                                <div class="col-6">
+                                                                    <p><b>{{ $item->produk_nama }}</b></p>
+                                                                    <p>{{ $item->size }}</p>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p>X <b>{{ $item->quantity }}</b></p>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-6">
-                                                                <p>X <b>{{ $item->quantity }}</b></p>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
+                                                        @endforeach
                                                     @else
-                                                    <p>No items found for this order.</p>
+                                                        <p>No items found for this order.</p>
                                                     @endif
                                                 </div>
                                                 <hr style="height: 2px; border:none; color:black; background-color:black">
@@ -160,27 +163,49 @@
                                                 </div>
 
                                                 <div class="hasilhover p-2 rounded">
-                                                        <div class="d-flex">
-                                                            <table>
-                                                                 @foreach ($barangOrders as $hvr)
+                                                    <div class="d-flex">
+                                                        <table>
+                                                            @foreach ($barangOrders as $hvr)
                                                                 <tr>
-                                                                    <td><p style="font-size: 70%"><b>{{ $hvr->produk_nama }}</b></p></td>
-                                                                    <td><p style="font-size: 70%">{{ $hvr->size }}</p></td>
-                                                                    <td><p style="font-size: 70%">X</p></td>
-                                                                    <td><p style="font-size: 70%">{{ $hvr->quantity }}</p></td>
-                                                                    <td><p style="font-size: 70%">=</p></td>
-                                                                    <td><p style="font-size: 70%">Rp. {{ number_format($hvr->subtotal, 2) }}</p></td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">
+                                                                            <b>{{ $hvr->produk_nama }}</b></p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">{{ $hvr->size }}</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">X</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">{{ $hvr->quantity }}</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">=</p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p style="font-size: 70%">Rp.
+                                                                            {{ number_format($hvr->subtotal, 2) }}</p>
+                                                                    </td>
                                                                 </tr>
-                                                                 @endforeach
-                                                            </table>
-                                                        </div>
+                                                            @endforeach
+                                                        </table>
+                                                    </div>
 
-                                                    <hr style="height: 2px; border:none; color:black; background-color:black">
+                                                    <hr
+                                                        style="height: 2px; border:none; color:black; background-color:black">
                                                     <table>
                                                         <tr>
-                                                            <td><p style="font-size: 80%"><b>total</b></p></td>
-                                                            <td><p style="font-size: 80%"><b>=</b></p></td>
-                                                            <td><p style="font-size: 80%"><b>Rp. {{ number_format($data->total_amount, 2) }}</b></p></td>
+                                                            <td>
+                                                                <p style="font-size: 80%"><b>total</b></p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="font-size: 80%"><b>=</b></p>
+                                                            </td>
+                                                            <td>
+                                                                <p style="font-size: 80%"><b>Rp.
+                                                                        {{ number_format($data->total_amount, 2) }}</b></p>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -217,7 +242,7 @@
                                                 @endif
 
                                                 {{-- header berwarna hijau apabila sudah terbayar lunas --}}
-                                                @if ($data->paid_amount == $data->total_amount)
+                                                @if ($data->paid_amount == $data->total_amount || $data->paid_amount > $data->total_amount)
                                                     <div class="card-header P-4 wajib-bayar custom-input"
                                                         style="display: absolute; z-index: 1; background: linear-gradient(to bottom, #4FDF6F, #FFFFFF);">
                                                         <h5 class="text-center fs-4 fzt7" style="font-weight: bold">
@@ -254,14 +279,14 @@
                                                             <td class="fzt7" style="background-color: #EDEDED">
                                                                 Kekurangan
                                                             </td>
-                                                            @if ($data->total_amount == $data->paid_amount)
-                                                                <td class="fzt7 col-6 "
-                                                                    style="background-color: #EDEDED">RP
+                                                            @if ($data->total_amount == $data->paid_amount || $data->paid_amount > $data->total_amount)
+                                                                <td class="fzt7 col-6 " style="background-color: #EDEDED">
+                                                                    RP
                                                                     {{ number_format(max(0, $data->total_amount - $data->paid_amount), 0, ',', '.') }}
                                                                 </td>
                                                             @else
-                                                                <td class="fzt7 col-6 "
-                                                                    style="background-color: #EDEDED">-RP
+                                                                <td class="fzt7 col-6 " style="background-color: #EDEDED">
+                                                                    -RP
                                                                     {{ number_format(max(0, $data->total_amount - $data->paid_amount), 0, ',', '.') }}
                                                                 </td>
                                                             @endif
@@ -283,26 +308,18 @@
                                             <div class="card-body" style="font-size: 18px">
                                                 <p class="fzt7" style="font-weight: 900; color:#ccc">Keterangan</p>
                                                 @php
-                                                    // Ubah jumlah kata yang diinginkan sesuai kebutuhan
-                                                    $limitedNote = Str::limit(
-                                                        $data->notes,
-                                                        $limit = 50,
-                                                        $end = '...',
-                                                    );
+                                                    $limitedNote = Str::limit($data->notes, $limit = 50, $end = '...');
                                                 @endphp
                                                 <div class="note-section">
                                                     <div class="limited-note">
                                                         <p class="fzt6 my-0">{{ $limitedNote }}</p>
-                                                        @if($data->dana_ongkir)
-                                                            <p class="fzt6 my-0">{{ $data->dana_ongkir }}: {{ $data->dana_ongkir }}</p>
+                                                        @if ($data->dana_ongkir)
+                                                            <p class="fzt6 my-0">{{ $data->dana_ongkir }}:
+                                                                {{ $data->dana_ongkir }}</p>
                                                         @else
                                                             <p class="fzt6 my-0">dana ongkir tidak ada</p>
                                                         @endif
-                                                        @if($data->dana_biaya_lain)
-                                                            <p class="fzt6 my-0">{{ $data->biaya_lain }}: {{ $data->dana_biaya_lain }}</p>
-                                                        @else
-                                                            <p class="fzt6 my-0">biaya lain tidak ada</p>
-                                                        @endif
+
                                                     </div>
                                                     <div class="full-note fzt7"
                                                         style="display: none; margin-top: 0; padding-top: 0;">
@@ -313,6 +330,22 @@
                                                     <a href="#" class="show-more fzt7"
                                                         onclick="toggleNoteVisibility(this); return false;">Selengkapnya
                                                     </a>
+
+                                                    <table>
+                                                        <tr>
+                                                            <th style="font-size: 70%;">Kurir</th>
+                                                            <td style="font-size: 70%;">:{{ $data->ongkir }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="font-size: 70%;">Ongkos</th>
+                                                            <td style="font-size: 70%;">:{{ $data->dana_ongkir }}</td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <th style="font-size: 70%;">No Resi</th>
+                                                            <td style="font-size: 70%;">:{{ $data->resi }}</td>
+                                                        </tr>
+                                                    </table>
 
 
                                                 </div>
@@ -339,42 +372,7 @@
                                                         class="fa-regular fa-square-plus m-1"></i>Proses
                                                     Orderan</small>
                                             </button>
-                                            <div class=" rounded rounded-3 d-flex   col-2 mx-2 px-0  border border-dark border-2 "
-                                                style="height:max-content;align-self:center;">
-                                                <form class="w-100 m-auto"
-                                                    action="{{ route('kesuntinga', $data->order_number) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" value="{{ $data->order_number }}"
-                                                        id="lorder_number">
-                                                    <input type="hidden" value="{{ $data->juragan }}" id="lid_juragan">
-                                                    <input type="hidden" value="{{ $data->juraganname }}"
-                                                        id="lname_juragan">
-                                                    <input type="hidden" value="{{ $data->source }}" id="lsource">
-                                                    <input type="hidden" value="{{ $data->served_by }}"
-                                                        id="lid_served_by">
-                                                    <input type="hidden" value="{{ $data->served_byname }}"
-                                                        id="lname_served_by">
-                                                    <input type="hidden" value="{{ $data->order_date }}"
-                                                        id="lorder_date">
-                                                    <input type="hidden" value="{{ $data->customer_name }}"
-                                                        id="lname_customer">
-                                                    <input type="hidden" value="{{ $data->id_customer }}"
-                                                        id="lid_customer">
-                                                    <input type="hidden" value="{{ $data->notes }}" id="lnotes">
-                                                    <input type="hidden" value="{{ $data->payment_method }}"
-                                                        id="lmethod">
-                                                    <input type="hidden" value="{{ $data->status }}" id="lstatus">
-                                                    <button type="submit"
-                                                        class="btn w-100 px-2 btn fzt7 text-start
-                                                    border border-none text-dark w-100 d-flex align-items-center"
-                                                        onclick="simpanlokal()" style="text-decoration: none;">
-                                                        Sunting
-                                                    </button>
-                                                </form>
 
-
-                                            </div>
                                             <div class="sunting rounded rounded-3 px-1 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
                                                 style="">
                                                 Pembayaran / hapus order
@@ -424,109 +422,67 @@
                                             </div>
                                         @else
                                         @endif
-                                        @if (($data->total_amount == $data->paid_amount || $data->paid_amount > $data->total_amount) && $data->status != 'cek_pembayaran')
-                                        <button data-bs-toggle="modal"
-                                            data-bs-target="#prosesOrderanModal{{ $data->order_number }}"
-                                            type="button"
-                                            class="rounded p-1 justify-content-center flex-lg-row flex-md-column  col-lg-2  col-3 d-flex align-items-center"
-                                            style="background-color: #202B46; color:white"
-                                            data-idpelanggan = "{{ $data->id_customer }}"><small
-                                                class="me-2 fzt6 col-12 text-center"><i
-                                                    class="fa-regular fa-square-plus m-1"></i>Proses
-                                                Orderan</small>
-                                        </button>
-                                        <div class="sunting rounded rounded-3 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
-                                            style="">
-                                            <form class="w-100 m-auto"
-                                                action="{{ route('kesuntinga', $data->order_number) }}"
-                                                method="POST">
-                                                @csrf
-                                                <input type="hidden" value="{{ $data->order_number }}"
-                                                    id="lorder_number">
-                                                <input type="hidden" value="{{ $data->juragan }}"
-                                                    id="lid_juragan">
-                                                <input type="hidden" value="{{ $data->juraganname }}"
-                                                    id="lname_juragan">
-                                                <input type="hidden" value="{{ $data->source }}"
-                                                    id="lsource">
-                                                <input type="hidden" value="{{ $data->served_by }}"
-                                                    id="lid_served_by">
-                                                <input type="hidden" value="{{ $data->served_byname }}"
-                                                    id="lname_served_by">
-                                                <input type="hidden" value="{{ $data->order_date }}"
-                                                    id="lorder_date">
-                                                <input type="hidden" value="{{ $data->customer_name }}"
-                                                    id="lname_customer">
-                                                <input type="hidden" value="{{ $data->id_customer }}"
-                                                    id="lid_customer">
-                                                <input type="hidden" value="{{ $data->notes }}"
-                                                    id="lnotes">
-                                                <input type="hidden"  value="{{ $data->payment_method }}"
-                                                    id="lmethod">
-                                                <input type="hidden"  value="{{ $data->status }}"
-                                                    id="lstatus">
-                                                <button type="submit"
-                                                    class="btn w-100 px-2 btn fzt7 text-start
-                                                border border-none text-dark w-100 d-flex align-items-center"
-                                                    onclick="simpanlokal()" style="text-decoration: none;">
-                                                    Sunting
+                                        @if (
+                                            ($data->total_amount == $data->paid_amount || $data->paid_amount > $data->total_amount) &&
+                                                $data->status != 'cek_pembayaran')
+                                            <button data-bs-toggle="modal"
+                                                data-bs-target="#prosesOrderanModal{{ $data->order_number }}"
+                                                type="button"
+                                                class="rounded p-1 justify-content-center flex-lg-row flex-md-column  col-lg-2  col-3 d-flex align-items-center"
+                                                style="background-color: #202B46; color:white"
+                                                data-idpelanggan = "{{ $data->id_customer }}"><small
+                                                    class="me-2 fzt6 col-12 text-center"><i
+                                                        class="fa-regular fa-square-plus m-1"></i>Proses
+                                                    Orderan</small>
+                                            </button>
+                                        @else
+                                        @endif
+                                        @php
+                                            $status = DB::table('update_proses')
+                                                ->where('order_number', $data->order_number)
+                                                ->get();
+                                            $status4Selesai = DB::table('update_proses')
+                                                ->where('order_number', $data->order_number)
+                                                ->where('nama_proses', 'packing')
+                                                ->where('kelengkapan', 'selesai')
+                                                ->first();
+
+                                        @endphp
+                                        @if ($data->status == 'dalam_proses' && $data->total_amount == $data->paid_amount ||$data->total_amount < $data->paid_amount && $status4Selesai)
+                                            <div class="col-3">
+                                                <button type="button" class="btn btn-warning text-dark  col-3 w-100"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#resi{{ $data->order_number }}">
+                                                    <svg width="36" height="35" viewBox="0 0 50 33"
+                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g id="Logo Diantar">
+                                                            <rect id="Box" x="7.4375" y="1.69238" width="19.7476"
+                                                                height="25" stroke="#070707" stroke-width="2" />
+                                                            <path id="Head"
+                                                                d="M35.1755 11.6924H27.7969V19.1924M35.1755 11.6924L41.0008 19.1924M35.1755 11.6924V19.1924M41.0008 19.1924V27.1924H27.7969V19.1924M41.0008 19.1924H35.1755M27.7969 19.1924H35.1755"
+                                                                stroke="#070707" stroke-width="2" />
+                                                            <path id="Ellipse 1973"
+                                                                d="M34.9493 29.6924C34.9493 31.0468 34.1333 31.6924 33.6192 31.6924C33.105 31.6924 32.2891 31.0468 32.2891 29.6924C32.2891 28.338 33.105 27.6924 33.6192 27.6924C34.1333 27.6924 34.9493 28.338 34.9493 29.6924Z"
+                                                                stroke="#070707" stroke-width="2" />
+                                                            <path id="Ellipse 1974"
+                                                                d="M12.4258 29.6924C12.4258 31.0468 11.6099 31.6924 11.0957 31.6924C10.5816 31.6924 9.76562 31.0468 9.76562 29.6924C9.76562 28.338 10.5816 27.6924 11.0957 27.6924C11.6099 27.6924 12.4258 28.338 12.4258 29.6924Z"
+                                                                stroke="#070707" stroke-width="2" />
+                                                            <path id="Vector 1483"
+                                                                d="M1 8.69238C0.447715 8.69238 0 9.1401 0 9.69238C0 10.2447 0.447715 10.6924 1 10.6924V8.69238ZM1 10.6924H23.5243V8.69238H1V10.6924Z"
+                                                                fill="#070707" />
+                                                            <path id="Vector 1484"
+                                                                d="M4.88281 12.6924C4.33053 12.6924 3.88281 13.1401 3.88281 13.6924C3.88281 14.2447 4.33053 14.6924 4.88281 14.6924V12.6924ZM4.88281 14.6924H23.5236V12.6924H4.88281V14.6924Z"
+                                                                fill="#070707" />
+                                                            <path id="Vector 1485"
+                                                                d="M1 17.6924C0.447715 17.6924 2.89661e-0 justify-content-center d-flex 8 18.1401 0 18.6924C-2.89661e-0 justify-content-center d-flex 8 19.2447 0.447715 19.6924 1 19.6924L1 17.6924ZM1 19.6924L23.5243 19.6924L23.5243 17.6924L1 17.6924L1 19.6924Z"
+                                                                fill="#070707" />
+                                                        </g>
+                                                    </svg>
+                                                    Input Resi
                                                 </button>
-                                            </form>
-
-
-                                        </div>
-                                    @else
-                                    @endif
-                                    @php
-                                                        $status = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->get();
-                                                        $status4Selesai = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->where('id_status', 4)
-                                                            ->where('kelengkapan', 'selesai')
-                                                            ->first();
-
-
-                                                    @endphp
-                                                    @if ($data->status == 'dalam_proses' &&
-                                                         $data->total_amount == $data->paid_amount
-                                                        && $status4Selesai)
-                                                        <div class="col-3">
-                                                            <button type="button" class="btn btn-warning text-dark  col-3 w-100"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#resi{{ $data->order_number }}">
-                                                            <svg width="36" height="35" viewBox="0 0 50 33" fill="none"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <g id="Logo Diantar">
-                                                                    <rect id="Box" x="7.4375" y="1.69238" width="19.7476" height="25"
-                                                                        stroke="#070707" stroke-width="2" />
-                                                                    <path id="Head"
-                                                                        d="M35.1755 11.6924H27.7969V19.1924M35.1755 11.6924L41.0008 19.1924M35.1755 11.6924V19.1924M41.0008 19.1924V27.1924H27.7969V19.1924M41.0008 19.1924H35.1755M27.7969 19.1924H35.1755"
-                                                                        stroke="#070707" stroke-width="2" />
-                                                                    <path id="Ellipse 1973"
-                                                                        d="M34.9493 29.6924C34.9493 31.0468 34.1333 31.6924 33.6192 31.6924C33.105 31.6924 32.2891 31.0468 32.2891 29.6924C32.2891 28.338 33.105 27.6924 33.6192 27.6924C34.1333 27.6924 34.9493 28.338 34.9493 29.6924Z"
-                                                                        stroke="#070707" stroke-width="2" />
-                                                                    <path id="Ellipse 1974"
-                                                                        d="M12.4258 29.6924C12.4258 31.0468 11.6099 31.6924 11.0957 31.6924C10.5816 31.6924 9.76562 31.0468 9.76562 29.6924C9.76562 28.338 10.5816 27.6924 11.0957 27.6924C11.6099 27.6924 12.4258 28.338 12.4258 29.6924Z"
-                                                                        stroke="#070707" stroke-width="2" />
-                                                                    <path id="Vector 1483"
-                                                                        d="M1 8.69238C0.447715 8.69238 0 9.1401 0 9.69238C0 10.2447 0.447715 10.6924 1 10.6924V8.69238ZM1 10.6924H23.5243V8.69238H1V10.6924Z"
-                                                                        fill="#070707" />
-                                                                    <path id="Vector 1484"
-                                                                        d="M4.88281 12.6924C4.33053 12.6924 3.88281 13.1401 3.88281 13.6924C3.88281 14.2447 4.33053 14.6924 4.88281 14.6924V12.6924ZM4.88281 14.6924H23.5236V12.6924H4.88281V14.6924Z"
-                                                                        fill="#070707" />
-                                                                    <path id="Vector 1485"
-                                                                        d="M1 17.6924C0.447715 17.6924 2.89661e-0 justify-content-center d-flex 8 18.1401 0 18.6924C-2.89661e-0 justify-content-center d-flex 8 19.2447 0.447715 19.6924 1 19.6924L1 17.6924ZM1 19.6924L23.5243 19.6924L23.5243 17.6924L1 17.6924L1 19.6924Z"
-                                                                        fill="#070707" />
-                                                                </g>
-                                                            </svg>
-                                                            Input Resi
-                                                        </button>
-                                                        </div>
-
-                                                    @else
-                                                    @endif
+                                            </div>
+                                        @else
+                                        @endif
 
 
                                     </div>
@@ -557,64 +513,64 @@
                                 aria-label="Close"></button>
                         </div>
                         <form method="POST" id="formongkir" enctype="multipart/form-data"
-                        action="{{ route('tambah-pembayarana', ['orderNumber' => $orderNumber->order_number]) }}">
+                            action="{{ route('tambah-pembayarana', ['orderNumber' => $orderNumber->order_number]) }}">
 
-                        @csrf
-                        <div class="modal-body">
+                            @csrf
+                            <div class="modal-body">
 
-                            <h6 class="text-center bg-warning mb-4 p-2 rounded">Detail Pembayaran tidak
-                                bisa
-                                diganti
-                                atau diubah</h6>
-                            <div class="d-flex">
+                                <h6 class="text-center bg-warning mb-4 p-2 rounded">Detail Pembayaran tidak
+                                    bisa
+                                    diganti
+                                    atau diubah</h6>
+                                <div class="d-flex">
 
-                                <div class="mb-3 me-3">
-                                    <label for="tujuan-pembayaran" class="col-form-label">Tujuan
-                                        Pembayaran</label>
-                                    <select class="form-select custom-input" aria-label="Default select example"
-                                        id="tujuan-pembayaran" style="width: 200px" name="tujuan_bayar">
-                                        @if (!$orderNumber->tujuan_bayar)
-                                            <option value="" selected>Pilih Tujuan</option>
-                                        @else
-                                            <option value="{{ $orderNumber->tujuan_bayar }}" selected>
-                                                {{ $orderNumber->tujuan_bayar }}</option>
-                                        @endif
+                                    <div class="mb-3 me-3">
+                                        <label for="tujuan-pembayaran" class="col-form-label">Tujuan
+                                            Pembayaran</label>
+                                        <select class="form-select custom-input" aria-label="Default select example"
+                                            id="tujuan-pembayaran" style="width: 200px" name="tujuan_bayar">
+                                            @if (!$orderNumber->tujuan_bayar)
+                                                <option value="" selected>Pilih Tujuan</option>
+                                            @else
+                                                <option value="{{ $orderNumber->tujuan_bayar }}" selected>
+                                                    {{ $orderNumber->tujuan_bayar }}</option>
+                                            @endif
 
-                                        <option value="BRI">BRI</option>
-                                        <option value="BCA">BCA</option>
-                                        <option value="BNI">BNI</option>
-                                        <option value="Mandiri">Mandiri</option>
+                                            <option value="BRI">BRI</option>
+                                            <option value="BCA">BCA</option>
+                                            <option value="BNI">BNI</option>
+                                            <option value="Mandiri">Mandiri</option>
 
 
-                                    </select>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 ms-5">
+                                        <label for="tanggal-bayar" class="col-form-label">Tanggal
+                                            Bayar</label>
+                                        <input type="date" class="form-control custom-input" id="tanggal-bayar"
+                                            name="tanggal_bayar" style="width: 200px"
+                                            value="{{ $orderNumber->updated_at }}">
+                                    </div>
                                 </div>
-                                <div class="mb-3 ms-5">
-                                    <label for="tanggal-bayar" class="col-form-label">Tanggal
-                                        Bayar</label>
-                                    <input type="date" class="form-control custom-input" id="tanggal-bayar"
-                                        name="tanggal_bayar" style="width: 200px"
-                                        value="{{ $orderNumber->updated_at }}">
+                                <div class="mb-3">
+                                    <label for="jumlah-dana" class="col-form-label">Jumlah Dana</label>
+                                    <input type="text" class="form-control custom-input" id="jumlah-dana"
+                                        name="jumlah_dana" style="width: 200px" value="">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="gambar" class="col-form-label">Unggah Bukti Pembayaran</label>
+                                    <input type="file" class="form-control custom-input" id="gambar"
+                                        name="gambar" style="width: 200px">
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="jumlah-dana" class="col-form-label">Jumlah Dana</label>
-                                <input type="text" class="form-control custom-input" id="jumlah-dana"
-                                    name="jumlah_dana" style="width: 200px" value="">
-                            </div>
-                            <div class="mb-3">
-                                <label for="gambar" class="col-form-label">Unggah Bukti Pembayaran</label>
-                                <input type="file" class="form-control custom-input" id="gambar"
-                                    name="gambar" style="width: 200px">
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-start">
+                            <div class="modal-footer justify-content-start">
 
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Tambah
-                                Pembayaran</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                onclick="hideDropdownMenu()">Batal</button>
-                        </div>
-                    </form>
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Tambah
+                                    Pembayaran</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                    onclick="hideDropdownMenu()">Batal</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -623,8 +579,7 @@
         {{-- proses status --}}
         @foreach ($allorder as $orderId)
             <div class="modal fade" id="prosesOrderanModal{{ $orderId->order_number }}" data-bs-backdrop="static"
-                data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel"
-                aria-hidden="true">
+                data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
 
@@ -632,8 +587,7 @@
                             method="post" id="form_proses">
                             @csrf
                             <div class="modal-header">
-                                <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Status Proses
-                                    Orderan {{ $orderId->order_number }}
+                                <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Tambah Packing {{ $orderId->order_number }}
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -644,106 +598,39 @@
                                     Perlu diingat, penambahan status orderan ini tidak bisa diubah!</p>
 
                                 @php
-                                    $updateStatusProses = DB::table('update_status_proses')
+                                    $updateStatusProses = DB::table('update_proses')
                                         ->where('order_number', $orderId->order_number)
                                         ->get();
                                 @endphp
 
                                 <br>
-
-                                @if ($updateStatusProses->where('id_status', 3)->where('kelengkapan', 'Lengkap')->isNotEmpty())
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option disabled"
-                                                            data-value="3">Data Pesanan</a></li>
-                                                    <li>
-
-                                                        <a class="dropdown-item status-option
-                                                                {{ $updateStatusProses->where('id_status', 4)->where('kelengkapan', 'selesai')->isNotEmpty() ? 'disabled' : '' }}"
-                                                            data-value="4"> Packing</a>
-
-                                                    </li>
-
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-
+                                <div class="d-flex gap-1 justify-content-between">
+                                    <div class="col-lg-4 my-2">
+                                        <div
+                                            class="
+                                         d-flex align-items-center px-2 py-1">
+                                            Proses Packing :
                                         </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    {{-- <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Masuk">Masuk</a>
-                                                    </li> --}}
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Selesai">Selesai</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-                                            </div>
+
+                                        <input type="hidden" name="status" value="packing">
+                                    </div>
+                                    <div class="col-lg-8 my-2 keterangan-parent">
+                                        <div class="dropdown">
+                                            <button
+                                                class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                                id="kelengkapan" data-name="kelengkapan">
+                                                Pilih
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item kelengkapan-option"
+                                                        data-value="Selesai">Selesai</a></li>
+                                            </ul>
+                                            <input type="hidden" name="kelengkapan" id="checkKelengkapan"
+                                                value="">
                                         </div>
                                     </div>
-                                @else
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option" data-value="3">Data Pesanan
-                                                        </a></li>
-
-                                                    <li> <a class="dropdown-item status-option disabled"
-                                                            data-value="Packing">Packing</a></li>
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Lengkap">Lengkap</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Belum Lengkap">Belum
-                                                            Lengkap</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-
-
-
+                                </div>
 
                                 <div class="mb-3 col-lg-12">
                                     <label for="jumlah-dana" class="col-form-label">Note</label>
@@ -805,75 +692,38 @@
                             $orderDetails = DB::table('orders')
                                 ->where('order_number', $resi->order_number)
                                 ->get();
-                            $totalQuantity = DB::table('orders')
-                                ->where('order_number', $resi->order_number)
-                                ->value('total_quantity');
-                            $ongkir = DB::table('orders')
-                                ->where('order_number', $resi->order_number)
-                                ->value('dana_ongkir');
+
                         @endphp
-                             <form method="POST" id="formongkir"
-                             action="{{ route('resia', ['orderNumber' => $resi->order_number]) }}">
+                        <form method="POST" id="formongkir"
+                            action="{{ route('resia', ['orderNumber' => $resi->order_number]) }}">
 
-                             @csrf
-                             <div class="modal-body">
-                                 <div class="d-flex flex-row justify-content-between">
-                                     <div class="mb-3 col-5">
-                                         <label for="tanggal-bayar" class="col-form-label">Pilih Kurir</label>
-                                         <select class="form-select custom-input" aria-label="Default select example"
-                                             id="kurir" name="kurir">
-                                             <option value="" selected>Pilih Kurir</option>
-                                             <option value="JNE" >JNE</option>
-                                             <option value="Speed" >Speed</option>
-                                             <option value="Fast" >Fast</option>
-                                             <option value="Express" >Express</option>
-                                         </select>
-                                     </div>
-                                     <div class="mb-3 col-5">
-                                         <label for="lainnya" class="col-form-label">Lainnya</label>
-                                         <input type="text"  class="form-control custom-input" id="lainnya"
-                                             name="lainnya"
-                                             value="">
-                                     </div>
-                                 </div>
-                                 <div class="d-flex flex-row">
-                                     <div class="mb-3 col-12">
-                                         <label for="resi" class="col-form-label">No Resi</label>
-                                         <input type="text" class="form-control custom-input" id="resi"
-                                             name="resi" value="">
-                                     </div>
-                                 </div>
-                                 <div class="d-flex flex-row justify-content-between">
-                                     <div class="mb-3 col-5">
-                                         <label for="tanggal_kirim" class="col-form-label">Tanggal Kirim</label>
-                                         <input type="date" class="form-control custom-input" id="tanggal_kirim"
-                                             name="tanggal_kirim"
-                                             value="">
-                                     </div>
-                                     <div class="mb-3 col-5">
-                                         <label for="isi_paket" class="col-form-label">Isi Paket</label>
-                                         <input type="number" readonly class="form-control custom-input" id="isi_paket"
-                                             name="isi_paket"
-                                             value="{{ $totalQuantity }}">
-                                     </div>
+                            @csrf
+                            <div class="modal-body">
 
-                                 </div>
-                                 <div class="d-flex flex-row justify-content-between">
-                                     <div class="mb-3 col-5">
-                                         <label for="ongkir" class="col-form-label">Ongkir</label>
-                                         <input type="number" readonly class="form-control custom-input" id="ongkir"
-                                             name="ongkir"
-                                             value="{{ $ongkir }}">
-                                     </div>
-                                 </div>
-                             </div>
-
-                                    <div class="modal-footer justify-content-start">
-                                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Simpan</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Batal</button>
+                                <div class="d-flex flex-row">
+                                    <div class="mb-3 col-12">
+                                        <label for="resi" class="col-form-label">No Resi</label>
+                                        <input type="text" class="form-control custom-input" id="resi"
+                                            name="resi" value="">
                                     </div>
-                                </form>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <div class="mb-3 col-5">
+                                        <label for="tanggal_kirim" class="col-form-label">Tanggal Kirim</label>
+                                        <input type="date" class="form-control custom-input" id="tanggal_kirim"
+                                            name="tanggal_kirim" value="">
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer justify-content-start">
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Simpan</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -892,8 +742,7 @@
         </div>
         {{-- toast/popup ketika pembayaran gagal --}}
         <div class="toast-container position-absolute bottom-0 start-50 translate-middle-x">
-            <div id="pembayarangagal" class="toast rounded-4" role="alert" aria-live="assertive"
-                aria-atomic="true">
+            <div id="pembayarangagal" class="toast rounded-4" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-body bg-white text-center p-3">
                     <img src="/assets/img/gagal.png" alt="" style="width: 100px; height:100px">
                     <h6 class="mt-3 mb-3">Pembayaran <span style="color: #F44336">GAGAL</span> Ditambahkan</h6>
@@ -909,67 +758,70 @@
                 $('[data-bs-toggle="tooltip"]').tooltip();
             });
         </script>
-<script>
+        <script>
+            document.querySelectorAll('.dropdown-status').forEach(item => {
+                item.addEventListener('click', event => {
+                    if (event.target.classList.contains('status-option')) {
+                        const selectedOption = event.target;
+                        const dropdown = selectedOption.closest('.dropdown-status');
+                        const button = dropdown.querySelector('button');
+                        const input = dropdown.querySelector('input');
 
-        document.querySelectorAll('.dropdown-status').forEach(item => {
-            item.addEventListener('click', event => {
-                if (event.target.classList.contains('status-option')) {
-                    const selectedOption = event.target;
-                    const dropdown = selectedOption.closest('.dropdown-status');
-                    const button = dropdown.querySelector('button');
-                    const input = dropdown.querySelector('input');
-
-                    button.innerText = selectedOption.innerText;
-                    input.value = selectedOption.dataset.value;
-                }
-            });
-        });
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const hoverElements = document.querySelectorAll('.hoverjs');
-            const hasilHover = document.querySelector('.hasilhover');
-
-            hoverElements.forEach(element => {
-                element.addEventListener('mouseover', () => {
-                    hasilHover.style.display = 'block';
-                });
-
-                element.addEventListener('mouseleave', () => {
-                    hasilHover.style.display = 'none';
+                        button.innerText = selectedOption.innerText;
+                        input.value = selectedOption.dataset.value;
+                    }
                 });
             });
-        });
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const hoverElements = document.querySelectorAll('.hoverjs');
+                const hasilHover = document.querySelector('.hasilhover');
 
-        document.querySelectorAll('.validasi').forEach(item => {
-            item.addEventListener('click', event => {
+                hoverElements.forEach(element => {
+                    element.addEventListener('mouseover', () => {
+                        hasilHover.style.display = 'block';
+                    });
 
-            const muncul = event.target.closest('.parentvalidasi').querySelector('.validasimuncul');
-            muncul.style.display = "block";
-
-        })})
-        document.querySelectorAll('.buttonvalidasi').forEach(item => {
-            item.addEventListener('click', event => {
-                const validasi = event.target.closest('.validasimuncul');
-                validasi.style.display = "none";
+                    element.addEventListener('mouseleave', () => {
+                        hasilHover.style.display = 'none';
+                    });
+                });
             });
-        });
 
- document.querySelectorAll('#validasihapus').forEach(item => {
-            item.addEventListener('click', event => {
+            document.querySelectorAll('.validasi').forEach(item => {
+                item.addEventListener('click', event => {
 
-            const muncul = event.target.closest('.parentvalidasihapus').querySelector('.validasimunculhapus');
-            muncul.style.display = "block";
+                    const muncul = event.target.closest('.parentvalidasi').querySelector('.validasimuncul');
+                    muncul.style.display = "block";
 
-        })})
-        document.querySelectorAll('.buttonvalidasihapus').forEach(item => {
-            item.addEventListener('click', event => {
-                const validasi = event.target.closest('.validasimunculhapus');
-                validasi.style.display = "none";
+                })
+            })
+            document.querySelectorAll('.buttonvalidasi').forEach(item => {
+                item.addEventListener('click', event => {
+                    const validasi = event.target.closest('.validasimuncul');
+                    validasi.style.display = "none";
+                });
             });
-        });
-        function hideDropdownMenu() {
-            var dropdownMenu = document.querySelector('.dropdown-menu');
-            dropdownMenu.style.display = 'none';
-        }
+
+            document.querySelectorAll('#validasihapus').forEach(item => {
+                item.addEventListener('click', event => {
+
+                    const muncul = event.target.closest('.parentvalidasihapus').querySelector(
+                        '.validasimunculhapus');
+                    muncul.style.display = "block";
+
+                })
+            })
+            document.querySelectorAll('.buttonvalidasihapus').forEach(item => {
+                item.addEventListener('click', event => {
+                    const validasi = event.target.closest('.validasimunculhapus');
+                    validasi.style.display = "none";
+                });
+            });
+
+            function hideDropdownMenu() {
+                var dropdownMenu = document.querySelector('.dropdown-menu');
+                dropdownMenu.style.display = 'none';
+            }
 
             const forms = document.querySelectorAll('form.w-100.m-auto');
 
@@ -980,7 +832,7 @@
                     localStorage.setItem('snamejuragan_' + order_number, form.querySelector('#lname_juragan')
                         .value);
                     localStorage.setItem('sidjuragan_' + order_number, form.querySelector('#lid_juragan')
-                    .value);
+                        .value);
                     localStorage.setItem('ssource_' + order_number, form.querySelector('#lsource').value);
                     localStorage.setItem('snameservedby_' + order_number, form.querySelector('#lname_served_by')
                         .value);
@@ -988,7 +840,7 @@
                         .value);
                     localStorage.setItem('sordedate_' + order_number, form.querySelector('#lorder_date').value);
                     localStorage.setItem('snamecs_' + order_number, form.querySelector('#lname_customer')
-                    .value);
+                        .value);
                     localStorage.setItem('sidcs_' + order_number, form.querySelector('#lid_customer').value);
                     localStorage.setItem('snote_' + order_number, form.querySelector('#lnotes').value);
                     localStorage.setItem('smethod_' + order_number, form.querySelector('#lmethod').value);
@@ -1157,7 +1009,7 @@
                     showMoreLink.innerHTML = 'Tutup';
                 }
             }
-</script>
+        </script>
     @endsection
 @endsection
 </body>

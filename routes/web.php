@@ -133,23 +133,15 @@ Route::middleware(['auth:employee'])->group(function () {
         Route::get('/invoice/{orderNumber}', [OrderanController::class, 'cetakInvoiceAdmin'])
             ->name('admin.dashboard-invoice.invoice');
 
-        // Route::get('/profile', [ProfileController::class, 'profile'])->name('admin.profile');
-        // Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('getEditProfileAdmin');
-        // Route::get('/profile/ubah-password', [ProfileController::class, 'passwordView'])->name('getUbahPassAdmin');
-        // Route::put('/profile/update', [ProfileController::class, 'updateData'])->name('adminEditProfile');
-        // Route::put('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('adminEditPass');
 
-        // Route::get('/riwayat', function () {
-        //     return view('admin.data-pelanggan.dataTransaksi', ["title" => "Data Pelanggan"]);
-        // });
         Route::get('/tulisOrderan', [OrderanController::class, 'tulisOrder'])->name('tulisorder');
-        Route::post('/tulisOrderan/keranjang', [KeranjangController::class, 'keranjang'])->name('keranjang');
+        Route::post('/tulisOrderan/viewtulisorder', [KeranjangController::class, 'viewtulisorder'])->name('viewtulisorder');
         Route::post('/tulisOrderan/addcs', [KeranjangController::class, 'addcs'])->name('addcs');
         Route::post('/tulisOrderan/keorders', [OrderanProcess::class, 'keorders'])->name('keorders');
         Route::delete('/tulisOrderan/bataltulis', [KeranjangController::class, 'bataltulis'])->name('batalsa');
 
 
-        Route::post('/tulisOrderan/editkeranjang/{id}', [KeranjangController::class, 'editkeranjang'])->name('keranjang');
+        Route::post('/tulisOrderan/edittulisorder/{id}', [KeranjangController::class, 'edittulisorder'])->name('edittulisorder');
         Route::delete('/tulisOrderan/deleteorder/{id}', [KeranjangController::class, 'hapusorder'])->name('hapusordera');
 
         Route::post('/tulisOrderan/ongkir', [KeranjangController::class, 'ongkir'])->name('ongkir');
@@ -161,10 +153,6 @@ Route::middleware(['auth:employee'])->group(function () {
         Route::delete('/tulisOrderan/deletelain/{id}', [KeranjangController::class, 'hapuslain'])->name('hapuslain');
 
 
-
-
-
-
         Route::get('/dataBarang', [BarangController::class, 'indexAdmin'])->name('barang');
         Route::post('/dataBarang/store', [BarangController::class, 'addbarang'])->name('addbarang');
         Route::delete('/dataBarang/destroy/{id}', [BarangController::class, 'destroyA'])->name('deleteBarangA');
@@ -172,12 +160,6 @@ Route::middleware(['auth:employee'])->group(function () {
         Route::post('/dataBarang/stock/{id}', [BarangController::class, 'stock'])->name('stock');
         Route::delete('/dataBarang/destroy/{barang}', [BarangController::class, 'destroy'])->name('barangs.destroy');
 
-
-
-        // Route::get('/notif', [NotifController::class, 'index']);
-        // Route::post('/notif/store', [NotifController::class, 'createAdmin'])->name('addNotif');
-        // Route::put('/notif/edit/{id}', [NotifController::class, 'updateAdmin'])->name('editNotif');
-        // Route::delete('/notif/delete/{id}', [NotifController::class, 'destroy'])->name('deleteNotifA');
 
 
         Route::get('/request', [RequestController::class, 'main'])->name('admin.request.main');
@@ -188,7 +170,7 @@ Route::middleware(['auth:employee'])->group(function () {
 
         Route::get('/request/requestEdit/{order_number}', [RequestController::class, 'viewrequestA'])->name('admin.requestEdit.view');
 
-        Route::post('/request/keranjang', [RequestController::class, 'keranjangrequest'])->name('keranjangrequesta');
+        Route::post('/request/keranjang', [RequestController::class, 'suntingtulisorder'])->name('suntingtulisorder');
         Route::post('/request/editkeranjang/{id}', [RequestController::class, 'editkeranjangrequest'])->name('keranjangrequestedita');
         Route::post('/request/ongkir', [RequestController::class, 'ongkirrequest'])->name('ongkirrequesta');
         Route::post('/request/lain', [RequestController::class, 'lainrequest'])->name('lainrequesta');
@@ -220,11 +202,13 @@ Route::middleware(['auth:employee'])->group(function () {
         Route::delete('/notif/delete/{id}', [NotifController::class, 'destroy'])->name('deleteNotifSA');
 
         Route::get('/juragan', [JuraganController::class, 'indexSuperAdmin'])->name('dataJuragan');
-        Route::post('/juragan/store', [JuraganController::class, 'storeSuperAdmin'])->name('tambahJuraganSuperAdmin');
         Route::put('/juragan/edit/{id}', [JuraganController::class, 'updateSuperAdmin'])->name('editJuraganSuperAdmin');
         Route::delete('/juragan/delete/{id}', [JuraganController::class, 'deleteJuragan'])->name('deleteJuragan');
         Route::get('/juragan/search', [JuraganController::class, 'search'])->name('searchJuraganSuperAdmin');
         Route::get('/juragan/getExistingIds', [JuraganController::class, 'getExistingIds'])->name('getExistingIds');
+
+        Route::get('/juragan/add', [EmployeeController::class, 'viewaddjuragan'])->name('tambahjuraganview');
+        Route::post('/juragan/add/tambah', [JuraganController::class, 'addjuragan'])->name('addjuragan');
 
         Route::get('/ceo', [EmployeeController::class, 'dataceo'])->name('dataceo');
         Route::get('/ceo/add', [EmployeeController::class, 'addceo'])->name('addceo');

@@ -109,6 +109,12 @@ class EmployeeController extends Controller
 
         return view('super-admin.data-CS.tambah-cs', ["title" => "tambah data", 'juragan' => $juragan]);
     }
+    public function viewaddjuragan()
+    {
+
+        return view('super-admin.data-juragan.addjuragan',["title" => "tambah toko"]);
+    }
+  
     public function addceo(){
         $title = 'add CEO';
 
@@ -144,6 +150,7 @@ class EmployeeController extends Controller
         return redirect()->route('datacs')->with('success', 'Data successfully added.');
 
     }
+
 
 
     public function tambahceo(Request $request){

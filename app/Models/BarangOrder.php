@@ -17,7 +17,7 @@ class BarangOrder extends Model
         'size',
         'quantity',
         'subtotal',
-        
+
     ];
 
     public function order()

@@ -19,24 +19,21 @@ class Order extends Model
         'order_date',
         'juragan',
         'id_customer',
+        'served_by',
         'payment_method',
         'source',
-        'served_by',
         'tgl_bayar',
-        'tujuan_bayar',
         'total_amount',
         'paid_amount',
         'remaining_amount',
-        'resi_id',
         'notes',
         'status',
-        'deadline',
         'ongkir',
-        'biaya_lain',
         'dana_ongkir',
-        'dana_biaya_lain',
         'total_quantity',
-        
+        'resi',
+        'tgl_kirim',
+
 
     ];
 

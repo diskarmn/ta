@@ -23,7 +23,15 @@ class EmployeeSeeder extends Seeder
             'gender' => 'female',
             'phone_number' => '08132007563',
             'role' => 'admin',
-
+        ]);
+        Employee::create([
+            'name' => 'cs Inc',
+            'email' => 'cs@gmail.com',
+            'password' => Hash::make('Cs#123'),
+            'profile_image' => 'default.png',
+            'gender' => 'female',
+            'phone_number' => '081336364545',
+            'role' => 'cs',
         ]);
 
 

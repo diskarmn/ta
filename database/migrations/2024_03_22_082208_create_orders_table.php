@@ -17,24 +17,22 @@ return new class extends Migration
             $table->string('order_number', 10);
             $table->date('order_date');
             $table->uuid('juragan');
+            $table->uuid('served_by');
             $table->uuid('id_customer')->default(DB::raw('(UUID())'));
             $table->string('payment_method', 25)->nullable();
             $table->string('source', 25);
-            $table->uuid('served_by');
-            $table->enum('tujuan_bayar', [
-                'BRI', 'BCA','COD',
-                'BNI', 'Mandiri', 'BSI'
-            ])->nullable();
             $table->date('tgl_bayar')->nullable();
             $table->integer('total_quantity')->nullable();
-           
             $table->bigInteger('total_amount');
-            $table->integer('paid_amount')->nullable();
+            $table->integer('paid_amount')->default(0)->nullable();
             $table->integer('remaining_amount')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['belum_proses', 'cek_pembayaran', 'dalam_proses', 'orderan_selesai'])
-                ->default('belum_proses');
-            $table->date('deadline')->nullable();
+            ->default('belum_proses');
+            $table->string('ongkir', 25)->nullable();
+            $table->integer('dana_ongkir')->nullable();
+            $table->string('resi', 30)->nullable();
+            $table->date('tgl_kirim')->nullable();
             $table->timestamps();
 
 

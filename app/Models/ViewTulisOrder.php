@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Keranjang extends Model
+class ViewTulisOrder extends Model
 {
     use HasFactory, HasUuids;
     public $incrementing = false;
@@ -14,7 +14,7 @@ class Keranjang extends Model
     protected $casts = ['id' => 'string'];
     protected $guarded =[];
 
-    protected $table = 'keranjangs';
+    protected $table = 'view_tulis_order';
     public function getIncrement()
     {
         return false;

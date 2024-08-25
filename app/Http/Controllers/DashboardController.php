@@ -352,7 +352,7 @@ class DashboardController extends Controller
             $teks .= " Kelengkapan Pembayaran: $paymentCompleteness.";
         }
 
-        
+
 
 
 
@@ -362,21 +362,18 @@ class DashboardController extends Controller
     public function updateCheckPaymentsa(Request $request, $orderId)
     {
         $kelengkapans = $request->adatidak;
-        $link = $request->link;
         $InfoPembayaran = InfoPembayaran::where('order_number', $orderId)
             ->whereNull('kelengkapan')
             ->orWhere('kelengkapan', '')
             ->get();
 
-        $InfoPembayaran->each(function ($item, $index) use ($kelengkapans, $link) {
+        $InfoPembayaran->each(function ($item, $index) use ($kelengkapans) {
             $kelengkapan = isset($kelengkapans[$index]) ? $kelengkapans[$index] : null;
-            $linkValue = isset($link[$index]) ? $link[$index] : null;
             if ($kelengkapan !== null) {
                 $kelengkapan = $kelengkapan === 'Ada' ? 'Ada' : 'Tidak Ada';
 
                 $item->update([
                     'kelengkapan' => $kelengkapan,
-                    'link' => $linkValue
                 ]);
             }
         });

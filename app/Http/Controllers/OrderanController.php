@@ -11,7 +11,7 @@ use App\Models\Juragan;
 use App\Models\Orderan;
 use App\Models\Customer;
 use App\Models\Employee;
-use App\Models\Keranjang;
+use App\Models\ViewTulisOrder;
 use App\Models\Pelanggan;
 use App\Models\Notiforder;
 use App\Models\BarangOrder;
@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use App\Models\InfoPembayaran;
 use App\Events\OrderCreatedNotif;
 use App\Events\NotifAddPembayaran;
-use App\Models\UpdateStatusProses;
+use App\Models\UpdateProses;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -120,8 +120,8 @@ class OrderanController extends Controller
         $pelanggan = Customer::get();
         $juragan = Juragan::get();
         $statistics = $this->orderStatus();
-        $allorder = Order::join('update_status_proses', 'orders.order_number', '=', 'update_status_proses.order_number')
-            ->select('update_status_proses.order_number')
+        $allorder = Order::join('update_proses', 'orders.order_number', '=', 'update_proses.order_number')
+            ->select('update_proses.order_number')
             ->get();
 
 
@@ -990,7 +990,7 @@ class OrderanController extends Controller
     {
         $teks = "Orderan pada invoice $orderNumber menambahkan pembayaran sebesar Rp.$dana";
 
-        
+
 
 
 
@@ -1019,26 +1019,26 @@ class OrderanController extends Controller
             'order_id' => $order->id,
             'order_number' => $orderNumber,
             'jumlah_dana' => $request->input('jumlah_dana'),
-            'payment_method' => $request->input('tujuan_bayar'),
             'gambar' => $fileName,
+            'payment_method'=>$tujuan,
         ]);
 
-        UpdateStatusProses::create([
-            'id_status' => 2,
+        UpdateProses::create([
+            'id_order' => $order->id,
+            'nama_proses' => 'pembayaran',
             'order_number' => $orderNumber,
+            'kelengkapan'=>'lengkap'
 
         ]);
 
         // Update semua baris dengan order_number yang sesuai
         Order::where('order_number', $orderNumber)->update([
-            'tujuan_bayar' => $tujuan,
             'updated_at' => $updated,
             'payment_method' => $tujuan,
             'status' => 'cek_pembayaran',
         ]);
 
 
-        $employeesName = auth()->user()->name; // Pastikan untuk mengambil nama karyawan yang login
         $notif = $this->notifPembayaran($orderNumber, $dana);
         NotifAddPembayaran::dispatch($notif);
 
@@ -1047,30 +1047,7 @@ class OrderanController extends Controller
 
 
 
-    // public function tambahPembayaran(Request $request, $orderNumber){
-    //     $tujuan=$request->tujuan_bayar;
-    //     $dana=$request->jumlah_dana;
-    //     $updated=$request->tanggal_bayar;
 
-    //     $order = Order::where('order_number', $orderNumber)->first();
-    //     // $totalPaid = $order->paid_amount ;
-
-    //     if ($dana > 0) {
-    //         $order->increment('paid_amount', $dana);
-    //     }
-    //     // dd($order);
-    //     $order->update([
-    //         'tujuan_bayar' => $tujuan,
-    //         'jumlah_dana' => $dana,
-    //         'updated_at' => $updated,
-    //         'payment_method' => $tujuan,
-
-    //     ]);
-
-    //     return redirect()->back();
-    // }
-
-    //Reuseable order status
     public function orderStatus()
     {
         $statistics = [
@@ -1117,17 +1094,14 @@ class OrderanController extends Controller
         $juragan = Juragan::get();
         $employees = Employee::where('role', 'cs')->get();
         $kda = Barang::all();
-        $ongkir = Keranjang::whereNotNull('ongkir')
+        $ongkir = ViewTulisOrder::whereNotNull('ongkir')
             ->whereNotNull('jasa_ongkir')
             ->where('employee_id', $user->id)
             ->get();
 
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('employee_id', $user->id)
-            ->get();
 
-        $keranjang = Keranjang::whereNotNull('kd')
+
+        $viewtulisorder = ViewTulisOrder::whereNotNull('kd')
             ->whereNotNull('harga')
             ->whereNotNull('qty')
             ->whereNotNull('ukuran')
@@ -1136,17 +1110,18 @@ class OrderanController extends Controller
             ->get();
 
         $title = "Tulis Orderan";
-        $total_semua = Keranjang::where('employee_id', $user->id)
-            ->sum('subtotal') + Keranjang::sum('ongkir') + Keranjang::sum('biaya_lain');
+        $total_semua = ViewTulisOrder::where('employee_id', $user->id)
+            ->selectRaw('SUM(qty * harga) as total')
+            ->value('total') + ViewTulisOrder::sum('ongkir');
+
         return view(
             'admin.tulis-orderan.main',
             [
                 'title' => $title,
                 'datas' => $data,
                 'kda' => $kda,
-                'keranjang' => $keranjang,
+                'viewtulisorder' => $viewtulisorder,
                 'ongkir' => $ongkir,
-                'biaya_lain' => $biaya_lain,
                 'total_semua' => $total_semua,
                 'cs' => $cs,
                 "employees" => $employees,
@@ -1167,143 +1142,6 @@ class OrderanController extends Controller
     }
 
 
-    public function tulisOrderSA()
-    {
-        $user = Auth::guard('employee')->user();
-        $data = Order::all();
-        $cs = Customer::all();
-        $juragan = Juragan::get();
-        $employees = Employee::where('role', 'cs')->get();
-        $kda = Barang::all();
-
-        $ongkir = Keranjang::whereNotNull('ongkir')
-            ->whereNotNull('jasa_ongkir')
-            ->where('employee_id', $user->id)
-            ->get();
-
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('employee_id', $user->id)
-            ->get();
-
-        $keranjang = Keranjang::whereNotNull('kd')
-            ->whereNotNull('harga')
-            ->whereNotNull('qty')
-            ->whereNotNull('ukuran')
-            ->where('employee_id', $user->id)
-            ->whereNull('order_number')
-            ->get();
-
-        $title = "Tulis Orderan";
-        $total_semua = Keranjang::where('employee_id', $user->id)
-            ->sum('subtotal') + Keranjang::sum('ongkir') + Keranjang::sum('biaya_lain');
-        return view(
-            'super-admin.tulis-orderan.tulisOrderan',
-            [
-                'title' => $title,
-                'datas' => $data,
-                'kda' => $kda,
-                'keranjang' => $keranjang,
-                'ongkir' => $ongkir,
-                'biaya_lain' => $biaya_lain,
-                'total_semua' => $total_semua,
-                'cs' => $cs,
-                "employees" => $employees,
-                'juragan' => $juragan,
-                'id_lokal' => $user->id
-            ]
-        );
-    }
-
-
-
-    public function tulisOrdercs()
-    {
-        $user = Auth::guard('employee')->user();
-        $data = Order::all();
-        $cs = Customer::all();
-        $juragan = Juragan::get();
-        $employees = Employee::where('role', 'cs')->get();
-        $kda = Barang::all();
-        $ongkir = Keranjang::whereNotNull('ongkir')
-            ->whereNotNull('jasa_ongkir')
-            ->where('employee_id', $user->id)
-            ->get();
-
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('employee_id', $user->id)
-            ->get();
-
-        $keranjang = Keranjang::whereNotNull('kd')
-            ->whereNotNull('harga')
-            ->whereNotNull('qty')
-            ->whereNotNull('ukuran')
-            ->where('employee_id', $user->id)
-            ->whereNull('order_number')
-            ->get();
-
-        $title = "Tulis Orderan";
-        $total_semua = Keranjang::where('employee_id', $user->id)
-            ->sum('subtotal') + Keranjang::sum('ongkir') + Keranjang::sum('biaya_lain');
-        $profile = auth()->user();
-
-        return view(
-            'customer-service.tulis-orderan.tulisOrderan',
-            [
-                'title' => $title,
-                'datas' => $data,
-                'kda' => $kda,
-                'keranjang' => $keranjang,
-                'ongkir' => $ongkir,
-                'biaya_lain' => $biaya_lain,
-                'total_semua' => $total_semua,
-                'cs' => $cs,
-                "employees" => $employees,
-                'juragan' => $juragan,
-                'id_lokal' => $user->id,
-                'profile' => $profile,
-
-            ]
-        );
-    }
-    public function suntingsa($orderNumber)
-    {
-        $title = "Sunting Edit";
-        $user = Auth::guard('employee')->user();
-
-        $requests = EditRequest::where('order_number', $orderNumber)->get();
-        $juragans = Juragan::get();
-        $employees = Employee::get();
-        $keranjang = Keranjang::where('order_number', $orderNumber)->get();
-
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('order_number', $orderNumber)
-            ->get();
-        $ongkir = Keranjang::whereNotNull('ongkir')
-            ->whereNotNull('jasa_ongkir')
-            ->where('order_number', $orderNumber)
-            ->get();
-        $kda = Barang::all();
-        $nomer_order = $orderNumber;
-
-        return view(
-            'super-admin.sunting-orderan.main',
-            [
-                'request' => $requests,
-                'keranjang' => $keranjang,
-                'juragans' => $juragans,
-                'employees' => $employees,
-                'biaya_lain' => $biaya_lain,
-                'ongkir' => $ongkir,
-                'kda' => $kda,
-                'title' => $title,
-                'nomer_order' => $nomer_order,
-                'user_id' => $user->id,
-            ]
-        );
-    }
     public function suntinga($orderNumber)
     {
         $gambar = Auth::guard('employee')->user()->profile_image;
@@ -1313,13 +1151,10 @@ class OrderanController extends Controller
         // $requests = EditRequest::where('order_number', $orderNumber)->get();
         $juragans = Juragan::get();
         $employees = Employee::get();
-        $keranjang = Keranjang::where('order_number', $orderNumber)->get();
+        $viewtulisorder = ViewTulisOrder::where('order_number', $orderNumber)->get();
 
-        $biaya_lain = Keranjang::whereNotNull('biaya_lain')
-            ->whereNotNull('jasa_biaya_lain')
-            ->where('order_number', $orderNumber)
-            ->get();
-        $ongkir = Keranjang::whereNotNull('ongkir')
+
+        $ongkir = ViewTulisOrder::whereNotNull('ongkir')
             ->whereNotNull('jasa_ongkir')
             ->where('order_number', $orderNumber)
             ->get();
@@ -1331,10 +1166,10 @@ class OrderanController extends Controller
             'admin.sunting-orderan.suntingOrderan',
             [
                 'gambar'=>$gambar,
-                'keranjang' => $keranjang,
+                'viewtulisorder' => $viewtulisorder,
                 'juragans' => $juragans,
                 'employees' => $employees,
-                'biaya_lain' => $biaya_lain,
+
                 'ongkir' => $ongkir,
                 'kda' => $kda,
                 'title' => $title,
@@ -1353,8 +1188,8 @@ class OrderanController extends Controller
 
         if ($orders->isNotEmpty()) {
             Order::where('order_number', $orderNumber)->delete();
-            UpdateStatusProses::where('order_number', $orderNumber)->delete();
-            return back()->with('success', 'Data berhasil dihapus dari keranjang.');
+            UpdateProses::where('order_number', $orderNumber)->delete();
+            return back()->with('success', 'Data berhasil dihapus dari viewtulisorder.');
         } else {
             return back()->with('error', 'Data gagal dihapus. Order tidak ditemukan.');
         }
@@ -1367,7 +1202,7 @@ class OrderanController extends Controller
         $teks = " $employeesName telah melakukan sunting Orderan pada invoice $orderNumber";
 
 
-        
+
 
 
 
@@ -1387,27 +1222,22 @@ class OrderanController extends Controller
         if ($notas) {
             $ongkir = $notas->ongkir;
             $dana_ongkir = $notas->dana_ongkir;
-            $biaya_lain = $notas->biaya_lain;
-            $dana_biaya_lain = $notas->dana_dana_biaya_lain;
 
             foreach ($orders as $order) {
                 $barang = Barang::find($order->id_produk);
 
                 if ($barang) {
-                    $keranjang = new Keranjang();
+                    $viewtulisorder = new ViewTulisOrder();
 
-                    $keranjang->order_number = $order->order_number;
-                    $keranjang->ukuran = $order->size;
-                    $keranjang->jasa_ongkir = $ongkir;
-                    $keranjang->jasa_biaya_lain = $biaya_lain;
-                    $keranjang->ongkir = $dana_ongkir;
-                    $keranjang->biaya_lain = $dana_biaya_lain;
-                    $keranjang->barang = $barang->nama;
-                    $keranjang->kd = $barang->id;
-                    $keranjang->harga = $barang->harga_satuan;
-                    $keranjang->qty = $order->quantity;
-                    $keranjang->subtotal = $order->subtotal;
-                    $keranjang->save();
+                    $viewtulisorder->order_number = $order->order_number;
+                    $viewtulisorder->ukuran = $order->size;
+                    $viewtulisorder->jasa_ongkir = $ongkir;
+                    $viewtulisorder->ongkir = $dana_ongkir;
+                    $viewtulisorder->barang = $barang->nama;
+                    $viewtulisorder->kd = $barang->id;
+                    $viewtulisorder->harga = $barang->harga_satuan;
+                    $viewtulisorder->qty = $order->quantity;
+                    $viewtulisorder->save();
                 }
             }
             Order::where('order_number', $orderNumber)->delete();
@@ -1437,20 +1267,20 @@ class OrderanController extends Controller
                 $barang = Barang::find($order->id_produk);
 
                 if ($barang) {
-                    $keranjang = new Keranjang();
+                    $viewtulisorder = new ViewTulisOrder();
 
-                    $keranjang->order_number = $order->order_number;
-                    $keranjang->ukuran = $order->size;
-                    $keranjang->jasa_ongkir = $ongkir;
-                    $keranjang->jasa_biaya_lain = $biaya_lain;
-                    $keranjang->ongkir = $dana_ongkir;
-                    $keranjang->biaya_lain = $dana_biaya_lain;
-                    $keranjang->barang = $barang->nama;
-                    $keranjang->kd = $barang->id;
-                    $keranjang->harga = $barang->harga_satuan;
-                    $keranjang->qty = $order->quantity;
-                    $keranjang->subtotal = $order->subtotal;
-                    $keranjang->save();
+                    $viewtulisorder->order_number = $order->order_number;
+                    $viewtulisorder->ukuran = $order->size;
+                    $viewtulisorder->jasa_ongkir = $ongkir;
+                    $viewtulisorder->jasa_biaya_lain = $biaya_lain;
+                    $viewtulisorder->ongkir = $dana_ongkir;
+                    $viewtulisorder->biaya_lain = $dana_biaya_lain;
+                    $viewtulisorder->barang = $barang->nama;
+                    $viewtulisorder->kd = $barang->id;
+                    $viewtulisorder->harga = $barang->harga_satuan;
+                    $viewtulisorder->qty = $order->quantity;
+                    $viewtulisorder->subtotal = $order->subtotal;
+                    $viewtulisorder->save();
                 }
             }
             Order::where('order_number', $orderNumber)->delete();

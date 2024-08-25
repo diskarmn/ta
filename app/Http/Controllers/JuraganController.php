@@ -79,29 +79,18 @@ class JuraganController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeSuperAdmin(Request $request)
+    public function addjuragan(Request $request)
     {
-        // dd($request->all());
-        // $createJuragan = new JuraganProcess;
-        // $routing = 'dataJuraganSuperAdmin';
-        // return $createJuragan->store($request, $routing);
-        $validatedData = $request->validate([
-            'name_juragan' => 'required|string|max:255',
-            'alamat' => 'required|string|max:255',
-        ]);
 
-        // Membuat instance baru dari model Juragan
         $juragan = new Juragan;
-        $juragan->name_juragan = $validatedData['name_juragan'];
-        $juragan->alamat = $validatedData['alamat'];
 
-        // Menyimpan data ke dalam database
+        $juragan->name_juragan = $request->input('name_juragan');
+        $juragan->alamat = $request->input('alamat');
+
         $juragan->save();
 
-        // Redirect ke halaman sebelumnya dengan pesan sukses
-        return back()->with('success', 'Data juragan berhasil ditambahkan.');
+     return redirect()->route('dataJuragan')->with('success', 'Data juragan berhasil ditambahkan.');
     }
-
     /**
      * Update the specified resource in storage.
      */

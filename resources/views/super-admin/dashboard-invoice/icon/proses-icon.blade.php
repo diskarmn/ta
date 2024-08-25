@@ -1,6 +1,6 @@
 
     @php
-        $status = DB::table('update_status_proses')
+        $status = DB::table('update_proses')
             ->where('order_number', $data->order_number)
             ->get();
 
@@ -25,7 +25,7 @@
 
                         </g>
                     </svg>
-                    @if ($status->contains('id_status', 2))
+                    @if ($status->contains('nama_proses','pembayaran'))
                         @php
                             $order = DB::table('orders')
                                 ->where('order_number', $data->order_number)
@@ -64,11 +64,11 @@
                         </svg>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 3))
+                    @if ($status->contains('nama_proses', 'data_orderan'))
                         @php
-                            $status3 = DB::table('update_status_proses')
+                            $status3 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 3)
+                                ->where('nama_proses', 'data_orderan')
                                 ->get();
 
                             $warna = $status3->where('kelengkapan', 'Lengkap')->isNotEmpty() ? '#24A240' : '#828282';
@@ -92,11 +92,11 @@
                     @else
                     @endif
 
-                    @if ($status->contains('id_status', 4))
+                    @if ($status->contains('nama_proses', 'packing'))
                         @php
-                            $status9 = DB::table('update_status_proses')
+                            $status9 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 4)
+                                ->where('nama_proses', '')
                                 ->get();
 
                             $warna = $status9->where('kelengkapan', 'selesai')->isNotEmpty() ? '#24A240' : '#828282';
@@ -118,7 +118,7 @@
                         </svg>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 5))
+                    @if ($status->contains('nama_proses', 'diantar'))
                         <svg width="36" height="35" viewBox="0 0 42 33" fill="none"
                             data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Diantar"
                             data-bs-custom-class="custom-tooltip" xmlns="http://www.w3.org/2000/svg">
@@ -155,7 +155,7 @@
 
                 <span class="d-flex align-items-center">
                     <span class="d-flex align-items-center line_bayar">
-                        @if ($status->contains('id_status', 2) || $status->contains('id_status', 3))
+                        @if ($status->contains('nama_proses','pembayaran') || $status->contains('nama_proses', 'data_orderan'))
                             <svg width="52" height="9" viewBox="0 0 29 9" data-bs-toggle="tooltip"
                                 data-bs-placement="bottom" data-bs-title="Pesanan Ditambahkan"
                                 data-bs-custom-class="custom-tooltip" fill="none"
@@ -184,7 +184,7 @@
                             </svg>
                         @endif
                     </span>
-                    @if ($status->contains('id_status', 2))
+                    @if ($status->contains('nama_proses','pembayaran'))
                         @php
                             $order = DB::table('orders')
                                 ->where('order_number', $data->order_number)
@@ -210,7 +210,7 @@
                             <g id="Line">
                                 <circle id="Ellipse 1852" cx="23.9952" cy="4.69051" r="4.30769"
                                     fill="{{ $fillColor }}" />
-                                @if ($status->contains('id_status', 3))
+                                @if ($status->contains('nama_proses', 'data_orderan'))
                                     <line id="Line 31" x1="20.3125" y1="4.69111" x2="48.0048"
                                         y2="4.69111"
                                         stroke="{{ $fillColor }}"
@@ -224,11 +224,11 @@
                         </svg>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 3))
+                    @if ($status->contains('nama_proses', 'data_orderan'))
                         @php
-                            $status3 = DB::table('update_status_proses')
+                            $status3 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 3)
+                                ->where('nama_proses', 'data_orderan')
                                 ->get();
 
                             $warna = $status3->where('kelengkapan', 'Lengkap')->isNotEmpty() ? '#24A240' : '#828282';
@@ -240,7 +240,7 @@
                             <g id="Line">
                                 <circle id="Ellipse 1852" cx="23.9952" cy="4.69051" r="4.30769"
                                     fill="{{ $warna }}" />
-                                @if ($status->contains('id_status', 4))
+                                @if ($status->contains('nama_proses', ''))
                                     <line id="Line 31" x1="20.3125" y1="4.69111" x2="48.0048"
                                         y2="4.69111" stroke="{{ $warna }}"
                                         stroke-width="2.46154" />
@@ -253,11 +253,11 @@
                     @else
                     @endif
 
-                    @if ($status->contains('id_status', 4))
+                    @if ($status->contains('nama_proses', ''))
                         @php
-                            $status9 = DB::table('update_status_proses')
+                            $status9 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 4)
+                                ->where('nama_proses', '')
                                 ->get();
 
                             $warna = $status9->where('kelengkapan', 'selesai')->isNotEmpty() ? '#24A240' : '#828282';
@@ -269,7 +269,7 @@
                             <g id="Line">
                                 <circle id="Ellipse 1852" cx="23.9952" cy="4.69051" r="4.30769"
                                     fill="{{ $warna }}" />
-                                @if ($status->contains('id_status', 5))
+                                @if ($status->contains('nama_proses', ''))
                                     <line id="Line 31" x1="20.3125" y1="4.69111" x2="48.0048"
                                         y2="4.69111" stroke="{{ $warna }}"
                                         stroke-width="2.46154" />
@@ -281,7 +281,7 @@
                         </svg>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 5))
+                    @if ($status->contains('nama_proses', ''))
                         <span class="d-flex align-items-center line_right">
                             <svg width="29" height="9" viewBox="0 0 29 9" fill="none"
                                 data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Diantar"
@@ -304,9 +304,9 @@
 
 
                 <div class="d-flex justify-content-between  gap-1" style="width: max-content !important;">
-                    @if ($status->contains('id_status', 1))
+                    @if ($status->contains('nama_proses', 'pesanan_ditambahkan'))
                         @php
-                            $status1 = $status->where('id_status', 1)->first();
+                            $status1 = $status->where('nama_proses', 'pesanan_ditambahkan')->first();
                         @endphp
                         <p data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="pesanan ditambahkan"
                             data-bs-custom-class="custom-tooltip" style="font-size:45%;width:43px;color:#24A240;"
@@ -317,9 +317,9 @@
                         </p>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 2))
+                    @if ($status->contains('nama_proses','pembayaran'))
                         @php
-                            $status2 = $status->where('id_status', 2)->first();
+                            $status2 = $status->where('nama_proses','pembayaran')->first();
 
                             $order = DB::table('orders')
                                 ->where('order_number', $data->order_number)
@@ -349,11 +349,11 @@
                         </p>
                     @else
                     @endif
-                    @if ($status->contains('id_status', 3))
+                    @if ($status->contains('nama_proses', 'data_orderan'))
                         @php
-                            $status3 = DB::table('update_status_proses')
+                            $status3 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 3)
+                                ->where('nama_proses', 'data_orderan')
                                 ->orderBy('updated_at', 'desc')
                                 ->first();
 
@@ -373,11 +373,11 @@
                         @endif
                     @endif
 
-                    @if ($status->contains('id_status', 4))
+                    @if ($status->contains('nama_proses', ''))
                         @php
-                            $status9 = DB::table('update_status_proses')
+                            $status9 = DB::table('update_proses')
                                 ->where('order_number', $data->order_number)
-                                ->where('id_status', 4)
+                                ->where('nama_proses', '')
                                 ->orderBy('updated_at', 'desc')
                                 ->first();
 
@@ -396,7 +396,7 @@
                             </p>
                         @endif
                     @endif
-                    @if ($status->contains('id_status', 5))
+                    @if ($status->contains('nama_proses', ''))
                             <p data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Diantar"
                                 data-bs-custom-class="custom-tooltip" style="font-size:45%;width:43px;color:#24A240;"
                                 class=" m-0 justify-content-center d-flex ">

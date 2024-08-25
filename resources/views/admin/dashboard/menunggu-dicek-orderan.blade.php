@@ -69,7 +69,7 @@
                                         <!--kanan-->
 
 
-                                        @include('super-admin.dashboard-invoice.icon.proses-icon')
+                                        @include('admin.dashboard.proses_icon')
 
 
 
@@ -307,7 +307,6 @@
                                             <div class="card-body" style="font-size: 18px">
                                                 <p class="fzt7" style="font-weight: 900; color:#ccc">Keterangan</p>
                                                 @php
-                                                    // Ubah jumlah kata yang diinginkan sesuai kebutuhan
                                                     $limitedNote = Str::limit($data->notes, $limit = 50, $end = '...');
                                                 @endphp
                                                 <div class="note-section">
@@ -319,12 +318,7 @@
                                                         @else
                                                             <p class="fzt6 my-0">dana ongkir tidak ada</p>
                                                         @endif
-                                                        @if ($data->dana_biaya_lain)
-                                                            <p class="fzt6 my-0">{{ $data->biaya_lain }}:
-                                                                {{ $data->dana_biaya_lain }}</p>
-                                                        @else
-                                                            <p class="fzt6 my-0">biaya lain tidak ada</p>
-                                                        @endif
+
                                                     </div>
                                                     <div class="full-note fzt7"
                                                         style="display: none; margin-top: 0; padding-top: 0;">
@@ -335,30 +329,23 @@
                                                     <a href="#" class="show-more fzt7"
                                                         onclick="toggleNoteVisibility(this); return false;">Selengkapnya
                                                     </a>
-                                                    @php
-                                                        $status = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->get();
-                                                        $status9Selesai = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->where('id_status', 9)
-                                                            ->where('kelengkapan', 'selesai')
-                                                            ->first();
-                                                        $status8Selesai = DB::table('update_status_proses')
-                                                            ->where('order_number', $data->order_number)
-                                                            ->where('id_status', 8)
-                                                            ->where('kelengkapan', 'selesai')
-                                                            ->first();
 
-                                                    @endphp
-                                                    @if ($data->status == 'dalam_proses' && $data->total_amount == $data->paid_amount && $status8Selesai && $status9Selesai)
-                                                        <button type="button"
-                                                            class="btn btn-primary border border-dark w-100"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#resi{{ $data->order_number }}">Resi
-                                                        </button>
-                                                    @else
-                                                    @endif
+                                                        <table>
+                                                            <tr>
+                                                                <th style="font-size: 70%;">Kurir</th>
+                                                                <td style="font-size: 70%;">:{{ $data->ongkir }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th style="font-size: 70%;">Ongkos</th>
+                                                                <td style="font-size: 70%;">:{{ $data->dana_ongkir }}</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th style="font-size: 70%;">No Resi</th>
+                                                                <td style="font-size: 70%;">:{{ $data->resi }}</td>
+                                                            </tr>
+                                                        </table>
+
 
                                                 </div>
                                             </div>
@@ -382,42 +369,7 @@
                                                         class="fa-regular fa-square-plus m-1"></i>Proses
                                                     Orderan</small>
                                             </button>
-                                            <div class=" rounded rounded-3 d-flex   col-2 mx-2 px-0  border border-dark border-2 "
-                                                style="height:max-content;align-self:center;">
-                                                <form class="w-100 m-auto"
-                                                    action="{{ route('kesuntinga', $data->order_number) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" value="{{ $data->order_number }}"
-                                                        id="lorder_number">
-                                                    <input type="hidden" value="{{ $data->juragan }}" id="lid_juragan">
-                                                    <input type="hidden" value="{{ $data->juraganname }}"
-                                                        id="lname_juragan">
-                                                    <input type="hidden" value="{{ $data->source }}" id="lsource">
-                                                    <input type="hidden" value="{{ $data->served_by }}"
-                                                        id="lid_served_by">
-                                                    <input type="hidden" value="{{ $data->served_byname }}"
-                                                        id="lname_served_by">
-                                                    <input type="hidden" value="{{ $data->order_date }}"
-                                                        id="lorder_date">
-                                                    <input type="hidden" value="{{ $data->customer_name }}"
-                                                        id="lname_customer">
-                                                    <input type="hidden" value="{{ $data->id_customer }}"
-                                                        id="lid_customer">
-                                                    <input type="hidden" value="{{ $data->notes }}" id="lnotes">
-                                                    <input type="hidden" value="{{ $data->payment_method }}"
-                                                        id="lmethod">
-                                                    <input type="hidden" value="{{ $data->status }}" id="lstatus">
-                                                    <button type="submit"
-                                                        class="btn w-100 px-2 btn fzt7 text-start
-                                                    border border-none text-dark w-100 d-flex align-items-center"
-                                                        onclick="simpanlokal()" style="text-decoration: none;">
-                                                        Sunting
-                                                    </button>
-                                                </form>
 
-
-                                            </div>
                                             <div class="sunting rounded rounded-3 px-1 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
                                                 style="">
                                                 Pembayaran / hapus order
@@ -486,42 +438,7 @@
                                                         class="fa-regular fa-square-plus m-1"></i>Proses
                                                     Orderan</small>
                                             </button>
-                                            <div class=" rounded rounded-3 d-flex   col-2 mx-2 px-0  border border-dark border-2 "
-                                                style="height:max-content;align-self:center;">
-                                                <form class="w-100 m-auto"
-                                                    action="{{ route('kesuntinga', $data->order_number) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" value="{{ $data->order_number }}"
-                                                        id="lorder_number">
-                                                    <input type="hidden" value="{{ $data->juragan }}" id="lid_juragan">
-                                                    <input type="hidden" value="{{ $data->juraganname }}"
-                                                        id="lname_juragan">
-                                                    <input type="hidden" value="{{ $data->source }}" id="lsource">
-                                                    <input type="hidden" value="{{ $data->served_by }}"
-                                                        id="lid_served_by">
-                                                    <input type="hidden" value="{{ $data->served_byname }}"
-                                                        id="lname_served_by">
-                                                    <input type="hidden" value="{{ $data->order_date }}"
-                                                        id="lorder_date">
-                                                    <input type="hidden" value="{{ $data->customer_name }}"
-                                                        id="lname_customer">
-                                                    <input type="hidden" value="{{ $data->id_customer }}"
-                                                        id="lid_customer">
-                                                    <input type="hidden" value="{{ $data->notes }}" id="lnotes">
-                                                    <input type="hidden" value="{{ $data->payment_method }}"
-                                                        id="lmethod">
-                                                    <input type="hidden" value="{{ $data->status }}" id="lstatus">
-                                                    <button type="submit"
-                                                        class="btn w-100 px-2 btn fzt7 text-start
-                                                    border border-none text-dark w-100 d-flex align-items-center"
-                                                        onclick="simpanlokal()" style="text-decoration: none;">
-                                                        Sunting
-                                                    </button>
-                                                </form>
 
-
-                                            </div>
                                             <div class="sunting rounded rounded-3 px-1 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
                                                 style="">
                                                 Pembayaran / hapus order
@@ -586,41 +503,7 @@
                                                         class="fa-regular fa-square-plus m-1"></i>Proses
                                                     Orderan</small>
                                             </button>
-                                            <div class="sunting rounded rounded-3 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
-                                                style="">
-                                                <form class="w-100 m-auto"
-                                                    action="{{ route('kesuntinga', $data->order_number) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    <input type="hidden" value="{{ $data->order_number }}"
-                                                        id="lorder_number">
-                                                    <input type="hidden" value="{{ $data->juragan }}" id="lid_juragan">
-                                                    <input type="hidden" value="{{ $data->juraganname }}"
-                                                        id="lname_juragan">
-                                                    <input type="hidden" value="{{ $data->source }}" id="lsource">
-                                                    <input type="hidden" value="{{ $data->served_by }}"
-                                                        id="lid_served_by">
-                                                    <input type="hidden" value="{{ $data->served_byname }}"
-                                                        id="lname_served_by">
-                                                    <input type="hidden" value="{{ $data->order_date }}"
-                                                        id="lorder_date">
-                                                    <input type="hidden" value="{{ $data->customer_name }}"
-                                                        id="lname_customer">
-                                                    <input type="hidden" value="{{ $data->id_customer }}"
-                                                        id="lid_customer">
-                                                    <input type="hidden" value="{{ $data->notes }}" id="lnotes">
-                                                    <input type="hidden" value="{{ $data->payment_method }}"
-                                                        id="lmethod">
-                                                    <input type="hidden" value="{{ $data->status }}" id="lstatus">
-                                                    <button type="submit"
-                                                        class="btn w-100 px-2 btn fzt7 text-start
-                                              border border-none text-dark w-100 d-flex align-items-center"
-                                                        onclick="simpanlokal()" style="text-decoration: none;">
-                                                        Sunting
-                                                    </button>
-                                                </form>
 
-                                            </div>
                                             <div class="sunting rounded rounded-3 px-1 d-flex overflow-hidden  col-2 mx-2 px-0 justify-content-between border border-dark border-2 "
                                                 style="">
                                                 Pembayaran / hapus order
@@ -909,169 +792,103 @@
 
         {{-- proses status --}}
         @foreach ($allorder as $orderId)
-            <div class="modal fade" id="prosesOrderanModal{{ $orderId->order_number }}" data-bs-backdrop="static"
-                data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content">
+        <div class="modal fade" id="prosesOrderanModal{{ $orderId->order_number }}" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" aria-labelledby="prosesOrderanModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
 
-                        <form action="{{ route('update.on.procesa', ['orderId' => $orderId->order_number]) }}"
-                            method="post" id="form_proses">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Status Proses
-                                    Orderan {{ $orderId->order_number }}
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p
-                                    class="bg-warning text-secondary rounded-1 text-center fs-6 fw-medium font-family-Montserrat m-0 px-3 py-2">
-                                    Perlu diingat, penambahan status orderan ini tidak bisa diubah!</p>
+                    <form action="{{ route('update.on.procesa', ['orderId' => $orderId->order_number]) }}"
+                        method="post" id="form_proses">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title w-100 text-center" id="prosesOrderanModalLabel">Status Proses
+                                Orderan {{ $orderId->order_number }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p
+                                class="bg-warning text-secondary rounded-1 text-center fs-6 fw-medium font-family-Montserrat m-0 px-3 py-2">
+                                Perlu diingat, penambahan status orderan ini tidak bisa diubah!</p>
 
-                                @php
-                                    $updateStatusProses = DB::table('update_status_proses')
-                                        ->where('order_number', $orderId->order_number)
-                                        ->get();
-                                @endphp
+                            @php
+                                $updateStatusProses = DB::table('update_proses')
+                                    ->where('order_number', $orderId->order_number)
+                                    ->get();
+                            @endphp
 
-                                <br>
-
-                                @if ($updateStatusProses->where('id_status', 3)->where('kelengkapan', 'Lengkap')->isNotEmpty())
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option disabled"
-                                                            data-value="3">Data Pesanan</a></li>
-                                                    <li>
-
-                                                        <a class="dropdown-item status-option
-                                                                {{ $updateStatusProses->where('id_status', 4)->where('kelengkapan', 'selesai')->isNotEmpty() ? 'disabled' : '' }}"
-                                                            data-value="4"> Packing</a>
-
-                                                    </li>
-
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-
+                            <br>
+                                <div class="d-flex gap-1 justify-content-between">
+                                    <div class="col-lg-4 my-2">
+                                        <div class="
+                                         d-flex align-items-center px-2 py-1">
+                                           Proses Packing :
                                         </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                 
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Selesai">Selesai</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-                                            </div>
+
+                                        <input type="hidden" name="status"  value="packing">
+                                    </div>
+                                    <div class="col-lg-8 my-2 keterangan-parent">
+                                        <div class="dropdown">
+                                            <button
+                                                class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                                id="kelengkapan" data-name="kelengkapan">
+                                                Pilih
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item kelengkapan-option"
+                                                        data-value="Selesai">Selesai</a></li>
+                                            </ul>
+                                            <input type="hidden" name="kelengkapan" id="checkKelengkapan"
+                                                value="">
                                         </div>
                                     </div>
-                                @else
-                                    <div class="d-flex gap-1 justify-content-between">
-                                        <div class="col-lg-6 my-2">
-                                            <div class="dropdown-status">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('pilih_status') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="pilih_status" data-name="pilih_status" name="pilih_status">
-                                                    Pilih Status
-                                                </button>
-                                                <ul class="dropdown-menu pilih-menu">
-                                                    <li><a class="dropdown-item status-option" data-value="3">Data Pesanan
-                                                        </a></li>
-
-                                                    <li> <a class="dropdown-item status-option disabled"
-                                                            data-value="Packing">Packing</a></li>
-                                                </ul>
-                                                <input type="hidden" name="status" id="modalStatus" value="">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 my-2 keterangan-parent">
-                                            <div class="dropdown">
-                                                <button
-                                                    class="btn d-flex justify-content-between align-items-center bg-white border w-100 border-black rounded rounded-3 dropdown-toggle @error('kelengkapan') is-invalid @enderror"
-                                                    type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                                    id="kelengkapan" data-name="kelengkapan">
-                                                    Pilih
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Lengkap">Lengkap</a>
-                                                    </li>
-                                                    <li><a class="dropdown-item kelengkapan-option"
-                                                            data-value="Belum Lengkap">Belum
-                                                            Lengkap</a></li>
-                                                </ul>
-                                                <input type="hidden" name="kelengkapan" id="checkKelengkapan"
-                                                    value="">
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endif
-
-
-
-
-
-                                <div class="mb-3 col-lg-12">
-                                    <label for="jumlah-dana" class="col-form-label">Note</label>
-                                    <textarea type="text" class="form-control shadow" placeholder="Opsional" style="min-height: 100px !important;"
-                                        name="keterangan"></textarea>
                                 </div>
 
-
+                            <div class="mb-3 col-lg-12">
+                                <label for="jumlah-dana" class="col-form-label">Note</label>
+                                <textarea type="text" class="form-control shadow" placeholder="Opsional" style="min-height: 100px !important;"
+                                    name="keterangan"></textarea>
                             </div>
-                            <div class="modal-footer justify-content-start gap-2 parentvalidasi"
-                                style="position: relative;">
 
-                                <div class="validasi px-2 py-1 rounded bg-primary text-center text-white">Simpan</div>
-                                <button type="button" class="btn btn-secondary modal_btn_width"
-                                    data-bs-dismiss="modal">Batal</button>
-                                <div class="validasimuncul" style="display: none;">
-                                    <div class="anaknyavalidasi">
 
-                                        <div
-                                            class="tengahnya w-50 m-auto p-5  rounded bg-white d-flex flex-column justify-content-center align-items-center">
-                                            <h1>Ubah Status Orderan</h1>
-                                            <p class="fz9 text-center">Setelah data status yang diubah disimpan data
-                                                tersebut <b class="text-danger fzt9">tidak bisa diubah kembali</b>
-                                                Apakah anda yakin menyimpan data ini?</p>
-                                            <div class="kanankirivalidasi d-flex flex-row justify-content-between w-50">
-                                                <button type="submit" class="btn btn-primary modal_btn_width "
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#confirmPerubahanStatusOrderModal"
-                                                    id="btnSimpanProsesOrderan">Simpan</button>
-                                                <div
-                                                    class="buttonvalidasi px-2 py-1 rounded bg-danger text-center d-flex align-items-center text-white">
-                                                    batal</div>
-                                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-start gap-2 parentvalidasi"
+                            style="position: relative;">
+
+                            <div class="validasi px-2 py-1 rounded bg-primary text-center text-white">Simpan</div>
+                            <button type="button" class="btn btn-secondary modal_btn_width"
+                                data-bs-dismiss="modal">Batal</button>
+                            <div class="validasimuncul" style="display: none;">
+                                <div class="anaknyavalidasi">
+
+                                    <div
+                                        class="tengahnya w-50 m-auto p-5  rounded bg-white d-flex flex-column justify-content-center align-items-center">
+                                        <h1>Ubah Status Orderan</h1>
+                                        <p class="fz9 text-center">Setelah data status yang diubah disimpan data
+                                            tersebut <b class="text-danger fzt9">tidak bisa diubah kembali</b>
+                                            Apakah anda yakin menyimpan data ini?</p>
+                                        <div class="kanankirivalidasi d-flex flex-row justify-content-between w-50">
+                                            <button type="submit" class="btn btn-primary modal_btn_width "
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmPerubahanStatusOrderModal"
+                                                id="btnSimpanProsesOrderan">Simpan</button>
+                                            <div
+                                                class="buttonvalidasi px-2 py-1 rounded bg-danger text-center d-flex align-items-center text-white">
+                                                batal</div>
                                         </div>
                                     </div>
-
                                 </div>
-                            </div>
 
-                        </form>
-                    </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
             </div>
-        @endforeach
+        </div>
+    @endforeach
 
 
 

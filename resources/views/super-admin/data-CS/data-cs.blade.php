@@ -12,7 +12,7 @@
             <div class="col-lg-8 col-md-7 d-flex header-text align-items-center ">Data CS</div>
             <div class="col-lg-4 col-md-5 d-flex  justify-content-end">
                 <a href="{{ route('pageTambahCSinSA') }}" class="btn btn-lg btn-blue rounded-2 px-4 fs-6">Tambah</a>
-               
+
             </div>
         </div>
 
@@ -32,35 +32,31 @@
                 <tbody id="tabel-body">
                     @if ($data_cs->count())
                         @foreach ($data_cs as $data)
-                        @php
-                            $juragan = DB::table('juragans')
-                                ->where('id', $data->juragan_id)
-                                ->first();
-                            $name_juragan =$juragan->name_juragan ?? 'belum ditentukan toko';
-                        @endphp
+                            @php
+                                $juragan = DB::table('juragans')
+                                    ->where('id', $data->juragan_id)
+                                    ->first();
+                                $name_juragan = $juragan->name_juragan ?? 'belum ditentukan toko';
+                            @endphp
                             <tr>
                                 <td class="col pb-0 pt-3">{{ $loop->iteration }}</td>
                                 <td class="col pb-0 pt-3 text-capitalize">{{ $data->name }}</td>
                                 <td class="col pb-0 pt-3">
                                     {{ $name_juragan }}
-
-
                                 </td>
                                 <td class="col pb-0 pt-3 text-truncate ">{{ $data->email }}</td>
                                 <td class="col pb-0 pt-3 text-truncate ">{{ $data->phone_number }}</td>
                                 <td class="col pb-0 pt-3">
                                     <div class="d-flex justify-content-center gap-lg-3 gap-md-1">
                                         <a class="btn btn-sm btn-orange px-lg-4 px-md-3  text-center rounded-2 fw-medium "
-                                            style="font-size:12px;"  data-bs-toggle="modal"
+                                            style="font-size:12px;" data-bs-toggle="modal"
                                             data-bs-target="#edit{{ $data->id }}">Edit</a>
 
                                         <button class="btn btn-sm px-lg-3 px-md-2 btn-red text-center fw-medium rounded-2 "
-                                            style="font-size:12px;" data-bs-target="#ModalDelete{{ $data->id }}" data-bs-toggle="modal"
-                                            type="submit">Hapus</button>
+                                            style="font-size:12px;" data-bs-target="#ModalDelete{{ $data->id }}"
+                                            data-bs-toggle="modal" type="submit">Hapus</button>
                                 </td>
                             </tr>
-
-                            <!-- Modal Delete -->
                             <div class="modal fade" id="ModalDelete{{ $data->id }}" tabindex="-1" role="dialog">
                                 <div class="modal-dialog modal-dialog-centered modal-md " role="document">
                                     <div class="modal-content ">
@@ -93,7 +89,6 @@
 
                 </tbody>
             </table>
-            {{-- pagination --}}
             <div class="d-flex justify-content-between  m-4 mt-5">
                 <div class="">
                     <button class="btn btn-outline-success" disabled>Halaman 1 </button>
@@ -107,78 +102,54 @@
     </div>
 
     @foreach ($data_cs as $edit)
-    <div class="modal fade" id="edit{{ $edit->id }}" tabindex="-1"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-
-                yang mau di edit {{ $edit->username }}
-                </div>
-                <div class="modal-body">
-                <form action="{{ route('editcs2', $data->id) }}" method="POST" id="editForm"
-                    >
-                    @csrf
-                    @method('PUT')
-                    <div class="col m-0 input-container d-none">
-                        <label for="idadmin" class="form-label custom-label">Id </label>
-                        <input type="text" id="idadmin" class="form-control custom-input">
+        <div class="modal fade" id="edit{{ $edit->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-center">yang mau di edit: {{ $edit->name }}
                     </div>
-
-                    <div class="row mb-5">
-                        <div class="col m-0 input-container">
-                            <label for="nama" class="form-label custom-label">Nama</label>
-                            <input type="text" id="nama" class="form-control custom-input" name="name"
-                                value="{{ $edit->name }}" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                    <div class="modal-body">
+                        <form action="{{ route('editcs2', $data->id) }}" method="POST" id="editForm"> @csrf
+                            @method('PUT')
+                            <label for="nama" class="form-label">Nama</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="text" id="nama" class="form-control " name="name"
+                                    value="{{ $edit->name }}"required>
                             </div>
-                        </div>
-                        <div class="col m-0 input-container ">
-                            <label for="hp" class="form-label custom-label">Nomor Handphone</label>
-                            <input type="tel" maxlength="13" minlength="11" id="hp"
-                                class="form-control custom-input" oninput="this.value = this.value.replace(/\D/g, '')"
-                                value="{{ $edit->phone_number }}" name="phone_number" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                            <label for="hp" class="form-label">No Hp</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="tel" maxlength="13" minlength="11" id="hp" class="form-control "
+                                    oninput="this.value = this.value.replace(/\D/g, '')" value="{{ $edit->phone_number }}"
+                                    name="phone_number" required>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-5">
-                        <div class="col m-0 input-container ">
-                            <label for="email" class="form-label custom-label">Email</label>
-                            <input type="email" id="email" class="form-control custom-input"
-                                value="{{ $edit->email }}" name="email" required>
-                            <div class="invalid-feedback fw-bold">
-                                EROR: Field Tidak Boleh Kosong
+                            <label for="email" class="form-label">email</label>
+                            <div class="input-group rounded mb-4 shadow align-items-center">
+                                <input type="email" id="email" class="form-control " value="{{ $edit->email }}"
+                                    name="email" required>
                             </div>
-                        </div>
+                            <div class="mb-3">
+                                @php
+                                    $juragan = DB::table('juragans')->get();
+                                @endphp
+                                <select name="juragan_id" class="form-select w-50">
+                                    @foreach ($juragan as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name_juragan }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+
+                            <div class="d-flex flex-row gap-3 justify-content-end">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn fw-bold btn-blue px-4 py-2 btn-sv">Simpan</button>
+
+                            </div>
+                        </form>
                     </div>
-
-                    <div class="mb-3">
-                        @php
-                        $juragan = DB::table('juragans')->get();
-                        @endphp
-                        <select name="juragan_id" class="form-select w-50">
-                            @foreach ($juragan as $item)
-                                <option value="{{ $item->id }}">{{ $item->name_juragan }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-
-
-                    <div class="d-flex flex-row gap-3 justify-content-end">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn fw-bold btn-dark px-4 py-2 btn-sv"
-                            >Simpan</button>
-
-                    </div>
-                </form>
                 </div>
             </div>
         </div>
-    </div>
     @endforeach
     <!-- sukses Modal delete  -->
     <div class="modal fade" id="suksesModalDelete" tabindex="-1" role="dialog" data-bs-backdrop="false">

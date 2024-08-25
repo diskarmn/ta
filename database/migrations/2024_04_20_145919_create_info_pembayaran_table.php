@@ -17,12 +17,12 @@ return new class extends Migration
             $table->uuid('order_id')->nullable();
             $table->integer('jumlah_dana')->default(0);
             $table->enum('kelengkapan', ['Ada', 'Tidak Ada'])->nullable();
-            $table->string('link')->nullable();
+            $table->string('order_number',10)->nullable();
+            $table->string('payment_method',10)->nullable();
             $table->string('gambar',100)->nullable();
             $table->timestamps();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
         });
-        // DB::statement('ALTER TABLE info_pembayaran ADD CONSTRAINT info_pembayaran_order_id_foreign FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE SET NULL;');
     }
 
     public function down(): void

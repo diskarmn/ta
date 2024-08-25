@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Barang;
 use App\Models\Customer;
-use App\Models\Keranjang;
+use App\Models\ViewTulisOrder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class KeranjangController extends Controller
 {
     //
-    public function keranjang(Request $request)
+    public function viewtulisorder(Request $request)
     {
         $user = Auth::guard('employee')->user();
         $request->validate([
@@ -22,27 +22,22 @@ class KeranjangController extends Controller
             'nama_barang'=>'required',
             'harga' => 'required',
             'ukuran' => 'required',
-            'qty' => 'required',
-            // 'point'=>'required'
         ]);
         // dd($request->all());
-        Keranjang::create([
+        ViewTulisOrder::create([
             'kd' => $request->kd,
             'harga' => $request->harga,
             'ukuran' => $request->ukuran,
             'qty' => $request->qty,
             'barang'=>$request->nama_barang,
-            'subtotal' => $request->harga * $request->qty,
+            // 'subtotal' => $request->harga * $request->qty,
             'employee_id'=> $user->id,
-            // 'point_per_barang'=>$request->point,
-            // 'point'=>$request->point * $request->qty
         ]);
-        // dd($request->kd);
         Barang::where('id', $request->kd)
             ->decrement('stock', $request->qty);
         return redirect()->back()->with('success', 'Data berhasil ditambahkan ke keranjang.');
     }
-    public function editkeranjang(Request $request, $id)
+    public function edittulisorder(Request $request, $id)
     {
         $user = Auth::guard('employee')->user();
         $request->validate([
@@ -54,17 +49,16 @@ class KeranjangController extends Controller
             'qty_sebelumnya'=>'nullable'
         ]);
         // dd($request->all());
-        $keranjang = Keranjang::findOrFail($id);
-            $keranjang->kd = $request->kd_edit;
-            $keranjang->barang = $request->nama_barang_edit;
+        $viewtulisorder = ViewTulisOrder::findOrFail($id);
+            $viewtulisorder->kd = $request->kd_edit;
+            $viewtulisorder->barang = $request->nama_barang_edit;
 
-        if ($keranjang) {
-            $keranjang->harga = $request->harga_edit;
-            $keranjang->ukuran = $request->ukuran_edit;
-            $keranjang->qty = $request->qty_edit;
-            $keranjang->subtotal = $request->qty_edit * $request->harga_edit;
-            $keranjang->employee_id= $user->id;
-            $keranjang->save();
+        if ($viewtulisorder) {
+            $viewtulisorder->harga = $request->harga_edit;
+            $viewtulisorder->ukuran = $request->ukuran_edit;
+            $viewtulisorder->qty = $request->qty_edit;
+            $viewtulisorder->employee_id= $user->id;
+            $viewtulisorder->save();
 
         $barang = DB::table('barangs')
             ->where('id', $request->kd_edit)
@@ -106,9 +100,9 @@ class KeranjangController extends Controller
 
     public function hapusorder($id)
     {
-        $keranjang = Keranjang::findOrFail($id);
-        if ($keranjang) {
-            $keranjang->delete();
+        $viewtulisorder = ViewTulisOrder::findOrFail($id);
+        if ($viewtulisorder) {
+            $viewtulisorder->delete();
             return back()->with('success', 'Data berhasil dihapus dari keranjang.');
         } else {
             return response([
@@ -154,7 +148,7 @@ class KeranjangController extends Controller
             'ongkir' => 'nullable',
             "jasa_ongkir" => 'nullable'
         ]);
-        Keranjang::create([
+        ViewTulisOrder::create([
             'ongkir' => $request->ongkir,
             'jasa_ongkir' => $request->jasa_ongkir,
             'employee_id'=> $user->id
@@ -169,14 +163,14 @@ class KeranjangController extends Controller
             'jasa_ongkir_edit' => 'required',
         ]);
         // dd($request->all());
-        $keranjang = Keranjang::findOrFail($id);
+        $viewtulisorder = ViewTulisOrder::findOrFail($id);
 
-        if ($keranjang) {
+        if ($viewtulisorder) {
             $user = Auth::guard('employee')->user();
-            $keranjang->ongkir = $request->ongkir_edit;
-            $keranjang->jasa_ongkir = $request->jasa_ongkir_edit;
-            $keranjang->employee_id= $user->id;
-            $keranjang->save();
+            $viewtulisorder->ongkir = $request->ongkir_edit;
+            $viewtulisorder->jasa_ongkir = $request->jasa_ongkir_edit;
+            $viewtulisorder->employee_id= $user->id;
+            $viewtulisorder->save();
             return redirect()->back()->with('success', 'Data berhasil diubah pada keranjang.');
         } else {
             return response([
@@ -186,9 +180,9 @@ class KeranjangController extends Controller
     }
     public function hapusongkir($id)
     {
-        $keranjang = Keranjang::where('id', $id)->firstOrFail();
-        if ($keranjang) {
-            $keranjang->delete();
+        $viewtulisorder = ViewTulisOrder::where('id', $id)->firstOrFail();
+        if ($viewtulisorder) {
+            $viewtulisorder->delete();
             return redirect()->back()->with('success', 'Data berhasil dihapus dari keranjang.');
         } else {
             return response([
@@ -207,7 +201,7 @@ class KeranjangController extends Controller
             'biaya_lain' => 'required',
             "jasa_biaya_lain" => 'required'
         ]);
-        Keranjang::create([
+        ViewTulisOrder::create([
             'biaya_lain' => $request->biaya_lain,
             'jasa_biaya_lain' => $request->jasa_biaya_lain,
             'employee_id'=> $user->id
@@ -223,12 +217,12 @@ class KeranjangController extends Controller
             'jasa_biaya_lain_edit' => 'required',
         ]);
 
-        $keranjang = Keranjang::findOrFail($id);
-        if ($keranjang) {
-            $keranjang->biaya_lain = $request->biaya_lain_edit;
-            $keranjang->jasa_biaya_lain = $request->jasa_biaya_lain_edit;
-            $keranjang->employee_id= $user->id;
-            $keranjang->save();
+        $viewtulisorder = ViewTulisOrder::findOrFail($id);
+        if ($viewtulisorder) {
+            $viewtulisorder->biaya_lain = $request->biaya_lain_edit;
+            $viewtulisorder->jasa_biaya_lain = $request->jasa_biaya_lain_edit;
+            $viewtulisorder->employee_id= $user->id;
+            $viewtulisorder->save();
             return redirect()->back()->with('success', 'Data berhasil diubah pada keranjang.');
         } else {
             return response([
@@ -238,9 +232,9 @@ class KeranjangController extends Controller
     }
     public function hapuslain($id)
     {
-        $keranjang = Keranjang::findOrFail($id);
-        if ($keranjang) {
-            $keranjang->delete();
+        $viewtulisorder = ViewTulisOrder::findOrFail($id);
+        if ($viewtulisorder) {
+            $viewtulisorder->delete();
             return redirect()->back()->with('success', 'Data berhasil dihapus dari keranjang.');
         } else {
             return response([

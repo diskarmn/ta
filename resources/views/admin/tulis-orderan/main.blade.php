@@ -9,7 +9,6 @@
         <div class="body-reqEdit flex-column p-4 " style=" border: 1.5px solid black; border-radius: 10px;">
             <form method="POST" id="formDataPelanggan" action="{{ url('cs/tulisOrderan/keorders') }}">
                 @csrf
-                {{-- info req --}}
                 <div class="d-flex flex-row justify-content-between mb-4 gap-5" id="form-juragan">
                     <div class="col">
                         <label for="opsi-juragan" class="label-order mb-0">Juragan</label>
@@ -26,14 +25,13 @@
                         <label for="opsi-orderan" class="label-order mb-0">Asal Orderan </label>
                         <select class="form-select form-select-lg shadow" id="opsi-orderan" name="sumber_f">
                             <option selected readonly id="local-sumber" >Pilih asal</option>
-                            <option value="Blibli">Blibli</option>
-                            <option value="Bukalapal">Bukalapak</option>
+                            <option value="Offline">Offline</option>
                             <option value="Facebook">Facebook</option>
                             <option value="Instagram">Instagram</option>
+                            <option value="Bukalapak">Bukalapak</option>
                             <option value="Lazada">Lazada</option>
                             <option value="Shopee">Shopee</option>
                             <option value="Tokopedia">Tokopedia</option>
-
                         </select>
                     </div>
                     <div class="col">
@@ -104,7 +102,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="infoOrder">
-                                    @foreach ($keranjang as $isi)
+                                    @foreach ($viewtulisorder as $isi)
                                         <tr class="text-center small border border-0  border-bottom tr-harga"
                                             id="dataOrder">
                                             <td class="col-lg-1">
@@ -154,8 +152,8 @@
                                                 {{ $isi->qty }}
                                             </td>
                                             <td class="col py-3 harga-barang" id="harga-barang">
-                                                <input type="hidden" value="{{ $isi->subtotal }}" name="subtotal_f[]">
-                                                {{ 'Rp ' . number_format($isi->subtotal, 0, ',', '.') }}
+                                                <input type="hidden" value="{{ $isi->qty * $isi->harga  }}" name="subtotal_f[]">
+                                                {{ 'Rp ' . number_format($isi->qty * $isi->harga, 0, ',', '.') }}
                                             </td>
 
                                         </tr>
@@ -207,51 +205,7 @@
                                         @endforeach
                                     @else
                                     @endif
-                                    @if ($biaya_lain->count())
-                                        @foreach ($biaya_lain as $item)
-                                            <tr class="text-center small " id="subtotal">
-                                                <td class="col-lg-1">
-                                                    <button class="btn px-1 py-0" type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#editbiayalain{{ $item->id }}">
 
-                                                        <svg width="15" height="15" viewBox="0 0 15 15"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M4.92648 14.3165H1.2395C1.07652 14.3165 0.920223 14.2517 0.804982 14.1365C0.689742 14.0212 0.625 13.8649 0.625 13.702V10.2695C0.625 10.1888 0.640894 10.1089 0.671776 10.0343C0.702657 9.95978 0.747921 9.89204 0.804983 9.83498L10.0224 0.617482C10.1377 0.502241 10.294 0.4375 10.457 0.4375C10.6199 0.4375 10.7762 0.502241 10.8915 0.617482L14.3239 4.04995C14.4392 4.16519 14.5039 4.32149 14.5039 4.48446C14.5039 4.64744 14.4392 4.80374 14.3239 4.91898L4.92648 14.3165Z"
-                                                                stroke="black" stroke-width="0.7" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M8 2.64062L12.3015 6.94212" stroke="black"
-                                                                stroke-width="0.7" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </button>
-
-                                                    {{-- btn delete --}}
-                                                    <button class="btn px-1 py-0 " type="button" data-bs-toggle="modal"
-                                                        data-bs-target="#hapuslain{{ $item->id }}">
-                                                        <svg width="18" height="18" viewBox="0 0 18 18"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M14.5027 3.98492H12.0602V3.57862C12.0602 3.00699 11.8805 2.59262 11.5171 2.33974C11.2604 2.17399 10.942 2.08984 10.5719 2.08984H7.83445C7.83232 2.08984 7.83063 2.09112 7.8285 2.09112C7.82638 2.09112 7.82468 2.08984 7.82255 2.08984H7.43622C6.47615 2.08984 5.94745 2.61854 5.94745 3.57862V3.98492H3.50625C3.42171 3.98492 3.34064 4.0185 3.28086 4.07828C3.22108 4.13806 3.1875 4.21913 3.1875 4.30367C3.1875 4.38821 3.22108 4.46928 3.28086 4.52906C3.34064 4.58884 3.42171 4.62242 3.50625 4.62242H3.78122L4.60827 15.581C4.60827 16.2742 5.0099 16.6716 5.71072 16.6716H12.2816C12.9663 16.6716 13.3684 16.2763 13.3832 15.6048L14.2107 4.62242H14.5023C14.5441 4.62245 14.5856 4.61423 14.6243 4.59824C14.663 4.58224 14.6981 4.55879 14.7277 4.52921C14.7573 4.49963 14.7808 4.46451 14.7969 4.42585C14.8129 4.38718 14.8212 4.34574 14.8212 4.30388C14.8213 4.26202 14.813 4.22057 14.7971 4.18188C14.7811 4.1432 14.7576 4.10805 14.728 4.07843C14.6984 4.04881 14.6633 4.02531 14.6247 4.00926C14.586 3.99322 14.5446 3.98495 14.5027 3.98492ZM13.5244 5.24972H4.46802L4.42085 4.62242H13.5715L13.5244 5.24972ZM6.58537 3.57862C6.58537 2.97384 6.83188 2.72734 7.43665 2.72734H10.5723C10.8179 2.72734 11.0198 2.77707 11.1626 2.86887C11.3381 2.99084 11.4232 3.22289 11.4232 3.57862V3.98492H6.58537V3.57862ZM12.747 15.5738C12.7389 15.9181 12.6216 16.0341 12.2816 16.0341H5.71072C5.36307 16.0341 5.24577 15.9198 5.24493 15.5568L4.51605 5.88679H13.4759L12.747 15.5738Z"
-                                                                fill="#333333" />
-                                                            <path
-                                                                d="M7.89934 6.39196C7.85753 6.39344 7.81642 6.40315 7.77836 6.42053C7.74031 6.43791 7.70605 6.46262 7.67755 6.49325C7.64905 6.52388 7.62687 6.55983 7.61227 6.59904C7.59768 6.63825 7.59096 6.67995 7.59249 6.72176L7.89169 14.9472C7.89466 15.0296 7.92943 15.1076 7.98871 15.1649C8.04798 15.2222 8.12715 15.2543 8.20959 15.2545L8.22149 15.2541C8.2633 15.2526 8.30441 15.2429 8.34247 15.2255C8.38053 15.2081 8.41478 15.1834 8.44328 15.1528C8.47178 15.1221 8.49396 15.0862 8.50856 15.047C8.52315 15.0078 8.52988 14.9661 8.52834 14.9243L8.22957 6.69838C8.22319 6.52243 8.07954 6.37666 7.89934 6.39196ZM5.92352 6.39238C5.83921 6.39827 5.76069 6.43739 5.70523 6.50114C5.64976 6.5649 5.62188 6.64808 5.62772 6.73238L6.19254 14.9578C6.19803 15.0383 6.23386 15.1137 6.29279 15.1687C6.35173 15.2238 6.42936 15.2545 6.51002 15.2545L6.53254 15.2536C6.61684 15.2478 6.69536 15.2086 6.75083 15.1449C6.8063 15.0811 6.83418 14.9979 6.82834 14.9136L6.26352 6.68818C6.25698 6.60413 6.21768 6.52601 6.15407 6.47068C6.09047 6.41534 6.00766 6.38722 5.92352 6.39238ZM10.0817 6.39196C9.90364 6.37496 9.75787 6.52286 9.75192 6.69881L9.45229 14.9243C9.4507 14.9661 9.45738 15.0078 9.47196 15.047C9.48653 15.0863 9.50871 15.1222 9.53722 15.1529C9.56573 15.1835 9.60001 15.2082 9.63809 15.2256C9.67618 15.243 9.71731 15.2526 9.75914 15.2541L9.77104 15.2545C9.85348 15.2543 9.93265 15.2222 9.99192 15.1649C10.0512 15.1076 10.086 15.0296 10.0889 14.9472L10.3886 6.72176C10.3902 6.67994 10.3835 6.63821 10.3689 6.59898C10.3543 6.55974 10.3321 6.52377 10.3036 6.49313C10.2751 6.46249 10.2408 6.43778 10.2028 6.42042C10.1647 6.40305 10.1235 6.39338 10.0817 6.39196ZM12.0575 6.39238C11.9734 6.38734 11.8907 6.41549 11.8271 6.47081C11.7635 6.52612 11.7242 6.60417 11.7175 6.68818L11.1527 14.9136C11.1469 14.9979 11.1748 15.0811 11.2302 15.1449C11.2857 15.2086 11.3642 15.2478 11.4485 15.2536L11.471 15.2545C11.5517 15.2544 11.6292 15.2237 11.6882 15.1686C11.7471 15.1136 11.7829 15.0383 11.7885 14.9578L12.3533 6.73238C12.3592 6.64808 12.3313 6.5649 12.2758 6.50114C12.2204 6.43739 12.1418 6.39827 12.0575 6.39238Z"
-                                                                fill="#333333" />
-                                                        </svg>
-                                                    </button>
-                                                </td>
-                                                <td colspan="1" class="col py-3"></td>
-                                                <td class="col py-3">Biaya Lain :</td>
-                                                <td class="col py-3 biaya-lain">
-                                                    <input type="hidden" name="jasa_biaya_lain" value="{{ $item->jasa_biaya_lain }}">
-                                                    {{ $item->jasa_biaya_lain }}</td>
-                                                <td class="col py-3 biaya-form">
-                                                    <input type="hidden" name="biaya_lain" value="{{ $item->biaya_lain }}">
-                                                    {{ 'Rp ' . number_format($item->biaya_lain, 0, ',', '.') }}</td>
-                                            </tr>
-                                        @endforeach
-                                    @else
-                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -264,11 +218,7 @@
                                         Ongkir
                                     </button>
                                 @endif
-                                @if ($biaya_lain->count())
-                                @else
-                                    <button type="button" class="btn btn-light btn-sm px-3 py-2" data-bs-toggle="modal"
-                                        data-bs-target="#Modalbiayalain">Biaya lain</button>
-                                @endif
+
                             </div>
                         </div>
                         <div id="totalhargaOrder">
@@ -290,7 +240,6 @@
                 </div>
                 <div class=" d-flex gap-3">
                     <a href="/super-admin/semua-orderan" class="btn btn-grey py-2 px-5">Batal</a>
-                    {{-- <button type="submit" class="btn btn-blue py-2 px-5">Simpan</button> --}}
                     <button type="submit" class="btn btn-blue py-2 px-5" onclick="hapuslocal()">Simpan</button>
 
                 </div>
@@ -408,121 +357,7 @@
         </div>
     @endforeach
 
-    {{-- Modal Add biaya lain --}}
-    <div class="modal fade" id="Modalbiayalain" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-0 m-3 py-0">
-                    <h5 class="modal-title ms-auto">Biaya Lain-Lain</h5>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body m-3 py-0">
-                    <form method="POST" id="formbiayalain" action="{{ url('cs/tulisOrderan/lain') }}">
-                        @csrf
-                        <div class="mb-3 ">
-                            <label for="costnominal" class="form-label h6 mb-1">Nominal</label>
-                            <input type="number" class="form-control form-control-lg input-custom shadow mb-2"
-                                id="costnominal" required name="biaya_lain">
-                            <div class="small">Gunakan tanda (-) untuk mengurangi. <br>misal untuk diskon : -20000</div>
-                        </div>
-                        <div class="mb-5 ">
-                            <label for="addcostlabel" class="form-label h6 mb-1">Label</label>
-                            <input type="text" class="form-control form-control-lg input-custom shadow"
-                                name="jasa_biaya_lain" id="addcostlabel"
-                                placeholder="Label biaya - Opsional (max 20 karakter)" required>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3 ">
-                            <button type="button" class="btn btn-grey py-2  px-5" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-blue px-5 py-2" data-bs-dismiss="modal"
-                                onclick="tambahcost()">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    {{-- Modal edit biaya lain --}}
-    @foreach ($biaya_lain as $item)
-        <div class="modal fade" id="editbiayalain{{ $item->id }}" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header border-bottom-0 m-3 py-0">
-                        <h5 class="modal-title ms-auto">Edit Biaya Lain-Lain</h5>
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body m-3 py-0">
-                        <form method="POST" id="formbiayalain" action="{{ url('cs/tulisOrderan/editlain/' . $item->id) }}">
-                            @csrf
-                            <div class="mb-3 ">
-                                <label for="costnominal" class="form-label h6 mb-1">Nominal</label>
-                                <input type="number" class="form-control form-control-lg input-custom shadow mb-2"
-                                    name="biaya_lain_edit" id="costnominal" required value="{{ $item->biaya_lain }}">
-                                <div class="small">Gunakan tanda (-) untuk mengurangi. <br>misal untuk diskon : -20000
-                                </div>
-                            </div>
-                            <div class="mb-5 ">
-                                <label for="addcostlabel" class="form-label h6 mb-1">Label</label>
-                                <input type="text" class="form-control form-control-lg input-custom shadow"
-                                    value="{{ $item->jasa_biaya_lain }}" id="addcostlabel"
-                                    placeholder="Label biaya - Opsional (max 20 karakter)" required
-                                    name="jasa_biaya_lain_edit">
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mb-3 ">
-                                <button type="button" class="btn btn-grey py-2  px-5"
-                                    data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-blue px-5 py-2"
-                                    data-bs-dismiss="modal">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    {{-- hapus biaya lain --}}
-    @foreach ($biaya_lain as $item)
-        <div class="modal fade" id="hapuslain{{ $item->id }}" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-white">
-                    <div class="modal-header border-bottom-0 m-3 py-0">
-                        <h5 class="modal-title ms-auto">Data Biaya Lain Yang Akan Dihapus</h5>
-                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body m-3 py-0">
-                        <form method="POST" id="formhapusbiayalain"  action="{{ url('cs/tulisOrderan/deletelain/' . $item->id) }}">
-                            @csrf
-                            @method('DELETE')
-
-                            <table class="table">
-                                <tr>
-                                    <td class="px-0 fs-5">keterangan</td>
-                                    <td class="px-0 fs-5">:</td>
-                                    <td class="px-0 fs-5" colspan="2" style="white-space: nowrap;">
-                                        {{ $item->jasa_biaya_lain }}</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-0 fs-5">nominal</td>
-                                    <td class="px-0 fs-5">:</td>
-                                    <td class="px-0 fs-5" colspan="2" style="white-space: nowrap;">
-                                        {{ $item->biaya_lain }}</td>
-                                </tr>
-                            </table>
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <button type="button" class="btn btn-grey py-2  px-5"
-                                    data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-danger px-5 py-2"
-                                    data-bs-dismiss="modal">Hapus</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
 
 
      {{-- Modal add order --}}
@@ -534,7 +369,7 @@
                     <button type="button" class="btn-close ms-auto " data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <form method="POST" id="tambahForm" action="{{ url('cs/tulisOrderan/keranjang') }}">
+                <form method="POST" id="tambahForm" action="{{ route('viewtulisorder') }}">
                     @csrf
 
                     <div class="modal-body m-3 py-0 wadahulang">
@@ -595,7 +430,7 @@
     </div>
 
     {{-- Modal edit order --}}
-    @foreach ($keranjang as $isi)
+    @foreach ($viewtulisorder as $isi)
         <div class="modal fade " id="editOrder{{ $isi->id }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -604,7 +439,7 @@
                         <button type="button" class="btn-close ms-auto " data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="{{ url('cs/tulisOrderan/editkeranjang/' . $isi->id) }}">
+                    <form method="POST" action="{{ url('cs/tulisOrderan/edittulisorder/' . $isi->id) }}">
                         @csrf
                         <div class="modal-body m-3 py-0">
                             <div class="d-flex flex-row justify-content-between gap-4  mb-4">
@@ -631,15 +466,14 @@
                                     <input type="text" disabled
                                         value="{{ 'Rp ' . number_format($isi->harga, 0, ',', '.') }}"
                                         class="form-control input-custom shadow" id="tampilhargasatuan_edit">
-                                    {{-- <input type="hidden" class="form-control input-custom shadow"
-                                    id="tampilpoint_edit" value="{{ $isi->point_per_barang }}" name="point_edit"> --}}
+
                                 </div>
 
                                 <div class="col ">
                                     <label for="ukuran" class="form-label label-order mb-1"
                                         id="label_ukuran">Ukuran</label>
-                                    <input required type="text" name="ukuran" id="ukuran"
-                                        class="form-control input-custom shadow" >
+                                    <input required readonly type="text" name="ukuran_edit" id="ukuran"
+                                        class="form-control input-custom shadow"  value="{{ $isi->ukuran }}">
                                 </div>
 
                                 <div class="col">
@@ -671,7 +505,7 @@
         </div>
     @endforeach
     {{-- Modal hapus order --}}
-    @foreach ($keranjang as $isi)
+    @foreach ($viewtulisorder as $isi)
         <div class="modal fade " id="hapusOrder{{ $isi->id }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content bg-white">
@@ -825,114 +659,7 @@
         </div>
     @endforeach
 
-    {{-- Modal add pelanggan --}}
-    <div class="modal fade" id="tambahpelanggan" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered ">
-            <div class="modal-content">
-                <div class="modal-header border-bottom-0 m-3 py-0 ">
-                    <h5 class="modal-title ms-auto">Tambah Data pelanggan</h5>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body m-3 py-0">
-                    <form method="POST" id="formDataPelanggan" action="{{ url('admin/tulisOrderan/addcs') }}">
-                        @csrf
-                        <div class="mb-4 ">
-                            <label for="nama-pelanggan" class="form-label label-order mb-1">Nama Pelanggan</label>
-                            <input type="text" class="form-control form-control-lg  input-custom shadow"
-                                id="nama-pelanggan" required name="add_nama_pelanggan">
-                            <div class="invalid-feedback">
-                                Masukkan nama pelanggan
-                            </div>
-                        </div>
 
-                        <div class="mb-4 ">
-                            <label for="email-pelanggan" class="form-label label-order mb-1">Email Pelanggan</label>
-                            <input type="email" class="form-control form-control-lg  input-custom shadow"
-                                id="email-pelanggan" required name="add_email_pelanggan">
-                            <div class="invalid-feedback">
-                                Masukkan email pelanggan
-                            </div>
-                        </div>
-                        <div class="d-flex row">
-                            <div class="col-md-6 mb-2" id="tambah-hp-1">
-                                <label for="hp-1" class="form-label label-order mb-1">HP 1</label>
-                                <input type="telp" minlength="10" maxlength="13"
-                                    class="form-control form-control-lg  input-custom shadow " id="hp-1"
-                                    oninput="this.value = this.value.replace(/\D/g, '')" required
-                                    name="add_phone_pelanggan">
-                            </div>
-                            <div class="col-md-6 mb-4 " id="tambah-hp-2">
-                                <label for="hp-2" class="form-label label-order mb-1">HP 2 (Optional) </label>
-                                <input type="telp" minlength="10" maxlength="13"
-                                    class="form-control form-control-lg  input-custom shadow " id="hp-2"
-                                    oninput="this.value = this.value.replace(/\D/g, '')" name="add_phone2_pelanggan">
-                            </div>
-                        </div>
-                        <div class="mb-4 ">
-                            <label for="alamat" class="form-label label-order mb-1">Alamat</label>
-                            <textarea type="text" class="form-control form-control-lg  input-custom shadow " id="alamat" rows="3"
-                                required name="add_alamat_pelanggan"></textarea>
-                            <div class="invalid-feedback">
-                                Masukkan alamat
-                            </div>
-                        </div>
-
-                        <div class="row d-flex">
-                            <div class="col-md-6 mb-4">
-                                <label for="provinsi2" class="form-label label-order mb-1">Provinsi</label>
-
-                                <select class="form-select form-select-lg  shadow" onchange="loadKabupaten()" required
-                                    id="provinsiadd" name="add_provinsi_pelanggan">
-                                    <option value="">Pilih Provinsi</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Masukkan provinsi
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-4">
-                                <label for="kabupaten2" class="form-label label-order mb-1">Kab / kota</label>
-                                <select class="form-select form-select-lg  shadow" id="kabupatenadd"
-                                    name="add_kabupaten_pelanggan" onchange="loadKecamatan()" required>
-                                    <option value="">Pilih Kab/Kota</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Masukkan kota
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row d-flex mb-4">
-                            <div class="col-md-6">
-                                <label for="kecamatan2" class="form-label label-order mb-1">Kecamatan</label>
-                                <select class="form-select form-select-lg  shadow" id="kecamatanadd" required
-                                    name="add_kecamatan_pelanggan">
-                                    <option value="">Pilih Kecamatan</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Masukkan kecamatan
-                                </div>
-                            </div>
-                            <div class="col-md-6 ">
-                                <label for="kodepos2" class="form-label label-order mb-1">Kode Pos </label>
-                                <input type="number" class="form-control form-control-lg  input-custom shadow "
-                                    name="add_kodepos_pelanggan" maxlength="5" id="kodepos2" required>
-                                <div class="invalid-feedback">
-                                    Masukkan kodepos
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center my-3 ">
-                            <button type="button" class="btn btn-grey py-2  px-5" data-bs-target="#search"
-                                data-bs-dismiss="modal" data-bs-toggle="modal">Kembali</button>
-                            <button type="submit" class="btn btn-blue px-5 py-2" data-bs-dismiss="modal"
-                                onclick="addPelanggan()">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     {{-- Modal search pelanggan --}}
     <div class="modal fade" id="search" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered ">
@@ -942,7 +669,7 @@
                     <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"
                         aria-label="Close"></button>
                 </div>
-                <div class="modal-body mb-5 py-0 ">
+                <div class="modal-body mb-5 py-3 ">
 
                     <div class="manual d-flex justify-content-center">
 
@@ -961,11 +688,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="modal-footer mt-5 mb-3 justify-content-center">
-                        <button type="button" class="btn btn-blue px-5 mt-5 py-2" data-bs-target="#tambahpelanggan"
-                            data-bs-dismiss="modal" data-bs-toggle="modal">Tambah Pelanggan</button>
 
-                    </div>
                 </div>
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\BEController;
 
+use Carbon\Carbon;
 use App\Models\Resi;
 use Dotenv\Util\Str;
 use App\Models\Notif;
@@ -14,13 +15,14 @@ use App\Models\Keranjang;
 use App\Models\Notiforder;
 use App\Models\BarangOrder;
 use App\Listeners\SendNotif;
+use App\Models\UpdateProses;
 use Illuminate\Http\Request;
 use App\Events\OrderCreatedNotif;
-use App\Models\UpdateStatusProses;
 use Illuminate\Support\Facades\DB;
 use App\Events\MyEventNotification;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\ViewTulisOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -298,16 +300,11 @@ class OrderanProcess extends Controller
         $tanggal = $request->input('tanggal_order');
         $id = $request->input('id_pelanggan_keorder');
         $ongkir = $request->input('jasa_ongkir');
-        $biaya_lain = $request->input('jasa_biaya_lain');
         $dana_ongkir = $request->input('ongkir');
-        $dana_biaya_lain = $request->input('biaya_lain');
         $note = $request->input('note');
 
         $total_qty = array_sum($request->input('qty_f'));
 
-        // $inisialJuragan = implode('', array_map(function ($item) {
-        //     return $item[0];
-        // }, explode(' ', strtoupper($JuraganName))));
         $inisialJuragan =   strtoupper(substr($JuraganName, 0, 1));
         $id_pelanggan_part = strtoupper(substr($id, 0, 3));
         $orderDate = \Carbon\Carbon::parse($tanggal);
@@ -315,9 +312,6 @@ class OrderanProcess extends Controller
         $month = $orderDate->format('m');
         $day = $orderDate->format('d');
         $orderNumber = $inisialJuragan . $id_pelanggan_part . $month . $day;
-
-
-
 
 
         $order = new Order();
@@ -331,14 +325,17 @@ class OrderanProcess extends Controller
         $order->notes = $note;
         $order->order_number = $orderNumber;
         $order->ongkir = $ongkir;
-        $order->biaya_lain = $biaya_lain;
         $order->dana_ongkir = $dana_ongkir;
-        $order->dana_biaya_lain = $dana_biaya_lain;
+
+        if (in_array($sumber, ['Bukalapak', 'Lazada', 'Shopee', 'Tokopedia'])) {
+            $order->paid_amount = $total_semua;
+            $order->status = 'dalam_proses';
+        }
+
 
         $order->save();
 
         $orderId = Order::where('order_number', $orderNumber)->value('id');
-        // dd($orderId);
 
         $orders = [];
         foreach ($kdProdukArray as $index => $kdProduk) {
@@ -362,16 +359,24 @@ class OrderanProcess extends Controller
             Log::info('Event OrderCreatedNotif dipicu.');
         }
 
-        Keranjang::where('employee_id', $user->id)->get()->each(function ($item) {
+        ViewTulisOrder::where('employee_id', $user->id)->get()->each(function ($item) {
             $item->delete();
         });
-        $semuaorder=Order::where('order_number',$orderNumber)->get();
-        UpdateStatusProses::create([
-            'id_status' => 1,
+        UpdateProses::create([
+            'id_order'=> $orderId,
+            'nama_proses' => 'pesanan_ditambahkan',
             'order_number' => $orderNumber,
         ]);
 
-        $cs = Employee::where('id', $served)->first();
+        if (in_array($sumber, ['Bukalapak', 'Lazada', 'Shopee', 'Tokopedia'])) {
+            UpdateProses::create([
+                'id_order'=> $orderId,
+                'nama_proses' => 'pembayaran',
+                'order_number' => $orderNumber,
+                'kelengkapan' => 'lengkap',
+            ]);
+        }
+
         $juragan = Juragan::where('name_juragan', $JuraganName)->first();
 
 
@@ -482,15 +487,15 @@ class OrderanProcess extends Controller
         $order_number = $orderId;
         $kelengkapan = $request->input('kelengkapan');
         $keterangan = $request->input('keterangan');
-
-        UpdateStatusProses::create([
-            'id_status' => $status,
+        $order = Order::where('order_number', $order_number)->first();
+        UpdateProses::create([
+            'id_order' => $order->id,
+            'nama_proses' => $status,
             'order_number' => $order_number,
             'keterangan' => $keterangan,
             'kelengkapan' => $kelengkapan
         ]);
 
-        // Panggil fungsi notifProsesOrderan untuk membuat notifikasi
 
 
         return redirect()->back();
@@ -527,46 +532,20 @@ class OrderanProcess extends Controller
     public function resisa(Request $request, $orderNumber)
     {
         $request->validate([
-            'kurir' => 'required|string|max:50',
-            'ongkir' => 'required|integer',
-            'isi_paket' => 'required|integer',
             'tanggal_kirim' => 'required|date',
             'resi' => 'required|string|max:50',
-            'lainnya' => 'nullable|string|max:150'
         ]);
-        // dd($request->all());
-        $resi = Resi::create([
-            'kurir' => $request->kurir,
-            'ongkos' => $request->ongkir,
-            'total_paket' => $request->isi_paket,
-            'tanggal_kirim' => $request->tanggal_kirim,
-            'no_resi' => $request->resi,
-            'order_number' => $orderNumber,
-            'lainnya'=>$request->lainnya
-        ]);
-
-        $notif = $this->notifAddResi($orderNumber);
-        OrderCreatedNotif::dispatch($notif);
-
         $order = Order::where('order_number', $orderNumber)->first();
+        $order->update([
+            'status' => 'orderan_selesai'
+        ]);
 
-        if ($order) {
-            $notif = $this->notifClosing($orderNumber);
-            OrderCreatedNotif::dispatch($notif);
+        UpdateProses::create([
+            'id_order' => $order->id,
+            'nama_proses' => 'diantar',
+            'order_number' => $orderNumber,
+        ]);
 
-            $order->update([
-                'resi_id' => $resi->id,
-                'status' => 'orderan_selesai',
-
-            ]);
-
-            $csUser = Employee::find($order->served_by);
-            $cs = $csUser->name;
-
-            $juragan = Juragan::find($order->juragan); // Asumsi kolom juragan_id ada di tabel order
-
-
-        }
 
         return redirect()->back();
     }

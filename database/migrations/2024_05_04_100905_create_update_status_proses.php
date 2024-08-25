@@ -12,14 +12,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('update_status_proses', function (Blueprint $table) {
+        Schema::create('update_proses', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->unsignedBigInteger('id_status');
+            $table->uuid('id_order');
+            $table->enum('nama_proses', ['pesanan_ditambahkan','pembayaran' ,'packing','diantar'])
+            ->nullable();
             $table->string('order_number',10);
             $table->enum('kelengkapan', ['Lengkap', 'Belum Lengkap','masuk','selesai'])->nullable();
             $table->text('keterangan', 255)->nullable();
             $table->timestamps();
-            $table->foreign('id_status')->references('id')->on('status_proses');
+
+            $table->foreign('id_order')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('update_status_proses');
+        Schema::dropIfExists('update_proses');
     }
 };
