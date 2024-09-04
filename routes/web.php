@@ -51,6 +51,10 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::get('/', function () {
         return view('login', ["title" => "utama"]);
     })->name('loginPage');
+Route::get('/register', function () {
+        return view('registercs', ["title" => "regis"]);
+    })->name('regis');
+Route::post('/register/addcs', [EmployeeController::class, 'regiscs'])->name('regiscs');
 Route::get('/logout', [AuthController::class, 'logout'])->name('web.logout');
 
 

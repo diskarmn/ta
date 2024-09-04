@@ -114,7 +114,7 @@ class EmployeeController extends Controller
 
         return view('super-admin.data-juragan.addjuragan',["title" => "tambah toko"]);
     }
-  
+
     public function addceo(){
         $title = 'add CEO';
 
@@ -151,6 +151,33 @@ class EmployeeController extends Controller
 
     }
 
+    public function regiscs(Request $request)
+    {
+        $employee = new Employee();
+        $employee->name = $request->input('name');
+        $employee->phone_number = $request->input('phone_number');
+        $employee->email = $request->input('email');
+        $employee->password = bcrypt($request->input('password'));
+        $employee->juragan_id = $request->input('juragan_id');
+        $employee->gender = $request->input('gender', '');
+        $employee->role = 'cs';
+
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('bukti_pembayaran'), $fileName);
+
+            $employee->profile_image = $fileName;
+        } else {
+            $employee->profile_image = null;
+        }
+
+        $employee->save();
+        return redirect()->back()->with('success', 'Data successfully added.');
+
+    }
 
 
     public function tambahceo(Request $request){

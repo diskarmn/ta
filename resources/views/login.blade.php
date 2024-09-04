@@ -123,8 +123,7 @@
                     <div class="card-body">
 
                         <h1 class="pt-3" style="color:#454B4D; font-size: 44px;"><b>Selamat Datang!</b></h1>
-
-
+                        <p style="font-size: 100%">belum punya akun? <a href="{{ route('regis') }}">register</a> sekarang</p>
                         <form action="{{ route('login') }}" method="POST">
                             @csrf
                             <div class="row d-flex justify-content-center py-3">
@@ -163,7 +162,7 @@
                                         @if (isset($_COOKIE['email'])) value="{{ $_COOKIE['email'] }}" @endif
                                         id="flexCheckDefault">
                                 </div>
-                           
+
                             </div>
                             <div>
                                 <button type="submit" class="btn btn-primary col-12">Login</button>
@@ -173,6 +172,7 @@
                 </div>
             </div>
         </div>
+
 
 
         <script>
